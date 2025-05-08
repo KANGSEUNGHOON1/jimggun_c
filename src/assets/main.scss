@@ -1,0 +1,15 @@
+@use './reset.css' as *;
+@use './pretendardvariable.css' as *;
+@use './variables' as *;
+@use './buttons' as *;
+@use './cards' as *;
+@use './scrollColor' as *;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: $font-family;
+  color: $font-primary;
+}

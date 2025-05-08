@@ -1,0 +1,42 @@
+// 색상 
+$primary-color: rgba(255, 111, 0, 1);
+$sub-color: rgba(253, 243, 231, 1);
+$white: rgba(255, 255, 255, 1);
+// 배경색상
+$bg-primary: rgba(229, 229, 236, 1);
+$bg-light: rgba(241, 241, 245, 1);
+// 폰트 패밀리
+$font-family: "Pretendard";
+// 폰트 색상
+$font-primary: rgba(17, 17, 17, 1);
+$font-gray: rgba(80, 80, 80, 1);
+$font-light-gray: rgba(118, 118, 118, 1);
+$font-disabled: rgba(217, 217, 217, 1);
+$input-select: rgba(229, 229, 236, 1);
+// 폰트 사이즈
+$title-font-XL: 36px;
+$title-font-L: 30px;
+$title-font-M: 28px;
+$title-font-S: 24px;
+$title-font-XS: 22px;
+
+$text-font-XL: 20px;
+$text-font-L: 18px;
+$text-font-M: 16px;
+$text-font-S: 14px;
+$text-font-XS: 12px;
+// input 색상
+$input-select: rgba(229, 229, 236, 1);
+$disabled-color: rgba(241, 241, 245, 1);
+// 간격
+// SNS 색상
+$naver-color: rgba(1, 199, 60, 1);
+$kakao-color: rgba(249, 219, 0, 1);
+// warning / error 색상
+$warning-color: rgba(220, 53, 69, 1);
+$error-color: rgba(217, 83, 79, 1);
+/* 박스섀도우 */
+$reservation-boxShadow:  4px 8px 15px rgba(255, 96, 7, 0.1);
+$info-boxShadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+// 호버 
+$primary-hover: #FF7F1A

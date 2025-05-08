@@ -1,0 +1,16 @@
+@use "./variables" as *;
+// 확인 결제 페이지 카드
+.res2_box {
+  padding: 35px 35px 50px 35px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: $reservation-boxShadow;
+}
+.res_pay_card {
+  padding: 35px 35px;
+  margin-top: 12px;
+  box-shadow: $reservation-boxShadow;
+  border-radius: 10px;
+  background-color: #fff;
+}
+// 검색 모달 카드
