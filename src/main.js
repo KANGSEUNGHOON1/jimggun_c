@@ -7,6 +7,7 @@ import router from "./router";
 import { createPinia } from "pinia";
 import { createI18n } from "vue-i18n";
 
+import './assets/tailwind.css';
 const pinia = createPinia();
 
 const messages = {
