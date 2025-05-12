@@ -22,6 +22,11 @@ import WorkerMypage from "@/pages/worker/WorkerMypage.vue";
 // 관리자페이지 로그인
 import A10_adminLogin from "@/views/A10_adminLogin.vue";
 import AdminHome from "@/pages/admin/AdminHome.vue";
+import Adminworker from "@/pages/admin/Adminworker.vue";
+import Dashboard from "@/pages/admin/Dashboard.vue";
+import Sidebar from "@/pages/admin/Sidebar.vue";
+import Sidebarmenu from "@/pages/admin/Sidebarmenu.vue";
+import Adminreservation from "@/pages/admin/Adminreservation.vue";
 
 const routes = [
   { path: "/", component: A1_home },
@@ -40,41 +45,20 @@ const routes = [
   { path: "/reslogin", component: A4_reslogin },
   //기사페이지
   {
-    path: '/worker',
-    component: WorkerLogin,
-    redirect: '/worker/WorkerLogin',
-    children: [
-      {
-        path: '/workerLogin',
-        component: WorkerLogin,
-      },
-      {
-        path: '/workerHome',
-        component: WorkerHome,
-      },
-      {
-        path: '/workerMain',
-        component: WorkerMain,
-      },
-      {
-        path: '/workerMypage',
-        component: WorkerMypage,
-      },
-    ],
     path: "/worker",
     component: A11_workerLogin,
-    name: "A11_workerLogin"
+    name: "A11_workerLogin",
   },
   // 기사페이지 로그인 후
   {
     path: "/worker",
-    component:WorkerHome,
-    redirect:"/worker/workerhome",
-    children:[
-      {path:"workerhome", component:WorkerHome},
+    component: WorkerHome,
+    redirect: "/worker/workerhome",
+    children: [
+      { path: "workerhome", component: WorkerHome },
       // {path:"workermain", component:WorkerMain},
       // {path:"workermypage", component:WorkerMypage},
-    ]
+    ],
   },
   // 관리자페이지
   {
@@ -82,6 +66,7 @@ const routes = [
     name: "A10_adminLogin",
     component: A10_adminLogin,
   },
+   
   // 관리자페이지 로그인 후
   {
     path: "/admin",
@@ -89,6 +74,11 @@ const routes = [
     redirect: "/admin/adminhome",
     children: [
       { path: "adminhome", component: AdminHome },
+      { path: "adminworker", component: Adminworker },
+      { path: "dashboard", component: Dashboard },
+      { path: "sidebar", component: Sidebar },
+      { path: "sidebarmenu", component: Sidebarmenu },
+      { path: "adminreservation", component: Adminreservation },
     ],
   },
 ];
