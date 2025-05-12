@@ -1,1 +1,1 @@
-<template></template>
+<template>어드민 홈</template>
