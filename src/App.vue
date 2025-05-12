@@ -1,11 +1,13 @@
 <script setup>
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
-import { useRoute } from "vue-router";
-import { computed } from "vue";
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 const route = useRoute();
-const isPopup = computed(() => route.query.popup === "true");
+const isPopup = computed(() => {
+  return route.query.popup === 'true' || route.path.startsWith('/admin') || route.path.startsWith('/worker');
+});
 </script>
 
 <template>

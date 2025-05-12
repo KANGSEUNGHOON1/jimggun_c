@@ -39,23 +39,23 @@ const routes = [
   //기사페이지
   {
     path: '/worker',
-    component: WorkerHome,
+    component: WorkerLogin,
     redirect: '/worker/WorkerLogin',
     children: [
       {
-        path: 'workerLogin',
+        path: '/workerLogin',
         component: WorkerLogin,
       },
       {
-        path: 'workerHome',
+        path: '/workerHome',
         component: WorkerHome,
       },
       {
-        path: 'workerMain',
+        path: '/workerMain',
         component: WorkerMain,
       },
       {
-        path: 'workerMypage',
+        path: '/workerMypage',
         component: WorkerMypage,
       },
     ],
