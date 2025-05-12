@@ -40,6 +40,27 @@ const routes = [
   { path: "/reslogin", component: A4_reslogin },
   //기사페이지
   {
+    path: '/worker',
+    component: WorkerLogin,
+    redirect: '/worker/WorkerLogin',
+    children: [
+      {
+        path: '/workerLogin',
+        component: WorkerLogin,
+      },
+      {
+        path: '/workerHome',
+        component: WorkerHome,
+      },
+      {
+        path: '/workerMain',
+        component: WorkerMain,
+      },
+      {
+        path: '/workerMypage',
+        component: WorkerMypage,
+      },
+    ],
     path: "/worker",
     component: A11_workerLogin,
     name: "A11_workerLogin"

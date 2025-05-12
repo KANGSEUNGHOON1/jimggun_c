@@ -39,7 +39,7 @@ const handleLogin = () => {
     </div>
     <form>
       <div class="loginInputContainer">
-        <input type="text" placeholder="아이디" class="loginInput" v-model="formData.userId" autocomplete="username"/>
+        <input type="text" placeholder="아이디" class="loginInput" v-model="formData.userId" autocomplete="username" />
         <input
           type="password"
           placeholder="비밀번호"
@@ -60,6 +60,7 @@ const handleLogin = () => {
     </div>
 
     <div class="snsLoginContainer">
+      <!-- <p>자주 사용하는 계정으로 간편하게 로그인</p> -->
       <div class="snsIconBox">
         <div class="snsIcon naver">
           <img src="/images/kang/naver.png" alt="네이버" />
@@ -70,6 +71,9 @@ const handleLogin = () => {
         <div class="snsIcon google">
           <img src="/images/kang/google.png" alt="구글" />
         </div>
+      </div>
+      <div class="workerLogin">
+        <router-link to="/workerLogin"><p>혹시 <strong>짐꾼</strong>이세요?</p></router-link>
       </div>
     </div>
   </div>
@@ -91,6 +95,9 @@ a {
   color: $font-primary;
 }
 //로고
+.logoContainer > img {
+  margin: auto;
+}
 .logo {
   width: 126px;
 }
@@ -145,6 +152,10 @@ a {
   color: $font-light-gray;
 }
 //간편 로그인
+.snsLoginContainer p {
+  margin-bottom: 36px;
+  font-size: 16px;
+}
 .snsLoginContainer {
   margin-top: 50px;
   margin-bottom: 100px;
@@ -176,6 +187,17 @@ a {
 }
 .google {
   background-color: $bg-light;
+}
+// 관리자 로그인
+.workerLogin {
+  padding-top: 36px;
+}
+.workerLogin p {
+  font-size: 18px;
+  cursor: pointer;
+  strong {
+    color: $primary-color;
+  }
 }
 @media screen and (max-width: 768px) {
   // gotop 버튼
