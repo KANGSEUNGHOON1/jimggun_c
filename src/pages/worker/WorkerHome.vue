@@ -14,7 +14,7 @@
         </h2>
         <h2
           @click="activeTab = 'todayWork'"
-          class="flex-1 text-center cursor-pointer"
+          class="flex-1 text-center cursor-pointer "
           :class="activeTab === 'todayWork' ? ' text-[#FF6F00]' : 'text-[#111]'"
         >
           오늘 할 일
@@ -24,6 +24,7 @@
       <!--홈 탭 내용-->
       <section v-if="activeTab === 'home'" class="home-wrap">홈</section>
 
+<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------ -->
       <!--오늘 할 일 탭 내용-->
       <section v-if="activeTab === 'todayWork'" class="todayWork-wrap">오늘 할 일</section>
     </div>

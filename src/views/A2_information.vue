@@ -1,50 +1,7 @@
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
-
-// top버튼
-// 로그인 상태 기반 라우터 설정
-const router = useRouter();
-const authStore = useAuthStore();
-const isLoggedIn = computed(() => authStore.getIsLoggedIn);
-
-// gotop 버튼
-const smoothlyBtn = ref(null);
-const topBtnWrap = ref(null);
-const isFooterVisible = ref(false);
-
-// 고용하기 버튼 클릭 시 라우팅
-function handleGoToReservation() {
-  if (isLoggedIn.value) {
-    router.push("/reservation");
-  } else {
-    router.push("/reslogin");
-  }
-}
-
-onMounted(() => {
-  smoothlyBtn.value?.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  const footer = document.querySelector("footer");
-  if (footer) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isFooterVisible.value = entry.isIntersecting;
-        });
-      },
-      {
-        threshold: 0.01,
-        rootMargin: "-100px 0px 0px 0px",
-      }
-    );
-    observer.observe(footer);
-  }
-});
+import { onMounted, ref, watch } from "vue";
+// gotop버튼
+import GototopBtn from "@/components/GototopBtn.vue";
 
 const activeTap = ref("delivery");
 const selectedPlace = ref(null);
@@ -210,14 +167,7 @@ watch(activeTap, (newValue) => {
 </script>
 
 <template>
-  <!-- gotop 버튼 -->
-  <div class="topBtnWrap" ref="topBtnWrap" :class="{ 'footer-visible': isFooterVisible }">
-    <a href="#" class="topBtn" ref="smoothlyBtn">↑</a>
-    <div class="resBtn" @click="handleGoToReservation">
-      <img src="/images/hong/gotopBtn-logo-w.png" alt="gotopBtn로고" />
-      <span>고용하기</span>
-    </div>
-  </div>
+  <GototopBtn />
 
   <!-- 지도 마커 클릭 시 모달창 구현 -->
   <article v-if="modalOpen" class="selectMarkerModal">
@@ -442,33 +392,14 @@ watch(activeTap, (newValue) => {
       <div class="careful inner">
         <h2 class="careful-title">유의사항</h2>
         <ul class="careful-box">
-          <li class="careful-list">
-            예약시 숙소명과 주소가 불일치 시 작성해주신 주소로 배송되며, 잘못된 예약으로 인해 발생한 문제는 책임지지
-            않습니다.
-          </li>
-          <li class="careful-list">
-            직접 투숙하는 숙소 이외에 짐을 두었다가 파손 및 분실사고 발생 시 책임지지 않습니다.
-          </li>
-          <li class="careful-list">
-            취급하지 않는 품목을 가방에 함께 넣을 경우 파손 및 분실 시 짐꾼은 책임지지 않습니다.
-          </li>
-          <li class="careful-list">
-            수화물의 결함, 교통장애, 천재지변 등의 이유로 수화물의 문제가 발생할 시 '짐꾼'에서 책정한 보상특약에 따라
-            처리합니다.
-          </li>
-          <li class="careful-list">
-            픽업시 픽업장소에 짐이 없고, 고객님과 연락이 되지 않을 경우 서비스 이용은 취소되며, 환불은 되지 않습니다.
-          </li>
-          <li class="careful-list">
-            고객님의 개인사유로 인해 픽업이 늦어질 경우 미리 고객센터에 연락 주시기 바랍니다.
-          </li>
-          <li class="careful-list">
-            여러개의 짐을 하나로 묶어서 예약한 경우 서비스 이용이 거절될 수 있으며, 거절 될 시 환불이 불가합니다.
-          </li>
-          <li class="careful-list">
-            정확한 가방배송을 위해 카카오톡 가방사진 링크에 가방과 보관장소를 첨부해주시고 업로드 하지 않을 시 발생한
-            문제는 책임지지 않습니다.
-          </li>
+          <li class="careful-list">예약시 숙소명과 주소가 불일치 시 작성해주신 주소로 배송되며, 잘못된 예약으로 인해 발생한 문제는 책임지지 않습니다.</li>
+          <li class="careful-list">직접 투숙하는 숙소 이외에 짐을 두었다가 파손 및 분실사고 발생 시 책임지지 않습니다.</li>
+          <li class="careful-list">취급하지 않는 품목을 가방에 함께 넣을 경우 파손 및 분실 시 짐꾼은 책임지지 않습니다.</li>
+          <li class="careful-list">수화물의 결함, 교통장애, 천재지변 등의 이유로 수화물의 문제가 발생할 시 '짐꾼'에서 책정한 보상특약에 따라 처리합니다.</li>
+          <li class="careful-list">픽업시 픽업장소에 짐이 없고, 고객님과 연락이 되지 않을 경우 서비스 이용은 취소되며, 환불은 되지 않습니다.</li>
+          <li class="careful-list">고객님의 개인사유로 인해 픽업이 늦어질 경우 미리 고객센터에 연락 주시기 바랍니다.</li>
+          <li class="careful-list">여러개의 짐을 하나로 묶어서 예약한 경우 서비스 이용이 거절될 수 있으며, 거절 될 시 환불이 불가합니다.</li>
+          <li class="careful-list">정확한 가방배송을 위해 카카오톡 가방사진 링크에 가방과 보관장소를 첨부해주시고 업로드 하지 않을 시 발생한 문제는 책임지지 않습니다.</li>
         </ul>
       </div>
     </section>
@@ -664,14 +595,9 @@ watch(activeTap, (newValue) => {
         <ul class="careful-box">
           <li class="careful-list">보관 후 7일이 지난 물품은 관리자의 요청에 따라 이동될 수 있습니다.</li>
 
-          <li class="careful-list">
-            보관함의 문을 제대로 닫지않아 발생한 문제에 대해서는 ‘짐꾼’은 책임지지 않습니다. 문을 꼭 확인해주세요.
-          </li>
+          <li class="careful-list">보관함의 문을 제대로 닫지않아 발생한 문제에 대해서는 ‘짐꾼’은 책임지지 않습니다. 문을 꼭 확인해주세요.</li>
           <li class="careful-list">유사시 보관함 관리를 위해 보관함을 임시로 열어 점검할 수 있습니다.</li>
-          <li class="careful-list">
-            수화물의 결함, 교통장애, 천재지변 등의 이유로 수화물의 문제가 발생할 시 ‘짐꾼’에서 책정한 보상특약에 따라
-            처리합니다.
-          </li>
+          <li class="careful-list">수화물의 결함, 교통장애, 천재지변 등의 이유로 수화물의 문제가 발생할 시 ‘짐꾼’에서 책정한 보상특약에 따라 처리합니다.</li>
           <li class="careful-list">보관함 이용중 발생한 문제는 고객센터 또는 현장 관리자에게 신고해 주십시오.</li>
           <li class="careful-list">보관불가 품목을 보관하여 발생한 책임에 대해서 짐꾼은 책임지지 않습니다.</li>
         </ul>
@@ -685,54 +611,6 @@ watch(activeTap, (newValue) => {
 
 <style lang="scss" scoped>
 @import "/src/assets/variables";
-// gotop 버튼
-.topBtnWrap {
-  position: fixed;
-  right: 100px;
-  bottom: 60px;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-
-  &.footer-visible {
-    transform: translateY(-250px);
-  }
-
-  @media screen and (max-width: 768px) {
-    // gotop 버튼
-    display: none !important;
-  }
-  .topBtn {
-    color: $primary-color;
-    font-size: 40px;
-    text-decoration: none;
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    border-radius: 50%;
-    background-color: $white;
-    text-align: center;
-    box-shadow: $info-boxShadow;
-  }
-  .resBtn {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: $primary-color;
-    text-align: center;
-    box-shadow: $info-boxShadow;
-    text-decoration: none;
-    padding: 13.5px 0;
-    span {
-      display: inline-block;
-      color: $white;
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
-  }
-}
 
 // 마커 모달창 구현
 .selectMarkerModal {

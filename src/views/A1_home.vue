@@ -1,24 +1,20 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref , computed } from "vue";
 import { useRouter } from "vue-router";
-// 상태관리
 import { useAuthStore } from "@/stores/auth";
 // 라이브러리
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/autoplay";
+// gotop버튼
+import GototopBtn from "@/components/GototopBtn.vue";
 
-// top 버튼 로그인 연결
+
+// 예약바로기 미니버튼 로그인 상태 기반 라우팅
 const router = useRouter();
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.getIsLoggedIn);
-
-// top버튼
-const smoothlyBtn = ref(null);
-const topBtnWrap = ref(null);
-const isFooterVisible = ref(false);
-
 function handleGoToReservation() {
   if (isLoggedIn.value) {
     router.push("/reservation");
@@ -27,34 +23,6 @@ function handleGoToReservation() {
   }
 }
 
-onMounted(() => {
-  smoothlyBtn.value?.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  });
-
-  // Intersection Observer 설정
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        isFooterVisible.value = entry.isIntersecting;
-      });
-    },
-    {
-      threshold: 0.01,
-      rootMargin: "-100px 0px 0px 0px",
-    }
-  );
-
-  // 푸터 요소 관찰 시작
-  const footer = document.querySelector("footer");
-  if (footer) {
-    observer.observe(footer);
-  }
-});
 // 슬라이드 이미지 데이터
 // 메인배너 더미데이터
 const mainBannerData = ref([
@@ -111,14 +79,7 @@ const mainBannerData = ref([
 </script>
 
 <template>
-  <!-- gotop 버튼 -->
-  <div class="topBtnWrap" ref="topBtnWrap" :class="{ 'footer-visible': isFooterVisible }">
-    <a href="#" class="topBtn" ref="smoothlyBtn">↑</a>
-    <div class="resBtn" @click="handleGoToReservation" style="cursor: pointer">
-      <img src="/images/hong/gotopBtn-logo-w.png" alt="gotopBtn로고" />
-      <span>고용하기</span>
-    </div>
-  </div>
+  <GototopBtn />
 
   <div class="main-wrap">
     <!-- 메인배너 슬라이드 -->
@@ -164,9 +125,12 @@ const mainBannerData = ref([
             <input type="text" id="mini1" placeholder="2025.03.22 / 11:00" />
           </div>
         </form>
-        <router-link :to="isLoggedIn ? '/reservation' : '/reslogin'" class="mini-button">
+        <!-- <router-link :to="isLoggedIn ? '/reservation' : '/reslogin'" class="mini-button">
           <p>바로 예약</p>
-        </router-link>
+        </router-link> -->
+        <div class="mini-button" @click="handleGoToReservation">
+        <p>바로 예약</p>
+        </div>
       </div>
     </section>
 
@@ -414,62 +378,6 @@ const mainBannerData = ref([
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 20px;
-}
-// gotop 버튼
-.topBtnWrap {
-  position: fixed;
-  right: 100px;
-  bottom: 60px;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  transition: transform 0.3s ease-in-out;
-  @media screen and (max-width: 768px) {
-    // gotop 버튼
-    display: none !important;
-    right: 60px !important;
-    bottom: 60px !important;
-  }
-  @media screen and (max-width: 430px) {
-    // gotop 버튼
-    // display: none !important;
-    right: 20px !important;
-    bottom: 30px !important;
-  }
-
-  &.footer-visible {
-    transform: translateY(-250px);
-  }
-
-  .topBtn {
-    color: $primary-color;
-    font-size: 40px;
-    text-decoration: none;
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    border-radius: 50%;
-    background-color: $white;
-    text-align: center;
-    box-shadow: $info-boxShadow;
-  }
-  .resBtn {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: $primary-color;
-    text-align: center;
-    box-shadow: $info-boxShadow;
-    text-decoration: none;
-    padding: 13.5px 0;
-    span {
-      display: inline-block;
-      color: $white;
-      font-size: 12px;
-    }
-  }
 }
 .main-wrap {
   width: 100%;
@@ -868,7 +776,7 @@ const mainBannerData = ref([
             .p2-contents-texts1 {
               background-color: $white;
               position: relative;
-              width: 255px;
+              width: 280px;
               padding: 30px;
               border-radius: 10px;
               border-bottom-left-radius: 0;
@@ -887,21 +795,21 @@ const mainBannerData = ref([
                 border-top: 25px solid $white;
               }
               h3 {
-                font-size: $text-font-M;
+                font-size: 18px;
                 font-weight: 600;
                 margin-bottom: 10px;
               }
               p {
-                font-size: $text-font-S;
-                line-height: 16px;
-                color: $font-gray;
+                font-size: 14.5px;
+                line-height: 18px;
+                color: $font-light-gray;
               }
             }
             // 말풍선 글 2
             .p2-contents-texts2 {
               background-color: $white;
               position: relative;
-              width: 255px;
+              width: 280px;
               padding: 30px;
               border-radius: 10px;
               border-top-left-radius: 0;
@@ -918,14 +826,14 @@ const mainBannerData = ref([
                 border-bottom: 25px solid $white;
               }
               h3 {
-                font-size: $text-font-M;
+                font-size: 18px;
                 font-weight: 600;
                 margin-bottom: 10px;
               }
               p {
-                font-size: $text-font-S;
-                line-height: 16px;
-                color: $font-gray;
+                font-size: 14.5px;
+                line-height: 18px;
+                color: $font-light-gray;
               }
             }
             // 말풍선 underline
@@ -976,7 +884,7 @@ const mainBannerData = ref([
             .p2-contents-texts3 {
               background-color: $white;
               position: relative;
-              width: 255px;
+              width: 280px;
               padding: 30px;
               border-radius: 10px;
               border-bottom-right-radius: 0;
@@ -994,21 +902,21 @@ const mainBannerData = ref([
                 border-top: 25px solid $white;
               }
               h3 {
-                font-size: $text-font-M;
+                font-size: 18px;
                 font-weight: 600;
                 margin-bottom: 10px;
               }
               p {
-                font-size: $text-font-S;
-                line-height: 16px;
-                color: $font-gray;
+                font-size: 14.5px;
+                line-height: 18px;
+                color: $font-light-gray;
               }
             }
             // 말풍선 글 4
             .p2-contents-texts4 {
               background-color: $white;
               position: relative;
-              width: 255px;
+              width: 280px;
               padding: 30px;
               border-radius: 10px;
               border-top-right-radius: 0;
@@ -1026,14 +934,14 @@ const mainBannerData = ref([
                 border-bottom: 25px solid $white;
               }
               h3 {
-                font-size: $text-font-M;
+                font-size: 18px;
                 font-weight: 600;
                 margin-bottom: 10px;
               }
               p {
-                font-size: $text-font-S;
-                line-height: 16px;
-                color: $font-gray;
+                font-size: 14.5px;
+                line-height: 18px;
+                color: $font-light-gray;
               }
             }
             // 말풍선 underline
