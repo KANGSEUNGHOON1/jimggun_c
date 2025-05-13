@@ -44,22 +44,11 @@ const routes = [
   { path: '/Info', component: Step1Info },
   { path: '/reslogin', component: A4_reslogin },
   //기사페이지
-  {
-    path: '/worker',
-    component: A11_workerLogin,
-    name: 'A11_workerLogin',
-  },
+  { path: "/worker", component: A11_workerLogin },
   // 기사페이지 로그인 후
-  {
-    path: '/worker',
-    component: WorkerMain,
-    redirect: '/worker/workermain',
-    children: [
-      { path: 'workerhome', component: WorkerHome },
-      { path: 'workermain', component: WorkerMain },
-      {path:"workermypage", component:WorkerMypage},
-    ],
-  },
+  { path: "/worker/worker-main", component: WorkerMain },
+  { path: "/worker/worker-home", component: WorkerHome },
+  { path: "/worker/worker-mypage", component: WorkerMypage },
   // 관리자페이지
   {
     path: '/admin',
