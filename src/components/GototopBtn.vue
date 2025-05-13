@@ -97,6 +97,11 @@ onMounted(() => {
     box-shadow: $info-boxShadow;
     text-decoration: none;
     padding: 13.5px 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     span {
       display: inline-block;
       color: $white;

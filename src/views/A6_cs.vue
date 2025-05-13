@@ -1,281 +1,228 @@
 <script setup>
-import { reactive, ref, computed, watch, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from "@/stores/auth";
-
-// 플로팅 버튼들 전체
-// 로그인 상태 기반 라우터 설정
-const authStore = useAuthStore();
-const isLoggedIn = computed(() => authStore.getIsLoggedIn);
-const router = useRouter();
-
-// gotop 버튼
-const smoothlyBtn = ref(null);
-const topBtnWrap = ref(null);
-const isFooterVisible = ref(false);
-
-// resBtn 버튼 클릭 시 라우팅
-function handleGoToReservation() {
-  if (isLoggedIn.value) {
-    router.push("/reservation");
-  } else {
-    router.push("/reslogin");
-  }
-}
-
-// top 버튼 부드럽게
-onMounted(() => {
-  smoothlyBtn.value?.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  // 푸터요소 관찰
-  const footer = document.querySelector("footer");
-  if (footer) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isFooterVisible.value = entry.isIntersecting;
-        });
-      },
-      {
-        threshold: 0.01,
-        rootMargin: "-100px 0px 0px 0px",
-      }
-    );
-    observer.observe(footer);
-  }
-});
+import { reactive, ref, computed, watch } from "vue";
+// gotop버튼
+import GototopBtn from "@/components/GototopBtn.vue";
 
 // 질문 별 주제 카테고리 데이터 더미
 const categories = [
-  { id: 'all', name: '전체' },
-  { id: 'reserve', name: '예약 관련' },
-  { id: 'deliver', name: '배송 관련' },
-  { id: 'service', name: '서비스 관련' },
-  { id: 'payment', name: '결제 관련' },
-  { id: 'cancellation', name: '취소/환불' },
+  { id: "all", name: "전체" },
+  { id: "reserve", name: "예약 관련" },
+  { id: "deliver", name: "배송 관련" },
+  { id: "service", name: "서비스 관련" },
+  { id: "payment", name: "결제 관련" },
+  { id: "cancellation", name: "취소/환불" },
 ];
 
 // faqs 질문 및 답변 데이터 더미
 const faqs = reactive([
   {
     id: 1,
-    category: 'deliver',
-    question: '내 짐의 도착시간은 어떻게 되나요?',
-    answer: '고객님이 설정하신 도착예정시간 이전에 배송될 예정입니다.',
+    category: "deliver",
+    question: "내 짐의 도착시간은 어떻게 되나요?",
+    answer: "고객님이 설정하신 도착예정시간 이전에 배송될 예정입니다.",
     isOpen: false,
   },
   {
     id: 2,
-    category: 'deliver',
-    question: '배송 상태를 어떻게 확인할 수 있나요?',
-    answer: '배송 상태는 마이페이지에 배송조회를 통해서 확인하실 수 있습니다.',
+    category: "deliver",
+    question: "배송 상태를 어떻게 확인할 수 있나요?",
+    answer: "배송 상태는 마이페이지에 배송조회를 통해서 확인하실 수 있습니다.",
     isOpen: false,
   },
   {
     id: 3,
-    category: 'deliver',
-    question: '수화물의 위치를 실시간으로 추적할 수 있나요?',
-    answer: '수화물의 위치는 자세한 실시간 위치는 기사님의 안전 및 짐꾼의 정책상 제공되지 않습니다.',
+    category: "deliver",
+    question: "수화물의 위치를 실시간으로 추적할 수 있나요?",
+    answer: "수화물의 위치는 자세한 실시간 위치는 기사님의 안전 및 짐꾼의 정책상 제공되지 않습니다.",
     isOpen: false,
   },
   {
     id: 4,
-    category: 'deliver',
-    question: '도착예정시간보다 늦게 도착하면 어떻게 해야 하나요?',
-    answer: '예약일 24시간 전까지는 예약 변경이 가능합니다. 마이페이지에서 예약 내역을 확인하고 변경할 수 있습니다.',
+    category: "deliver",
+    question: "도착예정시간보다 늦게 도착하면 어떻게 해야 하나요?",
+    answer: "예약일 24시간 전까지는 예약 변경이 가능합니다. 마이페이지에서 예약 내역을 확인하고 변경할 수 있습니다.",
     isOpen: false,
   },
   {
     id: 5,
-    category: 'payment',
-    question: '추가 요금이 발생할 수 있는 경우는 언제인가요?',
-    answer: '추가요금은 거리에 따른 추가요금이 발생할 수 있습니다. 자세한 참고사항은 요금안내를 참고해주세요.',
+    category: "payment",
+    question: "추가 요금이 발생할 수 있는 경우는 언제인가요?",
+    answer: "추가요금은 거리에 따른 추가요금이 발생할 수 있습니다. 자세한 참고사항은 요금안내를 참고해주세요.",
     isOpen: false,
   },
   {
     id: 6,
-    category: 'service',
-    question: '운송이 불가능한 물품은 무엇인가요?',
-    answer: '위험성 품목, 분실 및 도난의 우려가 있는 귀중품, 동·식물 등이 있습니다.',
+    category: "service",
+    question: "운송이 불가능한 물품은 무엇인가요?",
+    answer: "위험성 품목, 분실 및 도난의 우려가 있는 귀중품, 동·식물 등이 있습니다.",
     isOpen: false,
   },
   {
     id: 7,
-    category: 'service',
-    question: '위험물도 운송할 수 있나요?',
-    answer: '위험물은 짐꾼의 정책상 운송이 불가능 합니다.',
+    category: "service",
+    question: "위험물도 운송할 수 있나요?",
+    answer: "위험물은 짐꾼의 정책상 운송이 불가능 합니다.",
     isOpen: false,
   },
   {
     id: 8,
-    category: 'service',
-    question: '수화물 파손 또는 분실 시 보상은 어떻게 되나요?',
-    answer: '짐꾼에서 책정한 보상특약에 따라 보상됩니다.',
+    category: "service",
+    question: "수화물 파손 또는 분실 시 보상은 어떻게 되나요?",
+    answer: "짐꾼에서 책정한 보상특약에 따라 보상됩니다.",
     isOpen: false,
   },
   {
     id: 9,
-    category: 'service',
-    question: '짐을 직접 맡길 수 있는 장소가 어디인가요?',
-    answer: '예약하기 시 출발지의 적으신 주소의 문앞에서 픽업할 예정입니다.',
+    category: "service",
+    question: "짐을 직접 맡길 수 있는 장소가 어디인가요?",
+    answer: "예약하기 시 출발지의 적으신 주소의 문앞에서 픽업할 예정입니다.",
     isOpen: false,
   },
   {
     id: 10,
-    category: 'service',
-    question: '집에서 수거 서비스를 신청할 수 있나요?',
-    answer:
-      '짐꾼은 고객님들이 작성해주신 주소의 문앞에 있는 짐을 도착지의 문앞(또는 안내데스크 등)까지 배송해드립니다.',
+    category: "service",
+    question: "집에서 수거 서비스를 신청할 수 있나요?",
+    answer: "짐꾼은 고객님들이 작성해주신 주소의 문앞에 있는 짐을 도착지의 문앞(또는 안내데스크 등)까지 배송해드립니다.",
     isOpen: false,
   },
   {
     id: 11,
-    category: 'deliver',
-    question: '운송 취소 시 환불이 가능한가요?',
-    answer: '운송 중에 취소는 불가하며, 나의 짐 픽업 1일 전 취소 시 50%를 환불해주며 그 전에는 100% 환불해드립니다.',
+    category: "deliver",
+    question: "운송 취소 시 환불이 가능한가요?",
+    answer: "운송 중에 취소는 불가하며, 나의 짐 픽업 1일 전 취소 시 50%를 환불해주며 그 전에는 100% 환불해드립니다.",
     isOpen: false,
   },
   {
     id: 12,
-    category: 'service',
-    question: '특정 크기 이상의 짐도 운반이 가능한가요?',
-    answer:
-      '특정 크기 이상의 짐은 고객센터의 문의 후에 운반이 가능합니다. 단, 너무 큰 짐들의 경우 추가요금이 붙을 수 있습니다.',
+    category: "service",
+    question: "특정 크기 이상의 짐도 운반이 가능한가요?",
+    answer: "특정 크기 이상의 짐은 고객센터의 문의 후에 운반이 가능합니다. 단, 너무 큰 짐들의 경우 추가요금이 붙을 수 있습니다.",
     isOpen: false,
   },
   {
     id: 13,
-    category: 'service',
-    question: '식품이나 신선식품도 운반이 가능한가요?',
-    answer: '아이스박스에 포장이 된 식품이나 신선식품들은 운반이 가능합니다.',
+    category: "service",
+    question: "식품이나 신선식품도 운반이 가능한가요?",
+    answer: "아이스박스에 포장이 된 식품이나 신선식품들은 운반이 가능합니다.",
     isOpen: false,
   },
   {
     id: 14,
-    category: 'deliver',
-    question: '운송 중 짐의 위치를 변경할 수 있나요?',
-    answer: '운송이 시작되면 도착지의 위치를 변경하기 어렵습니다.',
+    category: "deliver",
+    question: "운송 중 짐의 위치를 변경할 수 있나요?",
+    answer: "운송이 시작되면 도착지의 위치를 변경하기 어렵습니다.",
     isOpen: false,
   },
   {
     id: 15,
-    category: 'deliver',
-    question: '체크인 시간이 지났는데도 짐이 도착하지 않았어요.',
-    answer: '교통상황에 따라 도착예정시간보다 조금 늦을 수 있습니다.',
+    category: "deliver",
+    question: "체크인 시간이 지났는데도 짐이 도착하지 않았어요.",
+    answer: "교통상황에 따라 도착예정시간보다 조금 늦을 수 있습니다.",
     isOpen: false,
   },
   {
     id: 16,
-    category: 'deliver',
-    question: '역이나 공항같은 경우에도 비대면으로 이루어지나요?',
-    answer: '짐꾼의 무인보관함이 있는 경우 비대면이 가능하며, 없는 경우에는 대면으로 이루어집니다.',
+    category: "deliver",
+    question: "역이나 공항같은 경우에도 비대면으로 이루어지나요?",
+    answer: "짐꾼의 무인보관함이 있는 경우 비대면이 가능하며, 없는 경우에는 대면으로 이루어집니다.",
     isOpen: false,
   },
   {
     id: 17,
-    category: 'service',
-    question: '섬지역에서도 이용이 가능한가요?',
-    answer: '짐꾼의 특성상 섬지역의 이용은 불가능합니다.',
+    category: "service",
+    question: "섬지역에서도 이용이 가능한가요?",
+    answer: "짐꾼의 특성상 섬지역의 이용은 불가능합니다.",
     isOpen: false,
   },
   {
     id: 18,
-    category: 'reserve',
-    question: '내짐 사진등록은 어떻게 하나요?',
-    answer:
-      '예약이 완료된 후 문자나 카카오톡으로 사진을 업로드 할 수 있는 링크를 보내드립니다. 집을 문밖에 두신 후 사진을 촬영하시고, 업로드해주세요.',
+    category: "reserve",
+    question: "내짐 사진등록은 어떻게 하나요?",
+    answer: "예약이 완료된 후 문자나 카카오톡으로 사진을 업로드 할 수 있는 링크를 보내드립니다. 집을 문밖에 두신 후 사진을 촬영하시고, 업로드해주세요.",
     isOpen: false,
   },
   {
     id: 19,
-    category: 'reserve',
-    question: '캐리어나 가방 이외의 기타품목은 어떤 것까지 옮겨주나요?',
-    answer:
-      '기타품목으로 골프백, 아이스박스, 자전거, 피아노 등 다양한 품목들을 옮겨드립니다. 자세한 사항은 고객센터로 문의주세요.',
+    category: "reserve",
+    question: "캐리어나 가방 이외의 기타품목은 어떤 것까지 옮겨주나요?",
+    answer: "기타품목으로 골프백, 아이스박스, 자전거, 피아노 등 다양한 품목들을 옮겨드립니다. 자세한 사항은 고객센터로 문의주세요.",
     isOpen: false,
   },
   {
     id: 20,
-    category: 'reserve',
-    question: '예약한 내용과 짐의 사이즈가 다르면 어떻게 되나요?',
-    answer:
-      '예약한 내용과 짐의 사이즈가 다를경우 추가요금을 요청할 수 있으며, 여러차례 연락에도 불구하고 부재중 시 서비스가 취소될 수 있습니다.(환불 x)',
+    category: "reserve",
+    question: "예약한 내용과 짐의 사이즈가 다르면 어떻게 되나요?",
+    answer: "예약한 내용과 짐의 사이즈가 다를경우 추가요금을 요청할 수 있으며, 여러차례 연락에도 불구하고 부재중 시 서비스가 취소될 수 있습니다.(환불 x)",
     isOpen: false,
   },
   {
     id: 21,
-    category: 'reserve',
-    question: '주말에도 서비스 예약신청이 가능한가요?',
-    answer: '당일 예약이 아닌 이상 짐꾼의 서비스 예약신청은 항상 가능합니다.',
+    category: "reserve",
+    question: "주말에도 서비스 예약신청이 가능한가요?",
+    answer: "당일 예약이 아닌 이상 짐꾼의 서비스 예약신청은 항상 가능합니다.",
     isOpen: false,
   },
   {
     id: 22,
-    category: 'reserve',
-    question: '추가요금이 붙었는데 이유가 무엇인가요?',
-    answer:
-      '짐꾼은 직선거리 기준 150km를 기준으로 동일권역과 타권역으로 나누고 있으며, 타권역에 해당하는 경우 추가요금이 붙을 수 있습니다. 자세한 사항은 요금안내를 참고해주세요.',
+    category: "reserve",
+    question: "추가요금이 붙었는데 이유가 무엇인가요?",
+    answer: "짐꾼은 직선거리 기준 150km를 기준으로 동일권역과 타권역으로 나누고 있으며, 타권역에 해당하는 경우 추가요금이 붙을 수 있습니다. 자세한 사항은 요금안내를 참고해주세요.",
     isOpen: false,
   },
   {
     id: 23,
-    category: 'reserve',
-    question: '예약은 몇시까지 신청해야 하나요?',
-    answer: '서비스 이용 하루 전 날 18시까지 신청을 부탁드립니다.',
+    category: "reserve",
+    question: "예약은 몇시까지 신청해야 하나요?",
+    answer: "서비스 이용 하루 전 날 18시까지 신청을 부탁드립니다.",
     isOpen: false,
   },
   {
     id: 24,
-    category: 'reserve',
-    question: '예약을 취소하려면 어떻게 해야하나요?',
-    answer:
-      '마이페이지 - 최근 이용 내역 - 전체내역에서 인수 대기의 품목에 한해서 예약이 취소 가능합니다. 예약취소를 원할 시 예약취소 버튼을 눌러주세요',
+    category: "reserve",
+    question: "예약을 취소하려면 어떻게 해야하나요?",
+    answer: "마이페이지 - 최근 이용 내역 - 전체내역에서 인수 대기의 품목에 한해서 예약이 취소 가능합니다. 예약취소를 원할 시 예약취소 버튼을 눌러주세요",
     isOpen: false,
   },
   {
     id: 25,
-    category: 'reserve',
-    question: '예약을 수정하려면 어떻게 해야하나요?',
-    answer:
-      '마이페이지 - 최근 이용 내역 - 전체내역에서 인수 대기의 품목에 한해서 예약이 수정 가능합니다. 예약수정을 원할 시 예약수정 버튼을 눌러주세요',
+    category: "reserve",
+    question: "예약을 수정하려면 어떻게 해야하나요?",
+    answer: "마이페이지 - 최근 이용 내역 - 전체내역에서 인수 대기의 품목에 한해서 예약이 수정 가능합니다. 예약수정을 원할 시 예약수정 버튼을 눌러주세요",
     isOpen: false,
   },
   {
     id: 26,
-    category: 'cancellation',
-    question: '환불 요청시 처리기간은 어떻게 되나요?',
-    answer: '환불 요청시 검토 후 환불 승인이 난 이후로 3영업일 이내에 결제하신 계좌로 환불됩니다.',
+    category: "cancellation",
+    question: "환불 요청시 처리기간은 어떻게 되나요?",
+    answer: "환불 요청시 검토 후 환불 승인이 난 이후로 3영업일 이내에 결제하신 계좌로 환불됩니다.",
     isOpen: false,
   },
   {
     id: 27,
-    category: 'payment',
-    question: '무통장 입금 시 입금 계좌번호 안내',
-    answer: '은행명 : 국민은행, 계좌번호 : 123456 00 654321, 이름 : 짐꾼',
+    category: "payment",
+    question: "무통장 입금 시 입금 계좌번호 안내",
+    answer: "은행명 : 국민은행, 계좌번호 : 123456 00 654321, 이름 : 짐꾼",
     isOpen: false,
   },
   {
     id: 28,
-    category: 'cancellation',
-    question: '당일 날 서비스 예약이 가능한가요?',
-    answer: '짐꾼의 특성상 당일 서비스 예약은 불가합니다.',
+    category: "cancellation",
+    question: "당일 날 서비스 예약이 가능한가요?",
+    answer: "짐꾼의 특성상 당일 서비스 예약은 불가합니다.",
     isOpen: false,
   },
   {
     id: 29,
-    category: 'cancellation',
-    question: '환불 규정이 어떻게 되나요?',
-    answer: '환불규정.pdf 다음 파일을 참고해주세요.',
+    category: "cancellation",
+    question: "환불 규정이 어떻게 되나요?",
+    answer: "환불규정.pdf 다음 파일을 참고해주세요.",
     isOpen: false,
   },
 ]);
 
 const activeIndex = ref(null);
-const searchQuery = ref('');
-const selectedCategory = ref('all');
+const searchQuery = ref("");
+const selectedCategory = ref("all");
 
 function toggleFAQ(id) {
   activeIndex.value = activeIndex.value === id ? null : id;
@@ -287,11 +234,7 @@ function handleInput(event) {
 
 const filteredFAQs = computed(() => {
   return faqs.filter((faq) => {
-    return (
-      (selectedCategory.value === 'all' || faq.category === selectedCategory.value) &&
-      (faq.question.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-        faq.answer.toLowerCase().includes(searchQuery.value.toLowerCase()))
-    );
+    return (selectedCategory.value === "all" || faq.category === selectedCategory.value) && (faq.question.toLowerCase().includes(searchQuery.value.toLowerCase()) || faq.answer.toLowerCase().includes(searchQuery.value.toLowerCase()));
   });
 });
 // 페이지네이션 적용
@@ -343,22 +286,15 @@ const nextPage = () => {
 //로그인 상태에 따라서 다른 곳으로 이동하게 하는 함수
 function goToInquire() {
   if (isLoggedIn.value) {
-    router.push('/inquire');
+    router.push("/inquire");
   } else {
-    router.push('/login');
+    router.push("/login");
   }
 }
 </script>
 
 <template>
-<!-- gotop 버튼 -->
-<div class="topBtnWrap" ref="topBtnWrap" :class="{ 'footer-visible': isFooterVisible }">
-    <a href="#" class="topBtn" ref="smoothlyBtn">↑</a>
-    <div class="resBtn" @click="handleGoToReservation">
-      <img src="/images/hong/gotopBtn-logo-w.png" alt="gotopBtn로고" />
-      <span>고용하기</span>
-    </div>
-  </div>
+  <GototopBtn />
 
   <!-- cs 전체 레이아웃 -->
   <section class="cs-container">
@@ -414,12 +350,7 @@ function goToInquire() {
       </div>
       <!-- 3. 카테고리 탭 영역 -->
       <div class="cs-category inner">
-        <button
-          v-for="category in categories"
-          :key="category.id"
-          :class="['category-btn', { active: selectedCategory === category.id }]"
-          @click="selectedCategory1(category.id)"
-        >
+        <button v-for="category in categories" :key="category.id" :class="['category-btn', { active: selectedCategory === category.id }]" @click="selectedCategory1(category.id)">
           {{ category.name }}
         </button>
       </div>
@@ -429,7 +360,7 @@ function goToInquire() {
           <!--  4-1. 질문 -->
           <div class="faq-question" @click="toggleFAQ(faq.id)">
             <p class="question-text">{{ faq.question }}</p>
-            <span class="arrow">{{ activeIndex === faq.id ? '▲' : '▼' }} </span>
+            <span class="arrow">{{ activeIndex === faq.id ? "▲" : "▼" }} </span>
           </div>
           <!-- 4-2. 답변 -->
           <div class="faq-answer" v-show="activeIndex === faq.id">
@@ -453,54 +384,7 @@ function goToInquire() {
 </template>
 
 <style lang="scss" scoped>
-@import '/src/assets/variables';
-// gotop 버튼
-.topBtnWrap {
-  position: fixed;
-  right: 100px;
-  bottom: 60px;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  @media screen and (max-width: 768px) {
-    // gotop 버튼
-    display: none !important;
-  }
-
-  &.footer-visible {
-    transform: translateY(-250px);
-  }
-  .topBtn {
-    color: $primary-color;
-    font-size: 40px;
-    text-decoration: none;
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    border-radius: 50%;
-    background-color: $white;
-    text-align: center;
-    box-shadow: $info-boxShadow;
-  }
-  .resBtn {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: $primary-color;
-    text-align: center;
-    box-shadow: $info-boxShadow;
-    text-decoration: none;
-    padding: 13.5px 0;
-    span {
-      display: inline-block;
-      color: $white;
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
-  }
-}
+@import "/src/assets/variables";
 
 .inner {
   max-width: 1240px;
@@ -623,6 +507,10 @@ a {
                 .quick-text1 {
                   font-size: $text-font-XL;
                   font-weight: 700;
+                  strong {
+                    color: $primary-color; 
+                    font-weight: 700; 
+                  }
                   @media screen and (max-width: 768px) {
                     font-size: $title-font-XS;
                   }
@@ -650,7 +538,7 @@ a {
               }
             }
           }
-          .quick-list3{
+          .quick-list3 {
             cursor: pointer;
           }
         }
@@ -665,6 +553,7 @@ a {
       margin-top: 100px;
       margin-bottom: 50px;
       span {
+        font-weight: 400;
         // color: $primary-color;
       }
       @media screen and (max-width: 768px) {
@@ -737,7 +626,7 @@ a {
           color: $white;
           border: 1px solid $white;
         }
-        &.active{
+        &.active {
           background-color: $primary-color;
           color: $white;
           border: 1px solid $white;

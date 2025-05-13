@@ -52,11 +52,11 @@ const routes = [
   // 기사페이지 로그인 후
   {
     path: "/worker",
-    component: WorkerHome,
-    redirect: "/worker/workerhome",
+    component: WorkerMain,
+    redirect: "/worker/workermain",
     children: [
       { path: "workerhome", component: WorkerHome },
-      // {path:"workermain", component:WorkerMain},
+      { path: "workermain", component: WorkerMain },
       // {path:"workermypage", component:WorkerMypage},
     ],
   },

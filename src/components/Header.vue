@@ -74,32 +74,26 @@ function goToReservation() {
     <!-- 이너 -->
     <div class="header headerInner">
       <!-- 로고 -->
-      <router-link to="/" class="headerLogo">
-        <img src="/public/images/jimggun_logo.png" alt="짐꾼로고" />
-      </router-link>
+      <div class="headerLogoWrap">
+        <router-link to="/" class="headerLogo">
+          <img src="/public/images/jimggun_logo.png" alt="짐꾼로고" />
+        </router-link>
+      </div>
       <!-- 모바일 -->
       <div class="mobile-wrap">
         <!-- 메뉴 -->
         <ul class="headerNav" :class="{ open: isMenuOpen }">
           <li>
-            <router-link to="/information" @click="closeMenu">{{
-              t("info")
-            }}</router-link>
+            <router-link to="/information" @click="closeMenu">{{ t("info") }}</router-link>
           </li>
           <li>
-            <router-link to="/charge" @click="closeMenu">{{
-              t("price")
-            }}</router-link>
+            <router-link to="/charge" @click="closeMenu">{{ t("price") }}</router-link>
           </li>
           <li>
-            <router-link to="/reservation" @click.prevent="goToReservation">{{
-              t("reserve")
-            }}</router-link>
+            <router-link to="/reservation" @click.prevent="goToReservation">{{ t("reserve") }}</router-link>
           </li>
           <li>
-            <router-link to="/review" @click="closeMenu">{{
-              t("review")
-            }}</router-link>
+            <router-link to="/review" @click="closeMenu">{{ t("review") }}</router-link>
           </li>
           <li>
             <router-link to="/cs" @click="closeMenu">{{ t("cs") }}</router-link>
@@ -109,9 +103,7 @@ function goToReservation() {
           <!-- 로그인 상태일 때 -->
           <template v-if="isLoggedIn">
             <router-link to="/mypage">{{ t("mypage") }}</router-link>
-            <router-link to="/" @click.prevent="handleLogout"
-              >로그아웃</router-link
-            >
+            <router-link to="/" @click.prevent="handleLogout">로그아웃</router-link>
           </template>
 
           <!-- 로그아웃 상태일 때 -->
@@ -120,10 +112,7 @@ function goToReservation() {
           </template>
 
           <!-- 햄버거바 -->
-          <div
-            class="hamburger-menu"
-            @click="toggleMenu"
-            :class="{ active: isMenuOpen }">
+          <div class="hamburger-menu" @click="toggleMenu" :class="{ active: isMenuOpen }">
             <span></span>
             <span></span>
             <span></span>
@@ -164,24 +153,15 @@ function goToReservation() {
     background-color: $white;
     justify-content: space-between;
     // 로고
-    .headerLogo {
-      display: block;
-      width: 10%;
-      max-width: 200px;
-      padding: 10px 0;
-      box-sizing: border-box;
-      @media screen and (max-width: 390px){
-        width: 95px !important;
-        height: 56px !important;
-        padding: 0 !important;
-        margin-top: 17px !important;
-      }
-      img {
-        height: 100%;
-        @media screen and (max-width: 390px){
-          width: 100% !important;
-          height: 100% !important;
-        }
+    .headerLogoWrap{
+      padding-top: 10px;
+      padding-bottom: 15px;
+      .headerLogo {
+        display: block;
+        width: 10%;
+        min-width: 117.56px;
+        max-width: 200px;
+        box-sizing: border-box;
       }
     }
     .mobile-wrap {
