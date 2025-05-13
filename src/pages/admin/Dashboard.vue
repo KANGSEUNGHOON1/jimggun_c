@@ -86,13 +86,13 @@
           <BarChart />
         </div>
 
-        <div class="flex justify-center gap-4 mt-4 text-sm text-gray-700">
+        <div class="flex justify-center gap-4 mt-4 text-xs text-gray-300 font-nomal">
           <div
             v-for="(label, i) in legends"
             :key="i"
-            class="flex items-center gap-2">
+            class="flex items-center gap-2 ">
             <span
-              class="w-2.5 h-2.5 rounded-full"
+              class="w-3 h-3 rounded-full"
               :style="{ backgroundColor: colors[i] }"></span>
             {{ label }}
           </div>
@@ -132,6 +132,6 @@ import { ref } from "vue";
 const mode = ref("daily"); // 초기값: 일간
 const modew = ref("weekly");
 
-const legends = ['활동 중 기사', '배차 완료', '배차 대기', '취소/지연 예약']
-const colors = ['#8B5CF6', '#A78BFA', '#C4B5FD', '#EC4899']
+const legends = ['활동 중 기사', '배차 완료', '배차 대기', '취소/지연 예약'] 
+const colors = ['#8B5CF6', '#A78BFA', '#C4B5FD', '#DC55F7']
 </script>
