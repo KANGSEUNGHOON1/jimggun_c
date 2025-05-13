@@ -31,7 +31,7 @@ import { useRouter } from "vue-router";
 const showPassword = ref(false);
 const router = useRouter();
 const handleLogin = () => {
-  router.push("/worker/workermain");
+  router.push("/worker/worker-main");
 };
 const togglePassword = () => {
   showPassword.value = !showPassword.value;
