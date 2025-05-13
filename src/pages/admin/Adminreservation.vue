@@ -118,7 +118,7 @@ import { ref } from "vue";
         <!-- 3-2-1. 예약목록 구분 -->
         <thead class="bg-[#F9FAFB] w-2/2 border-t border-b border-gray pr-[65px]">
           <tr class="w-2/2 pl-[20px] pr-[65px]">
-            <th class="pl-[20px]"><input type="checkbox" /></th>
+            <th class="pl-[20px] py-2"><input type="checkbox" /></th>
             <th class="text-[13px] text-gray">예약번호</th>
             <th class="text-[13px] text-gray">고객명</th>
             <th class="text-[13px] text-gray">연락처</th>
@@ -158,6 +158,11 @@ import { ref } from "vue";
         </div>
       </div>
     </div>
+    <!-- 4. 배차하기 및 기사배정 버튼 -->
+    <div class="flex flex-row-reverse gap-6">
+      <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
+      <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">배차하기</button>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -181,5 +186,12 @@ select {
 .searchbar {
   display: flex;
   align-items: center;
+}
+thead {
+  border-top: 1px solid #767676;
+  border-bottom: 1px solid #767676;
+}
+tbody td {
+  border-bottom: 1px solid #d9d9d9;
 }
 </style>
