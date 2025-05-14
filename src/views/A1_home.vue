@@ -374,10 +374,12 @@ const mainBannerData = ref([
 
 <style lang="scss" scoped>
 @import "/src/assets/variables";
+
 .inner {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 20px;
+  
 }
 .main-wrap {
   width: 100%;
