@@ -752,12 +752,30 @@ const isAllSelected = computed({
     if (value) {
       //  value가 true면 → 체크박스를 "전체 선택"한 것
       filteredReservations.value
-        .filter((item) => item.dispatchStatus === "wait") // '배차대기(wait)' 상태인 예약만 필터링
+        // .filter((item) => item.dispatchStatus === "wait") // '배차대기(wait)' 상태인 예약만 필터링
+        // .forEach((item) => selectedItems.value.add(item.id)); // 그 항목들의 id를 선택 목록(Set)에 추가
+        .filter((item) => {
+          return (
+            item.dispatchStatus === "wait" ||
+            item.dispatchStatus === "one" ||
+            item.dispatchStatus === "two" ||
+            item.dispatchStatus === "three"
+          );
+        }) // '배차대기(wait)' 상태인 예약만 필터링
         .forEach((item) => selectedItems.value.add(item.id)); // 그 항목들의 id를 선택 목록(Set)에 추가
     } else {
       //  value가 false면 → 체크박스를 "전체 선택 해제"한 것
       filteredReservations.value
-        .filter((item) => item.dispatchStatus === "wait") // '배차대기(wait)' 상태인 예약만 필터링
+        // .filter((item) => item.dispatchStatus === "wait") // '배차대기(wait)' 상태인 예약만 필터링
+        // .forEach((item) => selectedItems.value.delete(item.id)); // 그 항목들의 id를 선택 목록(Set)에서 제거
+        .filter((item) => {
+          return (
+            item.dispatchStatus === "wait" ||
+            item.dispatchStatus === "one" ||
+            item.dispatchStatus === "two" ||
+            item.dispatchStatus === "three"
+          );
+        })
         .forEach((item) => selectedItems.value.delete(item.id)); // 그 항목들의 id를 선택 목록(Set)에서 제거
     }
   },
@@ -769,7 +787,7 @@ const toggleItem = (id) => {
   const item = paginatedReservations.value.find((item) => item.id === id);
 
   //  배차 상태가 'wait'가 아니면 선택/해제 못 하게 함 (조건 제한)
-  if (item.dispatchStatus !== "wait") return;
+  // if (item.dispatchStatus !== "wait") return;
 
   //  이미 선택된 항목이면 → 선택 해제
   //has() : Set 객체에서 사용하는 메서드
@@ -784,7 +802,8 @@ const toggleItem = (id) => {
     selectedItems.value.add(id); //  Set에 해당 id 추가
 
     //  모든 '배차대기' 상태 항목 가져오기 (페이지 제한 없이 전체)
-    const allDispatchWaitItems = filteredReservations.value.filter((item) => item.dispatchStatus === "wait");
+    const allDispatchWaitItems = filteredReservations.value.filter((item) => item.dispatchStatus === "all");
+    // const allDispatchWaitItems = filteredReservations.value.filter((item) => item.dispatchStatus === "wait");
 
     //  모든 '배차대기' 항목이 선택되었는지 확인
     // every()는 JavaScript의 배열 메서드로,
@@ -1078,11 +1097,8 @@ const getPageNumbers = computed(() => {
           <tr class="w-2/2 pl-[20px] pr-[65px]">
             <th class="pl-[20px] flex justify-center align-center" v-if="showCheckboxes">
               <div>
-                <input
-                  class="w-4 h-4 align-middle"
-                  type="checkbox"
-                  v-model="isAllSelected"
-                  :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" />
+                <!-- :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" -->
+                <input class="w-4 h-4 align-middle" type="checkbox" v-model="isAllSelected" />
               </div>
             </th>
 
@@ -1105,16 +1121,14 @@ const getPageNumbers = computed(() => {
         <tbody v-for="item in paginatedReservations" class="bg-white align-middle text-center">
           <tr>
             <td class="pl-[20px] py-1 align-middle text-[14px]">
+              <!-- :disabled="!isCheckboxEnabled(item.dispatchStatus)" -->
+              <!-- :class="{'opacity-50 cursor-not-allowed': !isCheckboxEnabled(item.dispatchStatus),}"  -->
               <input
                 type="checkbox"
                 v-if="showCheckboxes"
                 :checked="selectedItems.has(item.id)"
                 @change="toggleItem(item.id)"
-                :disabled="!isCheckboxEnabled(item.dispatchStatus)"
-                class="w-4 h-4 align-middle"
-                :class="{
-                  'opacity-50 cursor-not-allowed': !isCheckboxEnabled(item.dispatchStatus),
-                }" />
+                class="w-4 h-4 align-middle" />
             </td>
             <td class="align-middle text-[14px]">{{ item.id }}</td>
             <td class="align-middle text-[14px]">{{ item.customerName }}</td>
@@ -1173,10 +1187,16 @@ const getPageNumbers = computed(() => {
   <div class="none w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div class="w-1/2 w-max-[900px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
       <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
+
     </div>
   </div>
   <!-- 5-2. 배차완료 예약 상세정보 -->
-
+  <div class="none w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
+    <div class="w-1/2 w-max-[900px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+        <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
+     
+    </div>
+  </div>
   <!-- 6. 배차하기 -->
 </template>
 <style scoped>
