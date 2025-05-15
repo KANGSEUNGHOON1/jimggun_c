@@ -614,6 +614,10 @@ const dispatchStatusFilter = ref("all3");
 const sortBy = ref("newRv");
 const dateStatus = ref("reservation");
 
+// btn
+const modifyDispatchStatus = ref(false);
+const modifyBtn = ref(true);
+
 // 날짜를 yyyy-mm-dd 형식으로 반환하는 함수
 function formatDate(date) {
   const yyyy = date.getFullYear();
@@ -802,7 +806,14 @@ const toggleItem = (id) => {
     selectedItems.value.add(id); //  Set에 해당 id 추가
 
     //  모든 '배차대기' 상태 항목 가져오기 (페이지 제한 없이 전체)
-    const allDispatchWaitItems = filteredReservations.value.filter((item) => item.dispatchStatus === "all");
+    const allDispatchWaitItems = filteredReservations.value.filter((item) => {
+      return (
+        item.dispatchStatus === "wait" ||
+        item.dispatchStatus === "one" ||
+        item.dispatchStatus === "two" ||
+        item.dispatchStatus === "three"
+      );
+    });
     // const allDispatchWaitItems = filteredReservations.value.filter((item) => item.dispatchStatus === "wait");
 
     //  모든 '배차대기' 항목이 선택되었는지 확인
@@ -818,9 +829,16 @@ const toggleItem = (id) => {
   }
 };
 
-// 배차하기 버튼 클릭 핸들러
+// 배차수정 버튼 클릭 핸들러
 const handleDispatchClick = () => {
-  showCheckboxes.value = !showCheckboxes.value;
+  showCheckboxes.value = true;
+  modifyDispatchStatus.value = true;
+  modifyBtn.value = false;
+};
+const cancelDispatchClick = () => {
+  showCheckboxes.value = false;
+  modifyDispatchStatus.value = false;
+  modifyBtn.value = true;
   if (!showCheckboxes.value) {
     selectedItems.value.clear(); // 체크박스 숨길 때 선택 상태 초기화
     isAllPagesSelected.value = false; // 전체 선택 상태도 초기화
@@ -961,6 +979,7 @@ const getPageNumbers = computed(() => {
   return range;
 });
 </script>
+
 <template>
   <div class="modal"></div>
   <!-- 전체 레이아웃 -->
@@ -1118,7 +1137,7 @@ const getPageNumbers = computed(() => {
           </tr>
         </thead>
         <!-- 3-2-2. 예약목록 내용 -->
-        <tbody v-for="item in paginatedReservations" class="bg-white align-middle text-center">
+        <tbody v-for="item in paginatedReservations" :key="item.id" class="bg-white align-middle text-center">
           <tr>
             <td class="pl-[20px] py-1 align-middle text-[14px]">
               <!-- :disabled="!isCheckboxEnabled(item.dispatchStatus)" -->
@@ -1171,14 +1190,24 @@ const getPageNumbers = computed(() => {
         </div>
       </div>
     </div>
-    <!-- 4. 배차하기 및 기사배정 버튼 -->
+
+    <!-- 4. 배차변경 및 기사배정 버튼 -->
     <div class="flex flex-row-reverse gap-6 mb-[27px]">
-      <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
-      <button
-        @click="handleDispatchClick"
-        :class="['w-36 h-12 rounded-[10px] text-white', showCheckboxes ? 'bg-red-500' : 'bg-neutral-500']">
-        {{ showCheckboxes ? "배차취소" : "배차선택" }}
-      </button>
+    <!-- 4-1. 배차변경 클릭 전 -->
+      <div class="flex gap-6" v-if="modifyDispatchStatus">
+        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">배차변경</button>
+        <!-- <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">저장</button> -->
+        <button @click="cancelDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
+          수정완료
+        </button>
+      </div>
+      <!-- 4-2. 배차변경 클릭 후 -->
+      <div class="flex gap-6" v-if="modifyBtn">
+        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
+        <button @click="handleDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
+          배차수정
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1187,17 +1216,18 @@ const getPageNumbers = computed(() => {
   <div class="none w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div class="w-1/2 w-max-[900px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
       <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
-
     </div>
   </div>
   <!-- 5-2. 배차완료 예약 상세정보 -->
   <div class="none w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div class="w-1/2 w-max-[900px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
-        <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
-     
+      <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
     </div>
   </div>
   <!-- 6. 배차하기 -->
+
+
+  
 </template>
 <style scoped>
 .dateBox {
