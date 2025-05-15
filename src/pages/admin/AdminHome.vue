@@ -12,8 +12,8 @@
     <aside class="[grid-area:aside] bg-white rounded-tl-10 rounded-tr-10">
       <Sidebar />
     </aside>
-    <main class="[grid-area:main] max-w-[1700px] ">
-      <router-view></router-view>
+    <main class="[grid-area:main] max-w-[1700px]">
+      <router-view ></router-view>
     </main>
   </div>
 </template>
