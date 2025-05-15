@@ -5,8 +5,8 @@
     <div class="workerHomeTab h-full">
       <!-- 탭 버튼 -->
       <div class="flex">
-        <h2 @click="activeTab = 'home'" class="flex-1 text-center cursor-pointer" :class="activeTab === 'home' ? ' text-[#FF6F00]' : 'text-[#111]'">홈</h2>
-        <h2 @click="activeTab = 'todayWork'" class="flex-1 text-center cursor-pointer" :class="activeTab === 'todayWork' ? ' text-[#FF6F00]' : 'text-[#111]'">오늘 할 일</h2>
+        <h2 @click="activeTab = 'home'" class="flex-1 text-center cursor-pointer my-[19px] mx-auto font-bold text-2xl" :class="activeTab === 'home' ? ' text-[#FF6F00]' : 'text-[#767676]'">홈</h2>
+        <h2 @click="activeTab = 'todayWork'" class="flex-1 text-center cursor-pointer my-[19px] mx-auto font-bold text-2xl" :class="activeTab === 'todayWork' ? ' text-[#FF6F00]' : 'text-[#767676]'">오늘 할 일</h2>
       </div>
 
       <!--홈 탭 내용-->
