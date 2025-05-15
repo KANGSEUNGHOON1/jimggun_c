@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 // 예약하기 더미데이터
 const reservations = ref([
@@ -608,9 +608,9 @@ const reservations = ref([
 
 // 필터링 관련
 const searchQuery = ref("");
-const statusFilter = ref("all");
-const areaFilter = ref("all");
-const dispatchStatusFilter = ref("all");
+const statusFilter = ref("all1");
+const areaFilter = ref("all2");
+const dispatchStatusFilter = ref("all3");
 const sortBy = ref("newRv");
 const dateStatus = ref("reservation");
 
@@ -657,7 +657,7 @@ const filteredReservations = computed(() => {
 
   // 2. 선택박스 필터링(4가지)
   // 2-1. 상태 필터링
-  if (statusFilter.value !== "all") {
+  if (statusFilter.value !== "all1") {
     result = result.filter((item) => item.status === statusFilter.value);
   }
   // 2-2. 리스트 순서 필터링
@@ -680,11 +680,11 @@ const filteredReservations = computed(() => {
       break;
   }
   // 2-3. 지역 필터링
-  if (areaFilter.value !== "all") {
+  if (areaFilter.value !== "all2") {
     result = result.filter((item) => item.area === areaFilter.value);
   }
   // 2-4. 배차상태 필터링
-  if (dispatchStatusFilter.value !== "all") {
+  if (dispatchStatusFilter.value !== "all3") {
     result = result.filter((item) => item.dispatchStatus === dispatchStatusFilter.value);
   }
 
@@ -833,6 +833,24 @@ const getdispatchStatusText = (dispatchStatus) => {
   return dispatchMap[dispatchStatus] || dispatchStatus;
 };
 
+// 필터가 변경될 때 페이지 번호를 1로 초기화
+watch(
+  [
+    statusFilter,
+    areaFilter,
+    dispatchStatusFilter,
+    sortBy,
+    searchQuery,
+    dateStatus,
+    () => dateRange.value.start,
+    () => dateRange.value.end,
+    showTomorrowPickup,
+  ],
+  () => {
+    currentPage.value = 1;
+  }
+);
+
 // 페이지네이션 적용
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
@@ -866,10 +884,13 @@ const nextPage = () => {
 const getPageNumbers = computed(() => {
   const total = totalPages.value;
   const current = Math.min(currentPage.value, total); // 현재 페이지가 마지막 페이지를 초과하지 않도록 제한
+  const first = ref(1);
   const range = [];
 
   // 첫 페이지는 항상 표시
-  range.push(1);
+  if (current >= 1) {
+    range.push(1);
+  }
   // 현재 페이지가 4일 때: 1 ... 3 4
   // 현재 페이지가 3일 때: 1 ... 2 3 4
   // 현재 페이지가 2일 때: 1 2 3 4
@@ -884,8 +905,13 @@ const getPageNumbers = computed(() => {
     if (current !== 2) {
       range.push(current - 1);
     }
+
     // 현재 페이지 표시
     range.push(current);
+    // 현재 페이지의 다음페이지 출력 표시
+    if (current && current !== total && current + 1 !== total) {
+      range.push(current + 1);
+    }
     // 현재 페이지가 마지막 페이지가 아닐 경우에만 다음 페이지 표시
     if (current < total) {
       // range.push(current + 1);
@@ -905,7 +931,11 @@ const getPageNumbers = computed(() => {
   }
 
   // 마지막 페이지가 1이 아니고 현재 페이지가 아닐 경우 표시
-  if (total > 1 && current !== total) {
+  // if (total > 1 && current !== total) {
+  //   range.push(total);
+  // }
+  // 마지막 페이지 추가 (중복 방지)
+  if (!range.includes(total)) {
     range.push(total);
   }
 
@@ -965,24 +995,26 @@ const getPageNumbers = computed(() => {
     <div
       class="flex justify-between px-[20px] py-[10px] w-2/2 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
       <!-- 2-1. 날짜 검색 및 다음 날 픽업날짜 체크박스 -->
-      <div class="flex items-center gap-[20px]">
-        <!-- 2-1-1. 날짜 검색 -->
-        <div class="dateBox flex gap-[10px]">
-          <select v-model="dateStatus" class="px-1">
-            <option value="reservation">예약일자</option>
-            <option value="pickup">픽업일자</option>
-          </select>
-          <input v-model="dateRange.start" type="date" class="border-none outline-none text-center align-middle" />
-          <span class="text-[16px]">~</span>
-          <input
-            :min="dateRange.start"
-            v-model="dateRange.end"
-            type="date"
-            class="border-none outline-none text-center align-middle" />
+      <div class="flex">
+        <select v-model="dateStatus" class="">
+          <option value="reservation">예약일자</option>
+          <option value="pickup">픽업일자</option>
+        </select>
+        <div class="flex items-center gap-[20px]">
+          <!-- 2-1-1. 날짜 검색 -->
+          <div class="dateBox flex gap-[10px]">
+            <input v-model="dateRange.start" type="date" class="border-none outline-none text-center align-middle" />
+            <span class="text-[16px]">~</span>
+            <input
+              :min="dateRange.start"
+              v-model="dateRange.end"
+              type="date"
+              class="border-none outline-none text-center align-middle" />
+          </div>
         </div>
         <!-- 2-1-2. 다음 날 픽업날짜 목록보기 -->
         <div class="flex items-center gap-[10px]">
-          <input type="checkbox" id="tomorrowPickUp" class="w-5 h-5" v-model="showTomorrowPickup" />
+          <input type="checkbox" id="tomorrowPickUp" class="w-4 h-4" v-model="showTomorrowPickup" />
           <label for="tomorrowPickUp" class="text-gray">내일 픽업 날짜만 보기</label>
         </div>
       </div>
@@ -990,7 +1022,7 @@ const getPageNumbers = computed(() => {
       <div class="flex gap-[10px]">
         <!-- 2-2-1. 상태필터 -->
         <select v-model="statusFilter">
-          <option value="all">전체상태</option>
+          <option value="all1">전체상태</option>
           <option value="pickupWait">픽업대기</option>
           <option value="deliveryWait">배송대기</option>
           <option value="delivery">배송중</option>
@@ -1005,7 +1037,7 @@ const getPageNumbers = computed(() => {
         </select>
         <!-- 2-2-3. 지역필터 -->
         <select v-model="areaFilter">
-          <option value="all">전체지역</option>
+          <option value="all2">전체지역</option>
           <option value="center">중구</option>
           <option value="south">남구</option>
           <option value="north">북구</option>
@@ -1016,7 +1048,7 @@ const getPageNumbers = computed(() => {
         </select>
         <!-- 2-2-4. 배차필터 -->
         <select v-model="dispatchStatusFilter">
-          <option value="all">전체배차</option>
+          <option value="all3">전체배차</option>
           <option value="wait">배차대기</option>
           <option value="one">1호차</option>
           <option value="two">2호차</option>
@@ -1045,16 +1077,20 @@ const getPageNumbers = computed(() => {
         <thead class="bg-[#F9FAFB] w-2/2 border-t border-b border-gray pr-[65px]">
           <tr class="w-2/2 pl-[20px] pr-[65px]">
             <th class="pl-[20px] flex justify-center align-center" v-if="showCheckboxes">
-              <input
-                type="checkbox"
-                v-model="isAllSelected"
-                :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" />
-            </th>
-            <th v-else class="pl-[20px]">
-              <div class="w-[13px] h-[13px]"></div>
+              <div>
+                <input
+                  class="w-4 h-4 align-middle"
+                  type="checkbox"
+                  v-model="isAllSelected"
+                  :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" />
+              </div>
             </th>
 
-            <th class="text-[13px] text-gray py-2">예약번호</th>
+            <th v-else class="pl-[20px] flex justify-center align-center">
+              <div class="w-4 h-4 align-middle"></div>
+            </th>
+
+            <th class="text-[13px] text-gray py-3">예약번호</th>
             <th class="text-[13px] text-gray">고객명</th>
             <th class="text-[13px] text-gray">연락처</th>
             <th class="text-[13px] text-gray">주소</th>
@@ -1075,6 +1111,7 @@ const getPageNumbers = computed(() => {
                 :checked="selectedItems.has(item.id)"
                 @change="toggleItem(item.id)"
                 :disabled="!isCheckboxEnabled(item.dispatchStatus)"
+                class="w-4 h-4 align-middle"
                 :class="{
                   'opacity-50 cursor-not-allowed': !isCheckboxEnabled(item.dispatchStatus),
                 }" />
@@ -1126,7 +1163,7 @@ const getPageNumbers = computed(() => {
       <button
         @click="handleDispatchClick"
         :class="['w-36 h-12 rounded-[10px] text-white', showCheckboxes ? 'bg-red-500' : 'bg-neutral-500']">
-        {{ showCheckboxes ? "배차취소" : "배차하기" }}
+        {{ showCheckboxes ? "배차취소" : "배차선택" }}
       </button>
     </div>
   </div>
@@ -1144,7 +1181,8 @@ const getPageNumbers = computed(() => {
 </template>
 <style scoped>
 .dateBox {
-  padding: 5px 10px;
+  padding: 5px 0;
+  margin-right: 10px;
   color: rgba(118, 118, 118, 1);
 }
 select {
