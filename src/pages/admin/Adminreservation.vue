@@ -834,6 +834,20 @@ const handleDispatchClick = () => {
   showCheckboxes.value = true;
   modifyDispatchStatus.value = true;
   modifyBtn.value = false;
+  
+  // 배송중(delivery)과 완료(complete) 상태 항목은 표시하지 않도록 필터링
+  statusFilter.value = "all1"; // 모든 상태 선택
+
+  // 배차 수정 모드에서는 픽업대기와 배송대기 상태만 표시
+  // 'pickupWait'와 'deliveryWait' 상태만 표시되도록 필터 설정
+  const modifyableStatuses = ["pickupWait"];
+
+  // 필터링 적용
+  statusFilter.value = modifyableStatuses[0]; // 기본으로 'pickupWait'(픽업대기) 필터 적용
+
+  // 페이지네이션 1페이지로 초기화
+  currentPage.value = 1;
+
 };
 const cancelDispatchClick = () => {
   showCheckboxes.value = false;
@@ -870,6 +884,63 @@ const getdispatchStatusText = (dispatchStatus) => {
   return dispatchMap[dispatchStatus] || dispatchStatus;
 };
 
+// 페이지네이션 적용
+const currentPage = ref(1);
+const itemsPerPage = ref(5);
+const groupSize = 5;
+const pageGroup = computed(() => Math.floor((currentPage.value - 1) / groupSize));
+const totalPages = computed(() => {
+  return Math.ceil(filteredReservations.value.length / itemsPerPage.value);
+});
+const paginatedReservations = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredReservations.value.slice(start, end);
+});
+const startPage = computed(() => pageGroup.value * groupSize + 1);
+const endPage = computed(() => Math.min(startPage.value + groupSize - 1, totalPages.value));
+const visiblePages = computed(() => {
+  const pages = [];
+  for (let i = startPage.value; i <= endPage.value; i++) {
+    pages.push(i);
+  }
+  return pages;
+});
+
+// 그룹이전버튼
+const prevPageGroup = () => {
+  const prevStartPage = (pageGroup.value - 1) * groupSize + 1;
+  if (prevStartPage >= 1) {
+    currentPage.value = prevStartPage;
+  }
+};
+const prevPage = () => {
+  if (currentPage.value !== 1) {
+    currentPage.value--;
+  }
+};
+
+// 페이지 이동버튼
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
+
+// 다음버튼
+const nextPage = () => {
+  if (currentPage.value !== totalPages.value) {
+    currentPage.value++;
+  }
+};
+// 그룹다음버튼
+const nextPageGroup = () => {
+  const nextStartPage = (pageGroup.value + 1) * groupSize + 1;
+  if (nextStartPage <= totalPages.value) {
+    currentPage.value = nextStartPage;
+  }
+};
+
 // 필터가 변경될 때 페이지 번호를 1로 초기화
 watch(
   [
@@ -884,38 +955,10 @@ watch(
     showTomorrowPickup,
   ],
   () => {
+    pageGroup.value = 0;
     currentPage.value = 1;
   }
 );
-
-// 페이지네이션 적용
-const currentPage = ref(1);
-const itemsPerPage = ref(5);
-const totalPages = computed(() => {
-  return Math.ceil(filteredReservations.value.length / itemsPerPage.value);
-});
-const paginatedReservations = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  const end = start + itemsPerPage.value;
-  return filteredReservations.value.slice(start, end);
-});
-
-// 이전버튼
-const prevPage = () => {
-  if (currentPage.value !== 1) {
-    currentPage.value--;
-  }
-};
-const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page;
-  }
-};
-const nextPage = () => {
-  if (currentPage.value !== totalPages.value) {
-    currentPage.value++;
-  }
-};
 
 // 페이지네이션 관련 함수 수정
 const getPageNumbers = computed(() => {
@@ -978,6 +1021,128 @@ const getPageNumbers = computed(() => {
 
   return range;
 });
+
+// 모달 표시 여부를 저장하는 반응형 변수 (배차 상태 변경 모달)
+const dispatchChangeModal = ref(false);
+
+// 사용자가 선택한 변경 대상 배차 상태 (기본값: 'one' → 1호차)
+const selectedDispatchStatus = ref("one");
+
+// 현재 선택된 예약 항목들 중 가장 많은 상태값을 저장 (예: 'wait', 'one', 'two', 'three')
+const currentDispatchStatus = ref("wait");
+
+// 현재 선택된 항목들의 배차 상태별 개수를 저장하는 객체
+const currentDispatchCounts = ref({
+  wait: 0,
+  one: 0,
+  two: 0,
+  three: 0,
+});
+
+// 배차 상태 변경 모달을 표시하는 함수
+const showDispatchChangeModal = () => {
+  // 항목이 선택되지 않은 경우 경고창을 띄우고 함수 종료
+  if (selectedItems.value.size === 0) {
+    alert("변경할 항목을 선택해주세요.");
+    return;
+  }
+
+  // 배차 상태별 선택된 항목 수를 계산할 임시 객체 초기화
+  //  counts는 각 배차 상태별로 몇 개씩 선택되었는지 기록하는 객체입니다.
+  //예: 사용자가 상태별로 항목을 선택했을 때, 그 개수를 셀 예정입니다.
+  //totalSelected는 선택된 항목이 총 몇 개인지 저장합니다.
+  const counts = { wait: 0, one: 0, two: 0, three: 0 };
+  let totalSelected = 0; // 총 선택된 항목 수
+  //selectedItems.value: 사용자가 선택한 예약 항목들의 ID 목록입니다.
+  //reservations.value.find(...): ID에 맞는 예약 항목을 찾습니다.
+  //counts[item.dispatchStatus]++: 해당 예약 항목의 배차 상태에 따라 개수를 1씩 증가시킵니다.
+  //예: item.dispatchStatus가 "one"이면 counts["one"]++
+  // 선택된 항목 ID들을 하나씩 확인하며 상태별 개수 카운트
+  selectedItems.value.forEach((id) => {
+    // ID에 해당하는 예약 항목을 찾음
+    const item = reservations.value.find((item) => item.id === id);
+    if (item) {
+      // 해당 항목의 배차 상태에 따라 카운트 증가
+      counts[item.dispatchStatus]++;
+      totalSelected++;
+    }
+  });
+  //Vue에서 currentDispatchCounts라는 전역 상태에 저장하는 것입니다.
+  //추후 모달창 같은 데서 상태별 개수를 보여주기 위해 저장
+  // 상태별 개수 정보를 전역 상태로 저장 (모달에서 표시 용도)
+  currentDispatchCounts.value = counts;
+  // 선택된 항목 중 가장 많이 분포된 배차 상태를 찾기 위한 변수 초기화
+  let maxCount = 0;
+  let maxStatus = "wait";
+
+  // 상태별 개수를 순회하면서 가장 많은 상태를 찾음
+  // counts 객체의 각 상태(status)를 순회합니다.
+  //"어떤 상태가 제일 많이 선택되었는가?" 를 찾는 것
+  // 예: counts = { pending: 3, complete: 7, canceled: 5 }
+  for (const status in counts) {
+    // 현재 상태의 개수가 지금까지 본 최대 개수(maxCount)보다 크다면,
+    if (counts[status] > maxCount) {
+      // 최대 개수를 현재 상태의 개수로 갱신합니다.
+      maxCount = counts[status];
+
+      // 가장 개수가 많은 상태를 현재 상태로 저장합니다.
+      maxStatus = status;
+    }
+  }
+
+  // 가장 많은 상태를 현재 상태로 설정
+  currentDispatchStatus.value = maxStatus;
+
+  // 현재 상태와 다른 값으로 변경 상태 기본값을 설정
+  if (maxStatus === "one") {
+    selectedDispatchStatus.value = "two"; // 1호차 → 2호차로 변경
+  } else if (maxStatus === "two") {
+    selectedDispatchStatus.value = "three"; // 2호차 → 3호차로 변경
+  } else if (maxStatus === "three") {
+    selectedDispatchStatus.value = "one"; // 3호차 → 1호차로 변경
+  } else {
+    // 배차 대기 상태인 경우 기본값을 1호차로 설정
+    selectedDispatchStatus.value = "one";
+  }
+
+  // 배차 변경 모달을 표시
+  dispatchChangeModal.value = true;
+};
+
+// 배차 변경 모달을 닫는 함수
+const closeDispatchChangeModal = () => {
+  dispatchChangeModal.value = false;
+};
+
+// 배차 상태 변경을 저장하고 화면 상태를 초기화하는 함수
+const saveDispatchChange = () => {
+  // 선택된 항목들을 하나씩 순회하며 배차 상태를 변경
+  selectedItems.value.forEach((id) => {
+    const item = reservations.value.find((item) => item.id === id);
+    if (item) {
+      // 선택된 새로운 배차 상태로 변경
+      item.dispatchStatus = selectedDispatchStatus.value;
+    }
+  });
+
+  // 모달 닫기
+  dispatchChangeModal.value = false;
+
+  // 선택된 체크박스 초기화
+  selectedItems.value.clear(); // Set 객체이므로 clear()로 전체 해제
+  isAllPagesSelected.value = false; // 전체 선택 해제
+
+  // 배차 상태 필터를 '전체배차' 상태로 초기화 ('all3'는 전체 항목 보여주는 값으로 가정)
+  dispatchStatusFilter.value = "all3";
+
+  // 배차 수정 모드 종료
+  showCheckboxes.value = false; // 체크박스 숨기기
+  modifyDispatchStatus.value = false; // 수정 모드 false
+  modifyBtn.value = true; // 수정 버튼 다시 활성화
+
+  // 페이지네이션을 1페이지로 초기화
+  currentPage.value = 1;
+};
 </script>
 
 <template>
@@ -1169,23 +1334,41 @@ const getPageNumbers = computed(() => {
       <!-- 3-3. 페이지네이션 -->
       <div class="flex justify-center items-center rounded-[10px] p-4">
         <div class="flex gap-2">
+          <!-- 3-3-1. 이전버튼(그룹단위) -->
+          <button
+            @click="prevPageGroup"
+            :disabled="pageGroup === 0"
+            class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+            <<
+          </button>
+          <!-- 3-3-2. 이전버튼(페이지단위) -->
           <button
             @click="prevPage"
             :disabled="currentPage === 1"
             class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
-            이전
+            <
           </button>
+          <!-- 3-3-3. 클릭 시 페이지 이동 -->
           <button
-            v-for="page in getPageNumbers"
+            v-for="page in visiblePages"
             @click="goToPage(page)"
+            class="w-10"
             :class="['px-3 py-1 text-[14px]', currentPage === page ? 'bg-gray-200 text-white rounded-[5px]' : '']">
             {{ page }}
           </button>
+          <!-- 3-3-4. 다음버튼(페이지단위) -->
           <button
             @click="nextPage"
             :disabled="currentPage === totalPages"
             class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
-            다음
+            >
+          </button>
+          <!-- 3-3-5. 다음버튼(그룹단위) -->
+          <button
+            @click="nextPageGroup"
+            :disabled="endPage === totalPages"
+            class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+            >>
           </button>
         </div>
       </div>
@@ -1193,9 +1376,11 @@ const getPageNumbers = computed(() => {
 
     <!-- 4. 배차변경 및 기사배정 버튼 -->
     <div class="flex flex-row-reverse gap-6 mb-[27px]">
-    <!-- 4-1. 배차변경 클릭 전 -->
+      <!-- 4-1. 배차변경 클릭 전 -->
       <div class="flex gap-6" v-if="modifyDispatchStatus">
-        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">배차변경</button>
+        <button @click="showDispatchChangeModal" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
+          배차변경
+        </button>
         <!-- <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">저장</button> -->
         <button @click="cancelDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
           수정완료
@@ -1224,10 +1409,39 @@ const getPageNumbers = computed(() => {
       <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
     </div>
   </div>
-  <!-- 6. 배차하기 -->
-
-
-  
+  <!-- 5-3. 배차변경 모달 -->
+  <div v-if="dispatchChangeModal" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
+    <div
+      class="flex flex-col align-center gap-[50px] w-[450px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      <h4 class="font-bold p-[30px] text-center text-[22px] border-b-[1px] border-b-[#E5E5EC]">배차변경</h4>
+      <p class="text-center">선택하신 총 {{ selectedItems.size }}건의 배차상태가 다음과 같이 변경됩니다.</p>
+      <div class="flex flex-col align-center gap-[25px]">
+        <div class="flex align-center justify-center gap-[30px]">
+          <span class="text-bold">변경 전</span>
+          <div class="block w-[200px]">
+            <div v-if="currentDispatchCounts.wait > 0">배차대기: {{ currentDispatchCounts.wait }}건</div>
+            <div v-if="currentDispatchCounts.one > 0">1호차: {{ currentDispatchCounts.one }}건</div>
+            <div v-if="currentDispatchCounts.two > 0">2호차: {{ currentDispatchCounts.two }}건</div>
+            <div v-if="currentDispatchCounts.three > 0">3호차: {{ currentDispatchCounts.three }}건</div>
+          </div>
+        </div>
+        <div class="flex align-center justify-center gap-[30px]">
+          <label class="text-bold">변경 후</label>
+          <select v-model="selectedDispatchStatus">
+            <option value="one">1호차</option>
+            <option value="two">2호차</option>
+            <option value="three">3호차</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex align-center justify-center gap-5 mb-[40px]">
+        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white" @click="saveDispatchChange">완료</button>
+        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white" @click="closeDispatchChangeModal">
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 <style scoped>
 .dateBox {
