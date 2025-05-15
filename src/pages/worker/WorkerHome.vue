@@ -7,14 +7,14 @@
       <div class="flex">
         <h2
           @click="activeTab = 'home'"
-          class="flex-1 text-center cursor-pointer py-[19px] mb-[35px] mx-auto font-bold text-2xl"
+          class="flex-1 text-center cursor-pointer py-[19px] mx-auto font-bold text-2xl"
           :class="activeTab === 'home' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#E5E5EC] text-[#767676]'"
         >
           홈
         </h2>
         <h2
           @click="activeTab = 'todayWork'"
-          class="flex-1 text-center cursor-pointer py-[19px] mb-[35px] mx-auto font-bold text-2xl"
+          class="flex-1 text-center cursor-pointer py-[19px] mx-auto font-bold text-2xl"
           :class="activeTab === 'todayWork' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#E5E5EC] text-[#767676]'"
         >
           오늘 할 일
@@ -25,7 +25,7 @@
       <section v-if="activeTab === 'home'" class="home-wrap mx-auto">
         <!--배너-->
         <div
-          class="w-full mx-auto max-w-[702px] h-80 p-6 bg-[#FFF] rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col justify-between text-[#111] font-['Pretendard']"
+          class="w-full mt-[35px] mx-auto max-w-[702px] h-80 p-6 bg-[#FFF] rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col justify-between text-[#111] font-['Pretendard']"
         >
           <!-- 상단: 날짜 + 온도 -->
           <div class="flex justify-between items-center">
@@ -256,10 +256,12 @@
           >
 
           <!-- 알림 아이콘 -->
-          <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
-            <img src="/images/kang/notice.png" alt="notice" />
-            <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">알림</div>
-          </div>
+          <router-link to="/worker/worker-notice">
+            <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
+              <img src="/images/kang/notice.png" alt="notice" />
+              <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">알림</div>
+            </div></router-link
+          >
 
           <!-- 마이페이지 아이콘 -->
           <router-link to="/worker/worker-mypage">
@@ -270,10 +272,12 @@
           >
 
           <!-- 환경설정 아이콘 -->
-          <div class="flex flex-col items-center gap-2.5 w-14 cursor-pointer">
-            <img src="/images/kang/settings.png" alt="settings" />
-            <div class="w-full text-center text-[#111] text-base font-medium font-['Pretendard']">환경설정</div>
-          </div>
+          <router-link to="/worker/worker-settings">
+            <div class="flex flex-col items-center gap-2.5 w-14 cursor-pointer">
+              <img src="/images/kang/settings.png" alt="settings" />
+              <div class="w-full text-center text-[#111] text-base font-medium font-['Pretendard']">환경설정</div>
+            </div></router-link
+          >
         </div>
       </section>
       <!-- ------------------------------------------------------------------------------------------------------------------------------------------------------ -->
@@ -538,6 +542,7 @@ onMounted(() => {
 });
 
 watch(activeTab, (newValue) => {
+  modalOpen.value = false;
   if (newValue === 'todayWork') {
     loadKakaoMap();
   }
