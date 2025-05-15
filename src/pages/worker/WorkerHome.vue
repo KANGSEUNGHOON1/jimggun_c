@@ -95,7 +95,7 @@
         <div class="w-full mx-auto mt-[35px] h-20 flex gap-10 px-4 md:px-0 justify-center">
           <!-- 전체 건수 -->
           <div
-            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-4"
+            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8"
           >
             <div class="flex flex-col justify-start items-start gap-1">
               <div class="text-[#505050] text-xl font-medium font-['Pretendard']">전체 건수</div>
@@ -108,7 +108,7 @@
 
           <!-- 남은 건수 -->
           <div
-            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-4"
+            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8"
           >
             <div class="flex flex-col justify-start items-start gap-1">
               <div class="text-[#505050] text-xl font-medium font-['Pretendard']">남은 건수</div>
@@ -121,7 +121,7 @@
 
           <!-- 완료 -->
           <div
-            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-4"
+            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8"
           >
             <div class="flex flex-col justify-start items-start gap-1">
               <div class="text-[#505050] text-xl font-medium font-['Pretendard']">완료</div>
@@ -250,8 +250,8 @@
           <!-- 홈 아이콘 -->
           <router-link to="/worker/worker-home">
             <div class="flex flex-col items-center gap-2.5 w-14">
-              <img src="/images/kang/home.png" alt="home" />
-              <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">홈</div>
+              <img src="/images/kang/homeActive.png" alt="home" />
+              <div class="w-12 text-center text-[#FF6F00] text-base font-medium font-['Pretendard']">홈</div>
             </div></router-link
           >
 
