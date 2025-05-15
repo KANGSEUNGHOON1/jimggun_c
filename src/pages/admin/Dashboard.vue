@@ -184,11 +184,11 @@
     <!-- 네 번째 행 -->
     <section class="dash-card col-span-2">
       <div class="dash-title">고객 소통 현황</div>
-      <div class="dash-box"><Notice /></div>
+      <div class="dash-box"><UserReview /></div>
     </section>
     <section class="dash-card col-span-2">
       <div class="dash-title">공지 및 알림</div>
-      <div class="dash-box"><UserReview /></div>
+      <div class="dash-box"><Notice/></div>
     </section>
   </div>
 </template>
