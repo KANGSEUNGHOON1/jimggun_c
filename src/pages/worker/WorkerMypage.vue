@@ -36,8 +36,8 @@
       <div
         v-for="date in calendarDates"
         :key="`${date.year}-${date.month}-${date.day}`"
-        class="h-24 bg-white border-r border-b border-[#D9D9D9] p-1 relative hover:bg-gray-50 transition-colors"
-        :class="{ 'last:border-r-0': true }"
+        class="h-24 bg-white border-r border-b border-[#D9D9D9] p-1 relative hover:bg-gray-50 transition-colors cursor-pointer"
+        @click="isModalOpen = true"
       >
         <span
           class="absolute top-1 right-2 text-[11px]"
@@ -138,10 +138,12 @@
     >
 
     <!-- 알림 아이콘 -->
-    <div class="flex flex-col items-center gap-2 w-14 cursor-pointer transition-transform hover:scale-105">
-      <img src="/images/kang/notice.png" alt="notice" />
-      <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">알림</div>
-    </div>
+    <router-link to="/worker/worker-notice">
+      <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
+        <img src="/images/kang/notice.png" alt="notice" />
+        <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">알림</div>
+      </div></router-link
+    >
 
     <!-- 마이페이지 아이콘 -->
     <router-link to="/worker/worker-mypage">
@@ -152,9 +154,43 @@
     >
 
     <!-- 환경설정 아이콘 -->
-    <div class="flex flex-col items-center gap-2.5 w-14 cursor-pointer transition-transform hover:scale-105">
-      <img src="/images/kang/settings.png" alt="settings" />
-      <div class="w-full text-center text-[#111] text-base font-medium font-['Pretendard']">환경설정</div>
+    <router-link to="/worker/worker-settings">
+      <div class="flex flex-col items-center gap-2.5 w-14 cursor-pointer">
+        <img src="/images/kang/settings.png" alt="settings" />
+        <div class="w-full text-center text-[#111] text-base font-medium font-['Pretendard']">환경설정</div>
+      </div></router-link
+    >
+  </div>
+
+  <!-- 모달창 -->
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
+    @click="isModalOpen = false"
+  >
+    <!-- 모달 내용 영역 -->
+    <div class="bg-white w-[90%] max-w-xl max-h-[80vh] overflow-y-auto rounded-lg shadow-lg p-6 relative" @click.stop>
+      <button @click="isModalOpen = false" class="absolute top-3 right-4 text-xl text-[#767676] hover:text-[#111]">
+        ✕
+      </button>
+      <h3 class="text-lg font-semibold text-[#111] mb-4">예약 리스트</h3>
+
+      <div class="flex flex-col gap-3">
+        <div
+          v-for="place in markerData"
+          :key="place.reservationId"
+          class="border border-[#E5E5EC] rounded-lg p-4 shadow-sm"
+        >
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-bold text-[#FF6F00]">예약번호 {{ place.reservationId }}</span>
+          </div>
+          <div class="text-sm text-[#111] mb-1"><strong>주소:</strong> {{ place.address }}</div>
+          <div class="text-sm text-[#111] mb-1"><strong>이름:</strong> {{ place.name }}</div>
+          <div class="text-sm text-[#111] mb-1"><strong>전화:</strong> {{ place.phone }}</div>
+          <div class="text-sm text-[#111] mb-1 whitespace-pre-line"><strong>수화물:</strong> {{ place.clothes }}</div>
+          <div class="text-sm text-[#111]"><strong>요청사항:</strong> {{ place.notes || '-' }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -308,6 +344,133 @@ function goNext() {
     };
   }
 }
+
+// 모달
+const isModalOpen = ref(false);
+
+// 데이터
+const markerData = [
+  {
+    lat: 35.8997,
+    lng: 128.638,
+    title: '대구국제공항',
+    reservationId: '01',
+    address: '대구 동구 공항로 221',
+    name: '홍길동',
+    phone: '010-1234-5678',
+    notes: '',
+    clothes: 'M - 1개\nL - 1개',
+    image: 'marker1.png',
+  },
+  {
+    lat: 35.8797,
+    lng: 128.6292,
+    title: '동대구역',
+    reservationId: '02',
+    address: '대구 동구 동대구로 550',
+    name: '이영희',
+    phone: '010-2345-6789',
+    notes: 'CU 편의점 앞에 둘게요',
+    clothes: 'S - 2개',
+    image: 'marker2.png',
+  },
+  {
+    lat: 35.9428,
+    lng: 128.5472,
+    title: '칠곡그린빌3차',
+    reservationId: '03',
+    address: '대구 북구 구암로 55',
+    name: '박철수',
+    phone: '010-3456-7890',
+    notes: '관리실에 둘게요',
+    clothes: 'M - 1개\nXL - 2개',
+    image: 'marker3.png',
+  },
+  {
+    lat: 35.8961,
+    lng: 128.5904,
+    title: '북구문화회관',
+    reservationId: '04',
+    address: '대구 북구 옥산로 15',
+    name: '김민지',
+    phone: '010-4567-8901',
+    notes: '',
+    clothes: 'L - 1개\nS - 1개',
+    image: 'marker4.png',
+  },
+  {
+    lat: 35.8777,
+    lng: 128.6002,
+    title: '칠성시장 남문',
+    reservationId: '05',
+    address: '대구 북구 칠성남로 5',
+    name: '최지훈',
+    phone: '010-5678-9012',
+    notes: '',
+    clothes: 'M - 1개\nM - 1개',
+    image: 'marker5.png',
+  },
+  {
+    lat: 35.8889,
+    lng: 128.5943,
+    title: '북구 건강센터',
+    reservationId: '06',
+    address: '대구 북구 팔달로 35',
+    name: '정유진',
+    phone: '010-6789-0123',
+    notes: '',
+    clothes: 'S - 1개\nL - 2개',
+    image: 'marker6.png',
+  },
+  {
+    lat: 35.8944,
+    lng: 128.6086,
+    title: '침산동 사무실',
+    reservationId: '07',
+    address: '대구 북구 침산로 70',
+    name: '장도현',
+    phone: '010-7890-1234',
+    notes: '',
+    clothes: 'XL - 1개',
+    image: 'marker7.png',
+  },
+  {
+    lat: 35.9022,
+    lng: 128.589,
+    title: '공원 앞 편의점',
+    reservationId: '08',
+    address: '대구 북구 동암로 123',
+    name: '서지수',
+    phone: '010-8901-2345',
+    notes: '',
+    clothes: 'S - 2개\nM - 1개',
+    image: 'marker8.png',
+  },
+  {
+    lat: 35.9444,
+    lng: 128.5673,
+    title: '대구은행 칠곡지점',
+    reservationId: '09',
+    address: '대구 북구 칠곡중앙대로 77',
+    name: '한상우',
+    phone: '010-9012-3456',
+    notes: '',
+    clothes: 'L - 1개\nM - 1개',
+    image: 'marker9.png',
+  },
+  {
+    lat: 35.8948,
+    lng: 128.5831,
+    title: '스마트주차장',
+    reservationId: '10',
+    address: '대구 북구 구암동 777',
+    name: '이소영',
+    phone: '010-1122-3344',
+    notes: '',
+    clothes: 'S - 1개\nS - 1개',
+    image: 'marker10.png',
+  },
+];
 </script>
 
 <style scoped></style>
