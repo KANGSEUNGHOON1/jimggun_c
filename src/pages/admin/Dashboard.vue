@@ -178,7 +178,7 @@
     </section>
     <section class="dash-card col-span-2">
       <div class="dash-title">운영 알림</div>
-      <div class="dash-box"><alarm/></div>
+      <div class="dash-box "><alarm/></div>
     </section>
 
     <!-- 네 번째 행 -->
