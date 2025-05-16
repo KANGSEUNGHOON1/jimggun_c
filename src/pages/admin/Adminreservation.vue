@@ -1331,9 +1331,9 @@ const closeSelectedItem = ()=>{
       </div>
     </div>
     <!-- 3.검색상자, 예약목록 리스트, 페이지네이션 -->
-    <div class="w-2/2 flex flex-col align-center bg-white rounded-[10px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+    <div class="relative w-2/2 h-[480px] flex flex-col align-center bg-white rounded-[10px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
       <!-- 3-1. 검색상자 -->
-      <div class="flex justify-between w-full p-[20px]">
+      <div class="h-[80px] flex justify-between w-full p-[20px]">
         <div class="flex align-center justify-center font-bold font-[16px]"><span>예약목록</span></div>
         <div class="searchbar flex align-center searchBox w-1/3 max-w-[500px] pr-2">
           <div class="w-5, h-5 mx-[10px]"><img class="w-full h-full" src="/images/lee/searchicon.png" alt="" /></div>
@@ -1345,13 +1345,15 @@ const closeSelectedItem = ()=>{
             class="w-full placeholder:text-[14px] py-[5px] outline-none" />
         </div>
       </div>
+      <!-- 3-2.예약목록 리스트 , 3-3. 페이지네이션 -->
+      <div class="flex">
       <!-- 3-2. 예약목록 리스트 -->
       <table class="w-full">
         <!-- 3-2-1. 예약목록 구분 -->
         <thead class="bg-[#F9FAFB] w-2/2 border-t border-b border-gray pr-[65px]">
           <tr class="w-2/2 pl-[20px] pr-[65px]">
             <th class="pl-[20px] flex justify-center align-center" v-if="showCheckboxes">
-              <div>
+              <div class="">
                 <!-- :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" -->
                 <input class="w-4 h-4 align-middle" type="checkbox" v-model="isAllSelected" />
               </div>
@@ -1361,15 +1363,15 @@ const closeSelectedItem = ()=>{
               <div class="w-4 h-4 align-middle"></div>
             </th>
 
-            <th class="text-[13px] text-gray py-3">예약번호</th>
-            <th class="text-[13px] text-gray">고객명</th>
-            <th class="text-[13px] text-gray">연락처</th>
-            <th class="text-[13px] text-gray">주소</th>
-            <th class="text-[13px] text-gray">예약일자</th>
-            <th class="text-[13px] text-gray">픽업일자</th>
-            <th class="text-[13px] text-gray">상태</th>
-            <th class="text-[13px] text-gray">배차상태</th>
-            <th class="pr-[65px] text-[13px] text-gray">액션</th>
+            <th class=" text-[13px] text-gray py-3">예약번호</th>
+            <th class=" text-[13px] text-gray">고객명</th>
+            <th class=" text-[13px] text-gray">연락처</th>
+            <th class=" text-[13px] text-gray">주소</th>
+            <th class=" text-[13px] text-gray">예약일자</th>
+            <th class=" text-[13px] text-gray">픽업일자</th>
+            <th class=" text-[13px] text-gray">상태</th>
+            <th class=" text-[13px] text-gray">배차상태</th>
+            <th class=" pr-[65px] text-[13px] text-gray">액션</th>
           </tr>
         </thead>
         <!-- 3-2-2. 예약목록 내용 -->
@@ -1403,7 +1405,7 @@ const closeSelectedItem = ()=>{
         </tbody>
       </table>
       <!-- 3-3. 페이지네이션 -->
-      <div class="flex justify-center items-center rounded-[10px] p-4">
+      <div class="absolute left-[50%] bottom-0 transform -translate-x-1/2 flex justify-center items-center rounded-[10px] p-4">
         <div class="flex gap-2">
           <!-- 3-3-1. 이전버튼(그룹단위) -->
           <button
@@ -1442,6 +1444,7 @@ const closeSelectedItem = ()=>{
             >>
           </button>
         </div>
+      </div>
       </div>
     </div>
 
