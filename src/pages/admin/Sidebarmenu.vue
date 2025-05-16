@@ -1,9 +1,22 @@
 <script setup>
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
 defineProps({
   title: String,
-  activeItem: String,
-  items: Array, // { icon?: String, label: String, value: String } 형태의 배열
-});
+  items: Array, // [{ label, value, route, icon, iconHover }]
+})
+
+const hoveredItem = ref(null)
+
+// hover 또는 현재 라우터 경로가 일치하면 true
+const isHoveredOrActive = (item) => {
+  const value = item.value || item.label
+  return hoveredItem.value === value || route.path === item.route
+}
 </script>
 
 <template>
@@ -11,15 +24,26 @@ defineProps({
     <div class="h-10 px-6 flex items-center text-gray-200 text-xs font-medium">
       {{ title }}
     </div>
+
     <div
       v-for="item in items"
-      :key="item.value"
-      @click="item.route && $router.push(item.route)"
+      :key="item.value || item.label"
+      @click="item.route && router.push(item.route)"
+      @mouseover="hoveredItem = item.value || item.label"
+      @mouseleave="hoveredItem = null"
       :class="[
-        'h-11 px-6 flex items-center gap-2.5 relative text-gray font-semibold hover:bg-[#FBFBFB] hover:border-l-[3px]	 hover:border-manager hover:font-bold hover:text-manager cursor-pointer',
-      ]">
-      <div class="w-5 h-5 bg-zinc-300 rounded-sm"></div>
-      <span class="text-sm font-semibold">{{ item.label }}</span>
+        'h-11 px-6 flex items-center gap-2.5 relative border-l-[3px]  cursor-pointer',
+        isHoveredOrActive(item)
+          ? 'bg-[#FBFBFB] border-manager text-manager'
+          : 'border-white text-gray'
+      ]"
+    >
+      <img
+        :src="isHoveredOrActive(item) ? item.iconHover || item.icon : item.icon"
+        alt="icon"
+        class="w-6 h-6 object-contain"
+      />
+      <span class="text-[15px] font-normal hover:font-semibold ">{{ item.label }}</span>
     </div>
   </div>
 </template>
