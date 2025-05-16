@@ -26,6 +26,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "wait",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR122",
@@ -38,6 +39,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "two",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR124",
@@ -50,6 +52,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "three",
     area: "east",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR125",
@@ -62,6 +65,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "dalseo",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR120",
@@ -74,6 +78,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "west",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR127",
@@ -86,6 +91,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "center",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR126",
@@ -98,6 +104,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "suseong",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR128",
@@ -110,6 +117,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR129",
@@ -122,6 +130,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "east",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR131",
@@ -134,6 +143,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "dalseo",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR130",
@@ -146,6 +156,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "center",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR132",
@@ -158,6 +169,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "west",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR134",
@@ -170,6 +182,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR135",
@@ -182,6 +195,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "suseong",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR133",
@@ -194,6 +208,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR137",
@@ -206,6 +221,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "east",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR136",
@@ -218,6 +234,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "dalseo",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR139",
@@ -230,6 +247,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "center",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR138",
@@ -242,6 +260,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "west",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR140",
@@ -254,6 +273,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "one",
     area: "center",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR141",
@@ -266,6 +286,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "wait",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR142",
@@ -278,6 +299,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR143",
@@ -290,6 +312,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "suseong",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR144",
@@ -302,6 +325,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "east",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR145",
@@ -314,6 +338,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "dalseo",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR146",
@@ -326,6 +351,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR147",
@@ -338,6 +364,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "center",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR148",
@@ -350,6 +377,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "east",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR149",
@@ -362,6 +390,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "suseong",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR150",
@@ -374,6 +403,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR151",
@@ -386,6 +416,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR152",
@@ -398,6 +429,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "west",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR153",
@@ -410,6 +442,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "suseong",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR154",
@@ -422,6 +455,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "center",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR155",
@@ -434,6 +468,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR156",
@@ -446,6 +481,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "dalseo",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR157",
@@ -458,6 +494,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "east",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR158",
@@ -470,6 +507,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR159",
@@ -482,6 +520,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR160",
@@ -494,6 +533,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "suseong",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR161",
@@ -506,6 +546,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "west",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR162",
@@ -518,6 +559,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR163",
@@ -530,6 +572,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "south",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR164",
@@ -542,6 +585,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "north",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR165",
@@ -554,6 +598,7 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "suseong",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR166",
@@ -566,6 +611,7 @@ const reservations = ref([
     status: "delivery",
     dispatchStatus: "two",
     area: "east",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR167",
@@ -578,6 +624,7 @@ const reservations = ref([
     status: "complete",
     dispatchStatus: "three",
     area: "center",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR168",
@@ -590,6 +637,7 @@ const reservations = ref([
     status: "pickupWait",
     dispatchStatus: "wait",
     area: "west",
+    clothes: "L - 1개\nM - 1개",
   },
   {
     id: "JR169",
@@ -602,8 +650,8 @@ const reservations = ref([
     status: "deliveryWait",
     dispatchStatus: "one",
     area: "dalseo",
+    clothes: "L - 1개\nM - 1개",
   },
-  // 21~30개의 데이터도 같은 형식으로 이어서 생성 가능
 ]);
 
 // 필터링 관련
@@ -834,7 +882,7 @@ const handleDispatchClick = () => {
   showCheckboxes.value = true;
   modifyDispatchStatus.value = true;
   modifyBtn.value = false;
-  
+
   // 배송중(delivery)과 완료(complete) 상태 항목은 표시하지 않도록 필터링
   statusFilter.value = "all1"; // 모든 상태 선택
 
@@ -847,7 +895,6 @@ const handleDispatchClick = () => {
 
   // 페이지네이션 1페이지로 초기화
   currentPage.value = 1;
-
 };
 const cancelDispatchClick = () => {
   showCheckboxes.value = false;
@@ -1143,6 +1190,30 @@ const saveDispatchChange = () => {
   // 페이지네이션을 1페이지로 초기화
   currentPage.value = 1;
 };
+
+// 5-1. 미배차 예약 상세정보 관련 함수
+const selectedItem = ref(null);
+
+const showReservationDetails = (item) => {
+  selectedItem.value = {
+    ...item,
+    id: item.id || "아이디 없음",
+    customerName: item.customerName || "예약자명 미입력",
+    phone: item.phone || "전화번호 미입력",
+    address: item.address || "주소 미입력",
+    detailaddress: item.detailaddress || "상세주소 미입력",
+    reservationDate: item.reservationDate || "예약날짜 미입력",
+    pickupDate: item.pickupDate || "픽업날짜 미입력",
+    status: item.status || "상태없음",
+    dispatchStatus: item.dispatchStatus || "배차정보 없음",
+    area: item.area || "지역미정",
+    clothes: item.clothes || "짐없음?",
+  };
+};
+// 모달 닫기 
+const closeSelectedItem = ()=>{
+  selectedItem.value = null
+}
 </script>
 
 <template>
@@ -1263,7 +1334,7 @@ const saveDispatchChange = () => {
     <div class="w-2/2 flex flex-col align-center bg-white rounded-[10px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
       <!-- 3-1. 검색상자 -->
       <div class="flex justify-between w-full p-[20px]">
-        <div class="font-bold font-[16px]">예약목록</div>
+        <div class="flex align-center justify-center font-bold font-[16px]"><span>예약목록</span></div>
         <div class="searchbar flex align-center searchBox w-1/3 max-w-[500px] pr-2">
           <div class="w-5, h-5 mx-[10px]"><img class="w-full h-full" src="/images/lee/searchicon.png" alt="" /></div>
           <input
@@ -1326,7 +1397,7 @@ const saveDispatchChange = () => {
             <td class="align-middle text-[14px]">{{ getStatusText(item.status) }}</td>
             <td class="align-middle text-[14px]">{{ getdispatchStatusText(item.dispatchStatus) }}</td>
             <td class="pr-[65px] align-middle text-[14px]">
-              <button>상세</button>
+              <button @click="showReservationDetails(item)">상세</button>
             </td>
           </tr>
         </tbody>
@@ -1388,19 +1459,79 @@ const saveDispatchChange = () => {
       </div>
       <!-- 4-2. 배차변경 클릭 후 -->
       <div class="flex gap-6" v-if="modifyBtn">
-        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
         <button @click="handleDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
           배차수정
         </button>
+        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
       </div>
     </div>
   </div>
 
   <!-- 5. 모달창 -->
   <!-- 5-1. 미배차 예약 상세정보 -->
-  <div class="none w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
-    <div class="w-1/2 w-max-[900px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
-      <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
+  <div v-if="selectedItem" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
+    <div
+      class="w-1/2 w-max-[1000px] rounded-[10px{{  }}] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      <h4 class="font-bold p-[30px] ml-[15px] text-[20px] border-b border-[#E5E5EC]">예약 상세 정보</h4>
+      <div class="flex px-[45px] my-[30px]">
+        <!-- 5-1-1. 기본정보 -->
+        <div class="flex flex-col flex-1 gap-[30px]">
+          <h4 class="text-[18px] font-bold">기본정보</h4>
+          <div class="flex flex-col gap-[30px]">
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">예약 번호</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.id}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">고객명</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.customerName}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">연락처</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.phone}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">주소</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.address}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">상세주소</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.detailaddress}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">짐종류</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.clothes}}</span>
+            </div>
+          </div>
+        </div>
+        <!-- 5-1-2. 일정정보 -->
+        <div class="flex flex-col flex-1 gap-[30px]">
+          <h4 class="text-[18px] font-bold">일정정보</h4>
+          <div class="flex flex-col gap-[30px]">
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">예약일자</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.reservationDate}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">픽업일자</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.pickupDate}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">배차상태</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{getdispatchStatusText(selectedItem.dispatchStatus)}}</span>
+            </div>
+            <div class="flex gap-[30px]">
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">배정기사</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 5-1-3. 상세정보 버튼들 -->
+      <div class="flex flex-row-reverse px-[45px] pt-[10px] pb-[30px] gap-6">
+        <button @click="closeSelectedItem" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">닫기</button>
+        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
+      </div>
     </div>
   </div>
   <!-- 5-2. 배차완료 예약 상세정보 -->
@@ -1466,8 +1597,8 @@ select {
   align-items: center;
 }
 thead {
-  border-top: 1px solid #767676;
-  border-bottom: 1px solid #767676;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
 }
 tbody td {
   border-bottom: 1px solid #d9d9d9;

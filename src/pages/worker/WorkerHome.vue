@@ -463,7 +463,6 @@ const createMarker = (place) => {
     title: place.title,
     image: new kakao.maps.MarkerImage(`/images/hong/${place.image}`, new kakao.maps.Size(44, 51)),
   });
-
   kakao.maps.event.addListener(marker, "click", () => {
     selectedPlace.value = place;
     modalOpen.value = true;
@@ -486,7 +485,6 @@ const initMap = () => {
     console.warn("지도를 초기화할 수 없습니다. #map 요소 없음");
     return;
   }
-
   map = new kakao.maps.Map(container, {
     center: new kakao.maps.LatLng(35.8944, 128.6586),
     level: 7,
@@ -500,7 +498,6 @@ const initMap = () => {
 const loadKakaoMap = () => {
   const kakaoApiKey = import.meta.env.VITE_KAKAO_MAP_KEY;
   if (!kakaoApiKey) return;
-
   const scriptId = "kakao-map-script";
   if (!document.getElementById(scriptId)) {
     const script = document.createElement("script");
@@ -534,7 +531,6 @@ onMounted(() => {
 // watch: 탭 전환 감지
 watch(activeTab, (newValue) => {
   modalOpen.value = false;
-
   if (newValue === "todayWork") {
     handleTabChangeToTodayWork(); // 무조건 지도 다시 생성
   }
