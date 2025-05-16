@@ -78,7 +78,7 @@
 
       <!-- 근무 현황 -->
       <div
-        class="w-full max-w-[730px] mx-auto mt-[45px] mb-[140px] py-4 px-1 bg-white rounded-md transition-all duration-300"
+        class="w-full max-w-[730px] mx-auto mt-[45px] mb-[45px] py-4 px-1 bg-white rounded-md transition-all duration-300"
       >
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-[#111] text-xl pl-2 font-medium font-['Pretendard']">
@@ -120,7 +120,7 @@
           <!-- 인센티브 -->
           <div class="flex flex-col items-end justify-center bg-white rounded-[10px] p1-4 py-5">
             <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1 text-right pr-5">
-              이 달의 인센티브
+              이 달의 추가수당
             </div>
             <div
               class="text-[#FF6F00] text-lg font-medium font-['Pretendard'] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] py-2 w-[180px] text-right pr-5"
@@ -136,42 +136,34 @@
         </div>
       </div>
 
-      <!--네비게이션 바-->
-      <div
-        class="fixed bottom-0 w-full max-w-[768px] py-3 px-[100px] bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex mx-auto justify-between items-center gap-20 overflow-hidden z-50"
-      >
-        <!-- 홈 아이콘 -->
-        <router-link to="/worker/worker-home">
-          <div class="flex flex-col items-center gap-2.5 w-14 transition-transform hover:scale-105">
-            <img src="/images/kang/home.png" alt="home" />
-            <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">홈</div>
-          </div></router-link
-        >
+      <!-- 근무 통계 차트 -->
+      <div class="w-full max-w-[730px] mx-auto mt-8 mb-[140px] py-6 px-4 bg-white rounded-lg shadow-sm">
+        <h2 class="text-[#111] text-xl font-medium font-['Pretendard'] mb-6">근무 통계</h2>
 
-        <!-- 알림 아이콘 -->
-        <router-link to="/worker/worker-notice">
-          <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
-            <img src="/images/kang/notice.png" alt="notice" />
-            <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">알림</div>
-          </div></router-link
-        >
+        <!-- 차트 컨테이너 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- 주간 근무 시간 차트 -->
+          <div class="bg-white p-4 rounded-lg border border-[#E5E5EC]">
+            <h3 class="text-[#505050] text-base font-medium mb-4">주간 근무 현황</h3>
+            <div v-if="weeklyChartData.datasets[0].data.some((value) => value > 0)" class="h-[250px]">
+              <Bar :data="weeklyChartData" :options="weeklyChartOptions" />
+            </div>
+            <div v-else class="h-[250px] flex items-center justify-center text-[#767676]">데이터가 없습니다</div>
+          </div>
 
-        <!-- 마이페이지 아이콘 -->
-        <router-link to="/worker/worker-mypage">
-          <div class="flex flex-col items-center gap-2.5 w-14 transition-transform hover:scale-105">
-            <img src="/images/kang/mypageActive.png" alt="mypage" />
-            <div class="w-20 text-center text-[#FF6F00] text-base font-medium font-['Pretendard']">마이페이지</div>
-          </div></router-link
-        >
-
-        <!-- 환경설정 아이콘 -->
-        <router-link to="/worker/worker-settings">
-          <div class="flex flex-col items-center gap-2.5 w-14 cursor-pointer">
-            <img src="/images/kang/settings.png" alt="settings" />
-            <div class="w-full text-center text-[#111] text-base font-medium font-['Pretendard']">환경설정</div>
-          </div></router-link
-        >
+          <!-- 시급 추이 차트 -->
+          <div class="bg-white p-4 rounded-lg border border-[#E5E5EC]">
+            <h3 class="text-[#505050] text-base font-medium mb-4">추가 수당 추이</h3>
+            <div v-if="payChartData.datasets[0].data.some((value) => value !== null)" class="h-[250px]">
+              <Line :data="payChartData" :options="payChartOptions" />
+            </div>
+            <div v-else class="h-[250px] flex items-center justify-center text-[#767676]">데이터가 없습니다</div>
+          </div>
+        </div>
       </div>
+
+      <!--네비게이션 바-->
+      <BottomNavBar />
 
       <!-- 모달창 -->
       <div
@@ -214,7 +206,23 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { Bar, Line } from 'vue-chartjs';
+import BottomNavBar from '@/components/BottomNavBar.vue';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+// Chart.js 등록
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
 // 현재 페이지 상태
 const currentPage = ref({ month: 5, year: 2025 });
@@ -503,6 +511,123 @@ const markerData = [
     image: 'marker10.png',
   },
 ];
+
+// 주간 차트 데이터 계산
+const weeklyChartData = computed(() => {
+  const year = currentPage.value.year;
+  const month = currentPage.value.month;
+  const weeks = ['1주차', '2주차', '3주차', '4주차', '5주차'];
+  const weeklyData = [0, 0, 0, 0, 0];
+
+  Object.entries(workData.value)
+    .filter(([date]) => {
+      const [y, m] = date.split('-').map(Number);
+      return y === year && m === month;
+    })
+    .forEach(([date, info]) => {
+      const day = parseInt(date.split('-')[2]);
+      const weekIndex = Math.floor((day - 1) / 7);
+      weeklyData[weekIndex] += info.pay;
+    });
+
+  return {
+    labels: weeks,
+    datasets: [
+      {
+        label: '주간 수입',
+        data: weeklyData,
+        backgroundColor: '#FF6F00',
+
+        borderRadius: 5,
+      },
+    ],
+  };
+});
+
+// 시급 추이 차트 데이터 계산
+const payChartData = computed(() => {
+  const year = currentPage.value.year;
+  const month = currentPage.value.month;
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const payData = Array(31).fill(null);
+
+  Object.entries(workData.value)
+    .filter(([date]) => {
+      const [y, m] = date.split('-').map(Number);
+      return y === year && m === month;
+    })
+    .forEach(([date, info]) => {
+      const day = parseInt(date.split('-')[2]);
+      payData[day - 1] = info.pay;
+    });
+
+  return {
+    labels: days,
+    datasets: [
+      {
+        label: '일일 수입',
+        data: payData,
+        borderColor: 'rgba(69, 166, 255, 0.8)',
+        backgroundColor: '#4299E1',
+        tension: 0.4,
+        fill: true,
+      },
+    ],
+  };
+});
+
+// 차트 옵션
+const weeklyChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      callbacks: {
+        label: (context) => `₩ ${context.raw.toLocaleString()}`,
+      },
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: (value) => `₩ ${value.toLocaleString()}`,
+      },
+    },
+  },
+};
+
+const payChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      callbacks: {
+        label: (context) => `₩ ${context.raw.toLocaleString()}`,
+      },
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: (value) => `₩ ${value.toLocaleString()}`,
+      },
+    },
+  },
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+</style>
