@@ -1,16 +1,13 @@
 <template>
+  <!--배경색-->
+  <div class="bg-white md:bg-[#FDF3E7] min-h-screen flex flex-col">
+ <!--전체영역-->
+ <div class=" w-full max-w-[768px] mx-auto h-screen bg-white flex-1">
   <div class="max-w-3xl mx-auto p-4 space-y-6">
     <!-- 헤더 영역 -->
     <div class="relative flex items-center h-16">
-      <!-- 스트 -->
+      <!-- 텍스트 -->
       <h1 class="absolute left-1/2 transform -translate-x-1/2 text-3xl font-bold text-black">알림사항</h1>
-
-      <!-- 오른쪽 설정 아이콘 -->
-      <div class="ml-auto">
-        <router-link to="/worker/worker-settings">
-          <img src="/images/kang/noticeSettings.png" alt="설정" class="w-6 h-6 cursor-pointer" />
-        </router-link>
-      </div>
     </div>
 
     <!-- 알림 리스트 -->
@@ -28,9 +25,9 @@
     </div>
   </div>
   <!--네비게이션 바-->
-  <div
-    class="fixed bottom-0 left-0 w-full py-3 bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex justify-center items-center gap-20 overflow-hidden z-50"
-  >
+   <div
+            class="fixed bottom-0 w-full max-w-[768px] py-3 px-[100px] bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex mx-auto justify-between items-center gap-20 overflow-hidden z-50"
+          >
     <!-- 홈 아이콘 -->
     <router-link to="/worker/worker-home">
       <div class="flex flex-col items-center gap-2.5 w-14 transition-transform hover:scale-105">
@@ -62,6 +59,8 @@
         <div class="w-full text-center text-[#111] text-base font-medium font-['Pretendard']">환경설정</div>
       </div></router-link
     >
+  </div>
+  </div>
   </div>
 </template>
 <script setup>
