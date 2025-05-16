@@ -5,25 +5,14 @@
     <div class="workerHomeTab h-full">
       <!-- 탭 버튼 -->
       <div class="flex">
-        <h2
-          @click="activeTab = 'home'"
-          class="flex-1 text-center cursor-pointer py-[19px] mx-auto font-bold text-2xl"
-          :class="activeTab === 'home' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#E5E5EC] text-[#767676]'">
-          홈
-        </h2>
-        <h2
-          @click="activeTab = 'todayWork'"
-          class="flex-1 text-center cursor-pointer py-[19px] mx-auto font-bold text-2xl"
-          :class="activeTab === 'todayWork' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#E5E5EC] text-[#767676]'">
-          오늘 할 일
-        </h2>
+        <h2 @click="activeTab = 'home'" class="flex-1 text-center cursor-pointer py-[19px] mx-auto font-bold text-2xl" :class="activeTab === 'home' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#E5E5EC] text-[#767676]'">홈</h2>
+        <h2 @click="activeTab = 'todayWork'" class="flex-1 text-center cursor-pointer py-[19px] mx-auto font-bold text-2xl" :class="activeTab === 'todayWork' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#E5E5EC] text-[#767676]'">오늘 할 일</h2>
       </div>
 
       <!--홈 탭 내용-->
       <section v-if="activeTab === 'home'" class="home-wrap mx-auto">
         <!--배너-->
-        <div
-          class="w-full mt-[35px] mx-auto max-w-[702px] h-80 p-6 bg-[#FFF] rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col justify-between text-[#111] font-['Pretendard']">
+        <div class="w-full mt-[35px] mx-auto max-w-[702px] h-80 p-6 bg-[#FFF] rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col justify-between text-[#111] font-['Pretendard']">
           <!-- 상단: 날짜 + 온도 -->
           <div class="flex justify-between items-center">
             <div class="text-xl font-bold">2025.04.28</div>
@@ -35,8 +24,7 @@
 
           <!-- 중단: 프로필 + 설명 -->
           <div class="flex items-center gap-6">
-            <div
-              class="relative w-24 h-24 bg-[#FDF3E7] rounded-full shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex items-center justify-center">
+            <div class="relative w-24 h-24 bg-[#FDF3E7] rounded-full shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex items-center justify-center">
               <img class="w-16 h-16" src="/images/kang/truckicon.png" alt="아이콘" />
             </div>
             <div class="flex flex-col justify-center">
@@ -59,8 +47,7 @@
         </div>
 
         <!--1호차 게이지 영역-->
-        <div
-          class="w-full mx-auto mt-[35px] max-w-[697px] h-auto p-6 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col gap-4 font-['Inter']">
+        <div class="w-full mx-auto mt-[35px] max-w-[697px] h-auto p-6 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col gap-4 font-['Inter']">
           <!-- 상단: 차량 이름 -->
           <div class="text-4xl font-bold text-[#111]">1호차</div>
 
@@ -73,8 +60,7 @@
           <!-- 하단: 진행 바 + 수치 -->
           <div class="flex items-center justify-between">
             <!-- 진행 바 -->
-            <div
-              class="w-full max-w-[559px] h-3 bg-[#FDF3E7] rounded-full outline outline-1 outline-[#E5E5EC] relative overflow-hidden">
+            <div class="w-full max-w-[559px] h-3 bg-[#FDF3E7] rounded-full outline outline-1 outline-[#E5E5EC] relative overflow-hidden">
               <div class="absolute top-0 left-0 h-full bg-[#FF6F00] rounded-full" style="width: 50%"></div>
             </div>
 
@@ -88,8 +74,7 @@
         <!--건수 표시 박스 3개-->
         <div class="w-full mx-auto mt-[35px] h-20 flex gap-10 px-4 md:px-0 justify-center">
           <!-- 전체 건수 -->
-          <div
-            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
+          <div class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
             <div class="flex flex-col justify-start items-start gap-1">
               <div class="text-[#505050] text-xl font-medium font-['Pretendard']">전체 건수</div>
             </div>
@@ -100,8 +85,7 @@
           </div>
 
           <!-- 남은 건수 -->
-          <div
-            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
+          <div class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
             <div class="flex flex-col justify-start items-start gap-1">
               <div class="text-[#505050] text-xl font-medium font-['Pretendard']">남은 건수</div>
             </div>
@@ -112,8 +96,7 @@
           </div>
 
           <!-- 완료 -->
-          <div
-            class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
+          <div class="w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
             <div class="flex flex-col justify-start items-start gap-1">
               <div class="text-[#505050] text-xl font-medium font-['Pretendard']">완료</div>
             </div>
@@ -135,8 +118,7 @@
           </div>
 
           <!-- 알림 내용 -->
-          <div
-            class="flex items-start gap-3 outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] rounded-[10px] shadow-[0px_2px_10px_0px_rgba(17,17,17,0.1)] px-4 py-4">
+          <div class="flex items-start gap-3 outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] rounded-[10px] shadow-[0px_2px_10px_0px_rgba(17,17,17,0.1)] px-4 py-4">
             <!-- 경고 아이콘 -->
             <div class="relative min-w-9 min-h-9 w-9 h-9 bg-[#EF4444] rounded-full flex items-center justify-center">
               <div class="w-3.5 h-3.5 bg-white rounded-full absolute"></div>
@@ -145,9 +127,7 @@
 
             <!-- 알림 텍스트 -->
             <div class="flex items-center h-8">
-              <p class="text-[#111] text-xs font-bold font-['Pretendard']">
-                금일 16:00부로 경부선 북대구IC 인근 산불로 인한 북대구TG 진입, 진출 차단을 알려드립니다.
-              </p>
+              <p class="text-[#111] text-xs font-bold font-['Pretendard']">금일 16:00부로 경부선 북대구IC 인근 산불로 인한 북대구TG 진입, 진출 차단을 알려드립니다.</p>
             </div>
           </div>
         </div>
@@ -163,24 +143,17 @@
           </div>
           <!-- 공지 리스트 -->
           <div class="flex flex-col gap-4">
-            <div
-              class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
-              <span class="text-base text-[#111] font-medium font-['Pretendard']"
-                >짐꾼 사칭 및 보이스피싱 주의 안내</span
-              >
+            <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
+              <span class="text-base text-[#111] font-medium font-['Pretendard']">짐꾼 사칭 및 보이스피싱 주의 안내</span>
               <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.30</span>
             </div>
 
-            <div
-              class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
-              <span class="text-base text-[#111] font-medium font-['Pretendard']"
-                >5월 황금 연휴 기간 물류 집중 안내</span
-              >
+            <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
+              <span class="text-base text-[#111] font-medium font-['Pretendard']">5월 황금 연휴 기간 물류 집중 안내</span>
               <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.28</span>
             </div>
 
-            <div
-              class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
+            <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
               <span class="text-base text-[#111] font-medium font-['Pretendard']">업데이트 된 짐꾼 앱 기능 안내</span>
               <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.11</span>
             </div>
@@ -199,28 +172,21 @@
           <!-- 카드 3개 그리드 -->
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <!-- 카드 1 -->
-            <div
-              class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
+            <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
               <img class="w-[210px] h-40 rounded-[10px] object-cover" src="/images/kang/safe.png" alt="안전 이미지" />
-              <div class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']">
-                운전 시 일어나는 안전사고 예방법
-              </div>
+              <div class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']">운전 시 일어나는 안전사고 예방법</div>
               <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.04.30</div>
             </div>
 
             <!-- 카드 2 -->
-            <div
-              class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
+            <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
               <img class="w-[210px] h-40 rounded-[10px] object-cover" src="/images/kang/safe2.jpg" alt="안전 이미지" />
-              <div class="mt-5 pl-6 text-xs font-semibold text-[#111] text-left font-['Pretendard']">
-                택배 배송 안전 수칙
-              </div>
+              <div class="mt-5 pl-6 text-xs font-semibold text-[#111] text-left font-['Pretendard']">택배 배송 안전 수칙</div>
               <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.03.31</div>
             </div>
 
             <!-- 카드 3 -->
-            <div
-              class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
+            <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
               <img class="w-[210px] h-40 rounded-[10px] object-cover" src="/images/kang/safe3.jpg" alt="안전 이미지" />
               <div class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']">택배 위험 포인트</div>
               <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.02.28</div>
@@ -228,8 +194,7 @@
           </div>
         </div>
         <!--네비게이션 바-->
-        <div
-          class="fixed bottom-0 left-0 w-full py-3 bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex justify-center items-center gap-20 overflow-hidden z-50">
+        <div class="fixed bottom-0 left-0 w-full py-3 bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex justify-center items-center gap-20 overflow-hidden z-50">
           <!-- 홈 아이콘 -->
           <router-link to="/worker/worker-home">
             <div class="flex flex-col items-center gap-2.5 w-14">
@@ -285,9 +250,7 @@
     </div>
   </div>
   <!-- 모달 -->
-  <div
-    v-if="modalOpen && selectedPlace"
-    class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[768px] bg-white rounded-xl shadow-lg z-50 p-6">
+  <div v-if="modalOpen && selectedPlace" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[768px] bg-white rounded-xl [box-shadow:0px_-4px_8px_rgba(0,0,0,0.1)] z-50 p-6">
     <!-- 상단 정보 -->
     <div class="flex justify-between mb-4">
       <!-- 왼쪽 컬럼 -->
@@ -320,18 +283,28 @@
           <span class="text-gray-500 w-20">요청사항</span>
           <span class="text-base">{{ selectedPlace.notes || "-" }}</span>
         </div>
-        <div class="flex items-end justify-between">
-          <!-- 왼쪽: 사진 label + 업로드칸 -->
-          <div class="flex gap-2 items-start">
-            <span class="text-gray-500 w-20">사진</span>
-            <div
-              class="w-16 h-16 border border-dashed border-gray-400 rounded-[10px] flex items-center justify-center text-gray-400 text-xl">
-              +
+
+        <!-- 전체 사진 행 -->
+        <div class="flex w-full items-center gap-2">
+          <!-- 사진 라벨 (위 정렬 고정) -->
+          <span class="text-gray-500 w-20 shrink-0">사진</span>
+
+          <!-- 오른쪽 영역 (업로드박스 + 버튼) -->
+          <div class="flex justify-between w-full">
+            <!-- 왼쪽: 업로드 영역 -->
+            <div class="flex items-start gap-2">
+              <div v-if="!uploadedImage" @click="triggerFileInput" class="w-16 h-16 border border-dashed border-gray-400 rounded-[10px] flex items-center justify-center text-gray-400 text-xl cursor-pointer">+</div>
+
+              <img v-else :src="uploadedImage" @click="triggerFileInput" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" />
+
+              <input type="file" ref="imageInput" accept="image/*" class="hidden" @change="handleImageUpload" />
+            </div>
+
+            <!-- 오른쪽: 픽업완료 버튼만 하단 정렬 -->
+            <div class="self-end">
+              <button class="bg-[#FF6F00] text-white px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap">픽업완료</button>
             </div>
           </div>
-
-          <!-- 오른쪽: 픽업완료 버튼 -->
-          <button class="bg-orange-500 text-white px-6 py-2 rounded-[10px] font-bold text-sm">픽업완료</button>
         </div>
 
         <!-- 닫기 버튼 -->
@@ -342,15 +315,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
-
-// 상태
+import { ref, onMounted, watch, nextTick } from "vue";
+// 탭
 const activeTab = ref("home");
+// 선택된 장소 정보
 const selectedPlace = ref(null);
+// 모달 열림상태
 const modalOpen = ref(false);
+// 숨겨진 input 요소
+const imageInput = ref(null);
+// 이미지 1장만 저장
+const uploadedImage = ref(null);
 
-// 지도 객체
+// 지도 및 마커 상태
 let map = null;
+let markers = [];
 
 // 마커 더미데이터 목록
 const markerData = [
@@ -476,32 +455,46 @@ const markerData = [
   },
 ];
 
+// 마커 생성
 const createMarker = (place) => {
   const position = new kakao.maps.LatLng(place.lat, place.lng);
   const marker = new kakao.maps.Marker({
     position,
     title: place.title,
-    image: new kakao.maps.MarkerImage(`http://localhost:5173/images/hong/${place.image}`, new kakao.maps.Size(44, 51)),
+    image: new kakao.maps.MarkerImage(`/images/hong/${place.image}`, new kakao.maps.Size(44, 51)),
   });
-  marker.setMap(map);
   kakao.maps.event.addListener(marker, "click", () => {
     selectedPlace.value = place;
     modalOpen.value = true;
   });
+
+  marker.setMap(map);
+  markers.push(marker);
 };
 
+// 기존 마커 제거
+const clearMarkers = () => {
+  markers.forEach((m) => m.setMap(null));
+  markers = [];
+};
+
+// 지도 초기화
 const initMap = () => {
-  if (map) return;
   const container = document.getElementById("map");
-  if (!container) return;
+  if (!container) {
+    console.warn("지도를 초기화할 수 없습니다. #map 요소 없음");
+    return;
+  }
   map = new kakao.maps.Map(container, {
     center: new kakao.maps.LatLng(35.8944, 128.6586),
     level: 7,
   });
 
+  clearMarkers();
   markerData.forEach(createMarker);
 };
 
+// 카카오맵 SDK 로딩 및 지도 실행
 const loadKakaoMap = () => {
   const kakaoApiKey = import.meta.env.VITE_KAKAO_MAP_KEY;
   if (!kakaoApiKey) return;
@@ -513,23 +506,51 @@ const loadKakaoMap = () => {
     script.onload = () => kakao.maps.load(initMap);
     document.head.appendChild(script);
   } else {
-    kakao.maps.load(initMap);
+    kakao.maps.load(initMap); // 이미 로드된 경우
   }
 };
 
+// 탭 전환 시 실행할 비동기 함수
+async function handleTabChangeToTodayWork() {
+  await nextTick(); // DOM 렌더 완료 후 실행
+
+  if (typeof kakao !== "undefined" && kakao.maps) {
+    kakao.maps.load(initMap);
+  } else {
+    loadKakaoMap();
+  }
+}
+
+// onMounted: 첫 진입이 todayWork일 경우 지도 로딩
 onMounted(() => {
   if (activeTab.value === "todayWork") {
-    loadKakaoMap();
+    handleTabChangeToTodayWork();
   }
 });
 
+// watch: 탭 전환 감지
 watch(activeTab, (newValue) => {
   modalOpen.value = false;
   if (newValue === "todayWork") {
-    map = null;
-    loadKakaoMap();
+    handleTabChangeToTodayWork(); // 무조건 지도 다시 생성
   }
 });
+
+// 이미지 업로드
+function triggerFileInput() {
+  imageInput.value?.click();
+}
+
+function handleImageUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    uploadedImage.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 </script>
 <style scoped>
 /* marker 숨김용 */
