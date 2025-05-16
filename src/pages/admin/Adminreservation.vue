@@ -24,7 +24,7 @@ const reservations = ref([
     reservationDate: "2025-04-20",
     pickupDate: "2025-04-23",
     status: "deliveryWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "two",
     area: "south",
     clothes: "L - 1개\nM - 1개",
   },
@@ -63,7 +63,7 @@ const reservations = ref([
     reservationDate: "2025-04-24",
     pickupDate: "2025-04-27",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "one",
     area: "dalseo",
     clothes: "L - 1개\nM - 1개",
   },
@@ -115,7 +115,7 @@ const reservations = ref([
     reservationDate: "2025-04-29",
     pickupDate: "2025-05-01",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "three",
     area: "north",
     clothes: "L - 1개\nM - 1개",
   },
@@ -167,7 +167,7 @@ const reservations = ref([
     reservationDate: "2025-05-03",
     pickupDate: "2025-05-05",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "two",
     area: "west",
     clothes: "L - 1개\nM - 1개",
   },
@@ -219,7 +219,7 @@ const reservations = ref([
     reservationDate: "2025-05-07",
     pickupDate: "2025-05-16",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "one",
     area: "east",
     clothes: "L - 1개\nM - 1개",
   },
@@ -284,7 +284,7 @@ const reservations = ref([
     reservationDate: "2025-05-02",
     pickupDate: "2025-05-04",
     status: "deliveryWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "one",
     area: "north",
     clothes: "L - 1개\nM - 1개",
   },
@@ -323,7 +323,7 @@ const reservations = ref([
     reservationDate: "2025-05-05",
     pickupDate: "2025-05-07",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "three",
     area: "east",
     clothes: "L - 1개\nM - 1개",
   },
@@ -375,7 +375,7 @@ const reservations = ref([
     reservationDate: "2025-05-09",
     pickupDate: "2025-05-11",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "two",
     area: "east",
     clothes: "L - 1개\nM - 1개",
   },
@@ -427,7 +427,7 @@ const reservations = ref([
     reservationDate: "2025-05-13",
     pickupDate: "2025-05-15",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "two",
     area: "west",
     clothes: "L - 1개\nM - 1개",
   },
@@ -479,7 +479,7 @@ const reservations = ref([
     reservationDate: "2025-05-17",
     pickupDate: "2025-05-19",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "one",
     area: "dalseo",
     clothes: "L - 1개\nM - 1개",
   },
@@ -531,7 +531,7 @@ const reservations = ref([
     reservationDate: "2025-05-21",
     pickupDate: "2025-05-23",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "three",
     area: "suseong",
     clothes: "L - 1개\nM - 1개",
   },
@@ -583,7 +583,7 @@ const reservations = ref([
     reservationDate: "2025-05-25",
     pickupDate: "2025-05-27",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "two",
     area: "north",
     clothes: "L - 1개\nM - 1개",
   },
@@ -635,7 +635,7 @@ const reservations = ref([
     reservationDate: "2025-05-29",
     pickupDate: "2025-05-31",
     status: "pickupWait",
-    dispatchStatus: "wait",
+    dispatchStatus: "three",
     area: "west",
     clothes: "L - 1개\nM - 1개",
   },
@@ -903,6 +903,10 @@ const cancelDispatchClick = () => {
   if (!showCheckboxes.value) {
     selectedItems.value.clear(); // 체크박스 숨길 때 선택 상태 초기화
     isAllPagesSelected.value = false; // 전체 선택 상태도 초기화
+    // areaFilter.value = "all2"
+    // sortBy.value = "newRv"
+    // statusFilter.value = "all1"
+    // dispatchStatusFilter.value = "all3"
   }
 };
 
@@ -1210,10 +1214,10 @@ const showReservationDetails = (item) => {
     clothes: item.clothes || "짐없음?",
   };
 };
-// 모달 닫기 
-const closeSelectedItem = ()=>{
-  selectedItem.value = null
-}
+// 모달 닫기
+const closeSelectedItem = () => {
+  selectedItem.value = null;
+};
 </script>
 
 <template>
@@ -1270,10 +1274,12 @@ const closeSelectedItem = ()=>{
       class="flex justify-between px-[20px] py-[10px] w-2/2 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
       <!-- 2-1. 날짜 검색 및 다음 날 픽업날짜 체크박스 -->
       <div class="flex">
-        <select v-model="dateStatus" class="">
-          <option value="reservation">예약일자</option>
-          <option value="pickup">픽업일자</option>
-        </select>
+        <div class="select1 flex align-center justify-center">
+          <select v-model="dateStatus" class="w-[85px]">
+            <option value="reservation">예약일자</option>
+            <option value="pickup">픽업일자</option>
+          </select>
+        </div>
         <div class="flex items-center gap-[20px]">
           <!-- 2-1-1. 날짜 검색 -->
           <div class="dateBox flex gap-[10px]">
@@ -1294,47 +1300,59 @@ const closeSelectedItem = ()=>{
       </div>
       <!-- 2-2. 상태(selectBox) 필터링 -->
       <div class="flex gap-[10px]">
-        <!-- 2-2-1. 상태필터 -->
-        <select v-model="statusFilter">
-          <option value="all1">전체상태</option>
-          <option value="pickupWait">픽업대기</option>
-          <option value="deliveryWait">배송대기</option>
-          <option value="delivery">배송중</option>
-          <option value="complete">완료</option>
-        </select>
+        <!-- 2-2-1. 지역필터 -->
+        <div class="select1 flex align-center justify-center">
+          <select v-model="areaFilter" class="w-[85px]">
+            <option value="all2">전체지역</option>
+            <option value="center">중구</option>
+            <option value="south">남구</option>
+            <option value="north">북구</option>
+            <option value="east">동구</option>
+            <option value="west">서구</option>
+            <option value="dalseo">달서구</option>
+            <option value="suseong">수성구</option>
+          </select>
+        </div>
         <!-- 2-2-2. 리스트 순서 필터 -->
-        <select v-model="sortBy">
-          <option value="newRv">최신예약순</option>
-          <option value="name">이름순</option>
-          <option value="number">예약번호순</option>
-          <option value="oldRv">오래된예약순</option>
-        </select>
-        <!-- 2-2-3. 지역필터 -->
-        <select v-model="areaFilter">
-          <option value="all2">전체지역</option>
-          <option value="center">중구</option>
-          <option value="south">남구</option>
-          <option value="north">북구</option>
-          <option value="east">동구</option>
-          <option value="west">서구</option>
-          <option value="dalseo">달서구</option>
-          <option value="suseong">수성구</option>
-        </select>
+        <div class="select1 flex align-center justify-center">
+          <select v-model="sortBy" class="w-[85px]">
+            <option value="newRv">최신순</option>
+            <option value="oldRv">오래된순</option>
+            <option value="name">이름순</option>
+            <option value="number">번호순</option>
+          </select>
+        </div>
+        <!-- 2-2-3. 상태필터 -->
+        <div class="select1 flex align-center justify-center">
+          <select v-model="statusFilter" class="w-[85px]">
+            <option value="all1">전체상태</option>
+            <option value="pickupWait">픽업대기</option>
+            <option value="deliveryWait">배송대기</option>
+            <option value="delivery">배송중</option>
+            <option value="complete">완료</option>
+          </select>
+        </div>
+
         <!-- 2-2-4. 배차필터 -->
-        <select v-model="dispatchStatusFilter">
-          <option value="all3">전체배차</option>
-          <option value="wait">배차대기</option>
-          <option value="one">1호차</option>
-          <option value="two">2호차</option>
-          <option value="three">3호차</option>
-        </select>
+        <div class="select1 flex align-center justify-center">
+          <select v-model="dispatchStatusFilter" class="w-[85px]">
+            <option value="all3">전체배차</option>
+            <option value="wait">배차대기</option>
+            <option value="one">1호차</option>
+            <option value="two">2호차</option>
+            <option value="three">3호차</option>
+          </select>
+        </div>
       </div>
     </div>
     <!-- 3.검색상자, 예약목록 리스트, 페이지네이션 -->
-    <div class="relative w-2/2 h-[480px] flex flex-col align-center bg-white rounded-[10px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+    <div
+      class="relative w-2/2 h-[480px] flex flex-col align-center bg-white rounded-[10px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
       <!-- 3-1. 검색상자 -->
       <div class="h-[80px] flex justify-between w-full p-[20px]">
-        <div class="flex align-center justify-center font-bold font-[16px]"><span>예약목록</span></div>
+        <div class="flex align-center justify-center font-bold font-[16px]">
+          <span class="leading-[40px]">예약목록</span>
+        </div>
         <div class="searchbar flex align-center searchBox w-1/3 max-w-[500px] pr-2">
           <div class="w-5, h-5 mx-[10px]"><img class="w-full h-full" src="/images/lee/searchicon.png" alt="" /></div>
           <input
@@ -1347,104 +1365,105 @@ const closeSelectedItem = ()=>{
       </div>
       <!-- 3-2.예약목록 리스트 , 3-3. 페이지네이션 -->
       <div class="flex">
-      <!-- 3-2. 예약목록 리스트 -->
-      <table class="w-full">
-        <!-- 3-2-1. 예약목록 구분 -->
-        <thead class="bg-[#F9FAFB] w-2/2 border-t border-b border-gray pr-[65px]">
-          <tr class="w-2/2 pl-[20px] pr-[65px]">
-            <th class="pl-[20px] flex justify-center align-center" v-if="showCheckboxes">
-              <div class="">
-                <!-- :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" -->
-                <input class="w-4 h-4 align-middle" type="checkbox" v-model="isAllSelected" />
-              </div>
-            </th>
+        <!-- 3-2. 예약목록 리스트 -->
+        <table class="w-full">
+          <!-- 3-2-1. 예약목록 구분 -->
+          <thead class="bg-[#F9FAFB] w-2/2 border-t border-b border-gray pr-[65px]">
+            <tr class="w-[100%] pl-[20px] pr-[65px]">
+              <th class="pl-[20px] flex justify-center align-center" v-if="showCheckboxes">
+                <div class="">
+                  <!-- :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" -->
+                  <input class="w-4 h-4 align-middle" type="checkbox" v-model="isAllSelected" />
+                </div>
+              </th>
+              <th v-else class="pl-[20px] flex justify-center align-center">
+                <div class="w-4 h-4 align-middle"></div>
+              </th>
 
-            <th v-else class="pl-[20px] flex justify-center align-center">
-              <div class="w-4 h-4 align-middle"></div>
-            </th>
+              <th class="w-[90px] pr-[30px] text-[13px] text-gray py-3">예약번호</th>
+              <th class="w-[70px] text-[13px] text-gray">고객명</th>
+              <th class="w-[200px] text-[13px] text-gray">연락처</th>
+              <th class="w-[350px] text-[13px] text-gray">주소</th>
+              <th class="w-[150px] text-[13px] text-gray">예약일자</th>
+              <th class="w-[150px] text-[13px] text-gray">픽업일자</th>
+              <th class="text-[13px] text-gray">상태</th>
+              <th class="text-[13px] text-gray">배차상태</th>
+              <th class="pr-[65px] text-[13px] text-gray">액션</th>
+            </tr>
+          </thead>
+          <!-- 3-2-2. 예약목록 내용 -->
+          <tbody v-for="item in paginatedReservations" :key="item.id" class="bg-white align-middle text-center">
+            <tr>
+              <td class="pl-[20px] py-1 align-middle text-[14px]">
+                <!-- :disabled="!isCheckboxEnabled(item.dispatchStatus)" -->
+                <!-- :class="{'opacity-50 cursor-not-allowed': !isCheckboxEnabled(item.dispatchStatus),}"  -->
+                <input
+                  type="checkbox"
+                  v-if="showCheckboxes"
+                  :checked="selectedItems.has(item.id)"
+                  @change="toggleItem(item.id)"
+                  class="w-4 h-4 align-middle" />
+              </td>
+              <td class="pr-[30px] align-middle text-[14px]">{{ item.id }}</td>
+              <td class="align-middle text-[14px]">{{ item.customerName }}</td>
+              <td class="align-middle text-[14px]">{{ item.phone }}</td>
+              <td class="py-2 align-middle text-[14px]">
+                {{ item.address }} <br />
+                {{ item.detailaddress }}
+              </td>
+              <td class="align-middle text-[14px]">{{ item.reservationDate }}</td>
+              <td class="align-middle text-[14px]">{{ item.pickupDate }}</td>
+              <td class="align-middle text-[14px]">{{ getStatusText(item.status) }}</td>
+              <td class="align-middle text-[14px]">{{ getdispatchStatusText(item.dispatchStatus) }}</td>
+              <td class="pr-[65px] align-middle text-[14px]">
+                <button @click="showReservationDetails(item)">상세</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-            <th class=" text-[13px] text-gray py-3">예약번호</th>
-            <th class=" text-[13px] text-gray">고객명</th>
-            <th class=" text-[13px] text-gray">연락처</th>
-            <th class=" text-[13px] text-gray">주소</th>
-            <th class=" text-[13px] text-gray">예약일자</th>
-            <th class=" text-[13px] text-gray">픽업일자</th>
-            <th class=" text-[13px] text-gray">상태</th>
-            <th class=" text-[13px] text-gray">배차상태</th>
-            <th class=" pr-[65px] text-[13px] text-gray">액션</th>
-          </tr>
-        </thead>
-        <!-- 3-2-2. 예약목록 내용 -->
-        <tbody v-for="item in paginatedReservations" :key="item.id" class="bg-white align-middle text-center">
-          <tr>
-            <td class="pl-[20px] py-1 align-middle text-[14px]">
-              <!-- :disabled="!isCheckboxEnabled(item.dispatchStatus)" -->
-              <!-- :class="{'opacity-50 cursor-not-allowed': !isCheckboxEnabled(item.dispatchStatus),}"  -->
-              <input
-                type="checkbox"
-                v-if="showCheckboxes"
-                :checked="selectedItems.has(item.id)"
-                @change="toggleItem(item.id)"
-                class="w-4 h-4 align-middle" />
-            </td>
-            <td class="align-middle text-[14px]">{{ item.id }}</td>
-            <td class="align-middle text-[14px]">{{ item.customerName }}</td>
-            <td class="align-middle text-[14px]">{{ item.phone }}</td>
-            <td class="py-2 align-middle text-[14px]">
-              {{ item.address }} <br />
-              {{ item.detailaddress }}
-            </td>
-            <td class="align-middle text-[14px]">{{ item.reservationDate }}</td>
-            <td class="align-middle text-[14px]">{{ item.pickupDate }}</td>
-            <td class="align-middle text-[14px]">{{ getStatusText(item.status) }}</td>
-            <td class="align-middle text-[14px]">{{ getdispatchStatusText(item.dispatchStatus) }}</td>
-            <td class="pr-[65px] align-middle text-[14px]">
-              <button @click="showReservationDetails(item)">상세</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <!-- 3-3. 페이지네이션 -->
-      <div class="absolute left-[50%] bottom-0 transform -translate-x-1/2 flex justify-center items-center rounded-[10px] p-4">
-        <div class="flex gap-2">
-          <!-- 3-3-1. 이전버튼(그룹단위) -->
-          <button
-            @click="prevPageGroup"
-            :disabled="pageGroup === 0"
-            class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
-            <<
-          </button>
-          <!-- 3-3-2. 이전버튼(페이지단위) -->
-          <button
-            @click="prevPage"
-            :disabled="currentPage === 1"
-            class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
-            <
-          </button>
-          <!-- 3-3-3. 클릭 시 페이지 이동 -->
-          <button
-            v-for="page in visiblePages"
-            @click="goToPage(page)"
-            class="w-10"
-            :class="['px-3 py-1 text-[14px]', currentPage === page ? 'bg-gray-200 text-white rounded-[5px]' : '']">
-            {{ page }}
-          </button>
-          <!-- 3-3-4. 다음버튼(페이지단위) -->
-          <button
-            @click="nextPage"
-            :disabled="currentPage === totalPages"
-            class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
-            >
-          </button>
-          <!-- 3-3-5. 다음버튼(그룹단위) -->
-          <button
-            @click="nextPageGroup"
-            :disabled="endPage === totalPages"
-            class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
-            >>
-          </button>
+        <!-- 3-3. 페이지네이션 -->
+        <div
+          class="absolute left-[50%] bottom-0 transform -translate-x-1/2 flex justify-center items-center rounded-[10px] p-4">
+          <div class="flex gap-2">
+            <!-- 3-3-1. 이전버튼(그룹단위) -->
+            <button
+              @click="prevPageGroup"
+              :disabled="pageGroup === 0"
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              <<
+            </button>
+            <!-- 3-3-2. 이전버튼(페이지단위) -->
+            <button
+              @click="prevPage"
+              :disabled="currentPage === 1"
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              <
+            </button>
+            <!-- 3-3-3. 클릭 시 페이지 이동 -->
+            <button
+              v-for="page in visiblePages"
+              @click="goToPage(page)"
+              class="w-10"
+              :class="['px-3 py-1 text-[14px]', currentPage === page ? 'bg-gray-200 text-white rounded-[5px]' : '']">
+              {{ page }}
+            </button>
+            <!-- 3-3-4. 다음버튼(페이지단위) -->
+            <button
+              @click="nextPage"
+              :disabled="currentPage === totalPages"
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              >
+            </button>
+            <!-- 3-3-5. 다음버튼(그룹단위) -->
+            <button
+              @click="nextPageGroup"
+              :disabled="endPage === totalPages"
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              >>
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     </div>
 
@@ -1452,12 +1471,12 @@ const closeSelectedItem = ()=>{
     <div class="flex flex-row-reverse gap-6 mb-[27px]">
       <!-- 4-1. 배차변경 클릭 전 -->
       <div class="flex gap-6" v-if="modifyDispatchStatus">
-        <button @click="showDispatchChangeModal" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
+        <button @click="showDispatchChangeModal" class="w-36 h-12 bg-manager rounded-[10px] text-white">
           배차변경
         </button>
         <!-- <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">저장</button> -->
-        <button @click="cancelDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
-          수정완료
+        <button @click="cancelDispatchClick" class="w-36 h-12  bg-white border rounded-[10px] text-black">
+          수정취소
         </button>
       </div>
       <!-- 4-2. 배차변경 클릭 후 -->
@@ -1474,7 +1493,7 @@ const closeSelectedItem = ()=>{
   <!-- 5-1. 미배차 예약 상세정보 -->
   <div v-if="selectedItem" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div
-      class="w-1/2 w-max-[1000px] rounded-[10px{{  }}] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      class="w-1/2 w-max-[1000px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
       <h4 class="font-bold p-[30px] ml-[15px] text-[20px] border-b border-[#E5E5EC]">예약 상세 정보</h4>
       <div class="flex px-[45px] my-[30px]">
         <!-- 5-1-1. 기본정보 -->
@@ -1482,28 +1501,28 @@ const closeSelectedItem = ()=>{
           <h4 class="text-[18px] font-bold">기본정보</h4>
           <div class="flex flex-col gap-[30px]">
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">예약 번호</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.id}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">예약 번호</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.id }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">고객명</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.customerName}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">고객명</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.customerName }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">연락처</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.phone}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">연락처</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.phone }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">주소</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.address}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">주소</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.address }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">상세주소</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.detailaddress}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">상세주소</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.detailaddress }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">짐종류</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.clothes}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">짐종류</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.clothes }}</span>
             </div>
           </div>
         </div>
@@ -1512,28 +1531,32 @@ const closeSelectedItem = ()=>{
           <h4 class="text-[18px] font-bold">일정정보</h4>
           <div class="flex flex-col gap-[30px]">
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">예약일자</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.reservationDate}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">예약일자</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.reservationDate
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">픽업일자</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{selectedItem.pickupDate}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">픽업일자</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.pickupDate }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">배차상태</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{getdispatchStatusText(selectedItem.dispatchStatus)}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">배차상태</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                getdispatchStatusText(selectedItem.dispatchStatus)
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-semibold">배정기사</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-medium">{{}}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">배정기사</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{}}</span>
             </div>
           </div>
         </div>
       </div>
       <!-- 5-1-3. 상세정보 버튼들 -->
       <div class="flex flex-row-reverse px-[45px] pt-[10px] pb-[30px] gap-6">
-        <button @click="closeSelectedItem" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">닫기</button>
-        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
+        <button class="w-36 h-12 bg-manager rounded-[10px] text-white">기사배정</button>
+        <button @click="closeSelectedItem" class="w-36 h-12 border border-neutral-500 rounded-[10px] text-black font-light">닫기</button>
       </div>
     </div>
   </div>
@@ -1544,35 +1567,47 @@ const closeSelectedItem = ()=>{
     </div>
   </div>
   <!-- 5-3. 배차변경 모달 -->
+  <!-- 배차변경 모달 bg -->
   <div v-if="dispatchChangeModal" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div
-      class="flex flex-col align-center gap-[50px] w-[450px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
-      <h4 class="font-bold p-[30px] text-center text-[22px] border-b-[1px] border-b-[#E5E5EC]">배차변경</h4>
-      <p class="text-center">선택하신 총 {{ selectedItems.size }}건의 배차상태가 다음과 같이 변경됩니다.</p>
-      <div class="flex flex-col align-center gap-[25px]">
-        <div class="flex align-center justify-center gap-[30px]">
-          <span class="text-bold">변경 전</span>
-          <div class="block w-[200px]">
-            <div v-if="currentDispatchCounts.wait > 0">배차대기: {{ currentDispatchCounts.wait }}건</div>
-            <div v-if="currentDispatchCounts.one > 0">1호차: {{ currentDispatchCounts.one }}건</div>
-            <div v-if="currentDispatchCounts.two > 0">2호차: {{ currentDispatchCounts.two }}건</div>
-            <div v-if="currentDispatchCounts.three > 0">3호차: {{ currentDispatchCounts.three }}건</div>
+      class="flex flex-col align-center gap-[40px] w-[400px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      <!-- 5-3-1. 모달 제목 -->
+      <h4 class="font-bold p-[20px] text-center text-[18px] border-b-[1px] border-b-[#E5E5EC]"><p class="text-center text-gray-300 font-normal text-[14px]">
+        선택하신 총 <span class="font-bold">{{ selectedItems.size }} 건</span>의 배차상태가 다음과 같이 변경됩니다.
+      </p></h4>
+      
+      <!-- 5-3-2. 변경 안내문 -->
+      
+      <!-- 5-3-3. 변경 전 후 내용 -->
+      <div class="w-1/2 flex flex-col align-center gap-[25px] mx-auto">
+        <!-- 변경전 -->
+        <div class="w-[200px] flex justify-around">
+          <span class="w-[50px] text-gray text-[15px] font-light">변경 전</span>
+          <div class="block w-[80px] text-center text-gray text-[15px] font-light">
+            <div v-if="currentDispatchCounts.wait > 0">배차대기 : {{ currentDispatchCounts.wait }}건</div>
+            <div v-if="currentDispatchCounts.one > 0">1호차 : {{ currentDispatchCounts.one }}건</div>
+            <div v-if="currentDispatchCounts.two > 0">2호차 : {{ currentDispatchCounts.two }}건</div>
+            <div v-if="currentDispatchCounts.three > 0">3호차 : {{ currentDispatchCounts.three }}건</div>
           </div>
         </div>
-        <div class="flex align-center justify-center gap-[30px]">
-          <label class="text-bold">변경 후</label>
-          <select v-model="selectedDispatchStatus">
-            <option value="one">1호차</option>
+        <!-- 변경 후 -->
+        <div class="w-[200px] flex align-center justify-around">
+          <label class="w-[50px] font-semibold">변경 후</label>
+          <div class="select3">
+          <select class="w-[70px] h-[20px] block text-black" v-model="selectedDispatchStatus">
+            <option value="one" >1호차</option>
             <option value="two">2호차</option>
             <option value="three">3호차</option>
           </select>
+          </div>
         </div>
       </div>
-      <div class="flex align-center justify-center gap-5 mb-[40px]">
-        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white" @click="saveDispatchChange">완료</button>
-        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white" @click="closeDispatchChangeModal">
-          닫기
+      <!-- 5-3-4. 모달 버튼 -->
+      <div class="flex align-center justify-center gap-2 mb-[30px]">
+        <button class="w-36 h-11 border border-neutral-500 rounded-[10px] text-black font-light" @click="closeDispatchChangeModal">
+          취소
         </button>
+        <button class="w-36 h-11 bg-manager rounded-[10px] text-white" @click="saveDispatchChange">완료</button>
       </div>
     </div>
   </div>
@@ -1584,9 +1619,7 @@ const closeSelectedItem = ()=>{
   color: rgba(118, 118, 118, 1);
 }
 select {
-  border: 1px solid rgba(217, 217, 217, 1) !important;
-  border-radius: 10px;
-  width: 100px;
+  /* padding-left: 15px; */
   font-size: 14px;
   color: rgba(118, 118, 118, 1);
   outline: none;
@@ -1598,6 +1631,25 @@ select {
 .searchbar {
   display: flex;
   align-items: center;
+}
+.select1 {
+  width: 110px;
+  border: 1px solid rgba(217, 217, 217, 1) !important;
+  border-radius: 10px;
+}
+.select2 {
+  width: 110px;
+  border: 1px solid rgba(217, 217, 217, 1) !important;
+  border-radius: 10px;
+}
+.select3{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 30px;
+  border: 1px solid rgba(217, 217, 217, 1) !important;
+  border-radius: 10px;
 }
 thead {
   border-top: 1px solid #d9d9d9;
