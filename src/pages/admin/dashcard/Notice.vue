@@ -1,19 +1,20 @@
 <template>
-  <ul class="w-full text-sm cursor-pointer">
+  <ul class="w-full text-sm cursor-pointer ">
     <li
       v-for="(notice, index) in notices"
       :key="index"
       :class="[
-        'flex justify-between items-start py-2.5',
+        'flex justify-between items-start py-2.5 ',
         index === 0 ? 'border-t border-input pt-4' : '',
         index % 2 === 1 ? 'bg-gray-100 rounded' : ''
-      ]"
+      ] "
+      
     >
-      <div class="flex items-center gap-4 ml-2 text-gray-300">
+      <div class="flex items-center gap-4 ml-2 text-black font-light hover:font-medium hover:text-[14px]">
         <img :src="notice.icon" :alt="notice.alt" class="w-5 h-5" />
         {{ notice.text }}
       </div>
-      <div class="text-gray mr-2 text-[13px] font-light">{{ notice.date }}</div>
+      <div class="text-gray mr-2 text-[13px] font-light ">{{ notice.date }}</div>
     </li>
   </ul>
 </template>

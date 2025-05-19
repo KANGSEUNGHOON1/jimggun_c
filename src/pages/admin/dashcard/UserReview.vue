@@ -3,8 +3,8 @@
     <!-- 상단 통계 -->
     <div class="grid grid-cols-3 gap-3">
       <div v-for="(item, i) in summaryItems" :key="i" class="bg-gray-100  rounded-8 h-[70px] text-center cursor-pointer ">
-        <p class="text-lg font-bold text-black mt-2.5">{{ item.value }}</p>
-        <p class="text-[15px] font-medium">{{ item.label }}</p>
+        <p class="text-xl font-bold text-black mt-2.5">{{ item.value }}</p>
+        <p class="text-[14px] font-medium text-gray">{{ item.label }}</p>
       </div>
     </div>
 
@@ -18,7 +18,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <div class=""><img src="/images/jung/review5.png" alt=""></div>
-            <span class="font-medium">{{ review.name }}</span>
+            <span class="text-gray text-[14px] font-medium">{{ review.name }}</span>
           </div>
         </div>
         <!-- 후기 내용 -->

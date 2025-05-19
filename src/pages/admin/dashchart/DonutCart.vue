@@ -8,6 +8,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount,computed  } from 'vue'
 import VChart from "vue-echarts";
 import { use } from "echarts/core";
 import { PieChart } from "echarts/charts";
@@ -18,7 +19,20 @@ import {
   GraphicComponent,
 } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
+// 다크모드 
+const isDark = ref(document.documentElement.classList.contains("dark"));
 
+const observer = new MutationObserver(() => {
+  isDark.value = document.documentElement.classList.contains("dark");
+});
+
+onMounted(() => {
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+});
+
+onBeforeUnmount(() => {
+  observer.disconnect();
+});
 use([
   PieChart,
   TitleComponent,
@@ -65,14 +79,14 @@ const pieOption = {
       verticalAlign: "middle",
       fontSize: 12,
       fontWeight: "bold",
-      color: "#505050",
+      color:isDark.value ? '#C0C3D1': "#505050",
       lineHeight: 18
     },
     percent: {
       align: "center",
       verticalAlign: "middle",
       fontSize: 12,
-      color: "#505050",
+      color:isDark.value ? '#9FA3B5': "#505050",
       lineHeight: 18
     }
   }
@@ -89,8 +103,8 @@ const pieOption = {
       data: pieData,
       itemStyle: {
         borderRadius: 10, //  조각의 라운드 처리
-        borderColor: "#ffffff", //  구역 간 구분선
-        borderWidth: 6, //  구분선 두께
+        borderColor:isDark.value ? '#2A2C41': "#ffffff", //  구역 간 구분선
+        borderWidth: 4, //  구분선 두께
       },
       emphasis: {
         scale: true,
@@ -116,7 +130,7 @@ const pieOption = {
         text: `${totalReservation.toLocaleString()}`,
         textAlign: "center",
          textVerticalAlign: "middle",
-        fill: "#111",
+         fill: isDark.value ? "#ffffff" : "#111111", 
         fontSize: 18, //  숫자 크기
         fontWeight: "bold",
       },
@@ -131,7 +145,7 @@ const pieOption = {
         text: "총 예약 건",
         textAlign: "center",
          textVerticalAlign: "middle",
-        fill: "#111",
+        fill: isDark.value ? "#ffffff" : "#111111", 
         fontSize: 12, // 아래 텍스트 크기
         fontWeight: 500,
       },

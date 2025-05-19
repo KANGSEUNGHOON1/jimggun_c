@@ -1,8 +1,9 @@
 <template>
-  <Bar :data="chartData" :options="chartOptions" :plugins="[DataLabelsPlugin, customDashedGridPlugin]" />
+  <Bar :data="chartData" :options="chartOptions" :plugins="[DataLabelsPlugin, customDashedGridPlugin]" :key="isDark" />
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount,computed  } from 'vue'
 import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -13,6 +14,20 @@ import {
   Legend
 } from 'chart.js'
 import DataLabelsPlugin from 'chartjs-plugin-datalabels'
+// 다크모드 
+const isDark = ref(document.documentElement.classList.contains("dark"));
+
+const observer = new MutationObserver(() => {
+  isDark.value = document.documentElement.classList.contains("dark");
+});
+
+onMounted(() => {
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+});
+
+onBeforeUnmount(() => {
+  observer.disconnect();
+});
 
 // Chart.js 필수 요소 등록
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend)
@@ -34,7 +49,7 @@ const chartData = {
   ]
 }
 
-// ✅ 점선 수동 렌더링 플러그인 정의
+//  점선 수동 렌더링 플러그인 정의
 const customDashedGridPlugin = {
   id: 'customDashedGridPlugin',
   beforeDraw(chart) {
@@ -42,24 +57,24 @@ const customDashedGridPlugin = {
     const xAxis = scales.x
 
     ctx.save()
-    ctx.strokeStyle = '#E5E7EB'
+    ctx.strokeStyle =isDark.value ? '#3F415A':'#E5E7EB'
     ctx.lineWidth = 1
 
     xAxis.ticks.forEach((tick, index) => {
       const value = tick.value
       const x = xAxis.getPixelForTick(index)
 
-      // ✅ 0값은 실선, 나머지는 점선
+      //  0값은 실선, 나머지는 점선
        if (value === 0) {
-        // ✅ 0값만 실선 + 두께 2px + 지정 색상
+        // 0값만 실선 + 두께 2px + 지정 색상
         ctx.setLineDash([])
-        ctx.strokeStyle = '#505050'
+        ctx.strokeStyle = isDark.value ? '#C0C3D1':'#505050'
         
         
       } else {
-        // ✅ 나머지는 점선 + 연한 기본 선 (선택사항: 투명색이나 흐린 회색)
+        //  나머지는 점선 + 연한 기본 선 (선택사항: 투명색이나 흐린 회색)
         ctx.setLineDash([4, 4])
-        ctx.strokeStyle = '#E5E7EB' // 또는 '#ccc', '#ddd'
+        ctx.strokeStyle =isDark.value ? '#3F415A':'#E5E7EB' // 또는 '#ccc', '#ddd'
         
       }
 
@@ -87,7 +102,7 @@ const chartOptions = {
       anchor: 'end',
       align: 'end',
       offset: 6,
-      color: '#505050',
+      color: isDark.value ? '#9FA3B5':'#505050',
       font: {
         size: 12,
         weight: '500'
@@ -101,7 +116,7 @@ const chartOptions = {
       max: 600,
       ticks: {
         stepSize: 100,
-        color: '#999999',
+        color:isDark.value ? '#3F415A': '#999999',
         font: { 
           size: 11,
           weight:'300',

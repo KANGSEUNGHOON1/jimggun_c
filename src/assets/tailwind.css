@@ -4,7 +4,7 @@
 
 @layer components {
   .dash-card {
-    @apply bg-white rounded-8 ;
+    @apply bg-white rounded-8 dark:bg-dark-100; 
   }
   .dash-title {
     @apply font-bold text-[16px] h-[64px] pt-6 pl-6 pr-6 ;
