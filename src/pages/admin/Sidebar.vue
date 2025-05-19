@@ -5,19 +5,19 @@
       <div class="w-[48px] h-[48px] rounded-full  bg-[url('/images/jung/duck.jpg')] bg-no-repeat bg-cover bg-center overflow-hidden ">
        
       </div>
-      <div class="ml-[10px] text-sm font-semibold relative">
+      <div class="ml-[10px] text-sm font-semibold relative dark:text-white">
         Psyduck
         <div class="flex mt-[4px] items-center">
-          <div class="text-xs font-medium text-gray">Manager</div>
+          <div class="text-xs font-normal text-gray dark:text-dark-font-100">Manager</div>
           <!-- 위치 다시 보기 -->
           <div
-            class="bg-gray-100 cursor-pointer w-[12px] h-[12px] rounded-[2px] absolute right-[-50px] ">
+            class="bg-gray-100 dark:bg-dark cursor-pointer w-[12px] h-[12px] rounded-[2px] absolute right-[-50px] ">
           <img src="/public/images/jung/arrowdown.png" alt="버튼" >
           </div>
         </div>
       </div>
     </div>
-    <div class="w-[172px] h-[1px] bg-input m-auto"></div>
+    <div class="w-[172px] h-[1px] bg-input m-auto dark:bg-dark-200"></div>
 
     <!-- Sample Section -->
  <Sidebarmenu

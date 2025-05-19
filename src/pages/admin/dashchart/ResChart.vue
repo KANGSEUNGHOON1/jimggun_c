@@ -1,9 +1,9 @@
 <template>
-  <Bar :data="chartData" :options="chartOptions" />
+  <Bar :data="chartData" :options="chartOptions" :key="isDark" />
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, onMounted, onBeforeUnmount,computed } from "vue";
 import { Bar } from "vue-chartjs";
 import {
   Chart as ChartJS,
@@ -25,6 +25,21 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+
+const isDark = ref(document.documentElement.classList.contains("dark"));
+
+const observer = new MutationObserver(() => {
+  isDark.value = document.documentElement.classList.contains("dark");
+});
+
+onMounted(() => {
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+});
+
+onBeforeUnmount(() => {
+  observer.disconnect();
+});
 
 // 👇 모드 props ('weekly' | 'monthly')
 const props = defineProps({
@@ -56,8 +71,8 @@ const chartData = computed(() => {
         type: "line",
         label: "총 예약",
         data: total,
-        borderColor: "#BFDBFE",
-        backgroundColor: "#ffffff",
+        borderColor: isDark.value ? "#93C5FD" : "#BFDBFE",
+        backgroundColor: isDark.value ? "#2A2C41" : "#ffffff",
         borderWidth: 1.5,
         tension: 0,
         yAxisID: "y",
@@ -89,7 +104,7 @@ const chartData = computed(() => {
   };
 });
 
-const chartOptions = {
+const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -104,6 +119,7 @@ const chartOptions = {
         font: {
           size: 11,
         },
+        color: isDark.value ? "#9FA3B5" : "#767676",
       },
     },
     tooltip: {
@@ -116,18 +132,22 @@ const chartOptions = {
     x: {
       grid: {
         display: true,
-        color: "#E5E7EB",
+        color: isDark.value ? "#3f415a" : "#E5E7EB",
         drawBorder: false,
         drawOnChartArea: false,
       },
       border: {
         display: false,
       },
+      ticks: {
+        color: isDark.value ? "#c0c3d1" : "#767676",
+      },
     },
     y: {
       beginAtZero: true,
       grid: {
-        drawBorder: false, // 👈 이 줄 추가: y축 왼쪽 보더 제거
+        drawBorder: false,
+        color: isDark.value ? "#3f415a" : "#E5E7EB",
       },
       border: {
         display: false,
@@ -136,9 +156,10 @@ const chartOptions = {
         stepSize: 100,
         callback: (value) => `${value}`,
         font: { size: 12 },
+        color: isDark.value ? "#c0c3d1" : "#767676",
       },
     },
   },
-};
+}));
 </script>
 <style scoped></style>

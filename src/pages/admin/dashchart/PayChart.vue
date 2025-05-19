@@ -1,9 +1,9 @@
 <template>
-  <Line :data="chartData" :options="chartOptions" />
+  <Line :data="chartData" :options="chartOptions" :key="isDark" />
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount,computed  } from 'vue'
 import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -27,6 +27,19 @@ ChartJS.register(
   Legend,
   Title
 )
+const isDark = ref(document.documentElement.classList.contains("dark"));
+
+const observer = new MutationObserver(() => {
+  isDark.value = document.documentElement.classList.contains("dark");
+});
+
+onMounted(() => {
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+});
+
+onBeforeUnmount(() => {
+  observer.disconnect();
+});
 
 // 📥 부모에서 받은 모드 ('daily' | 'monthly')
 const props = defineProps({
@@ -49,7 +62,7 @@ const chartData = computed(() => ({
       label: '매출',
       data: props.mode === 'daily' ? dailyData : monthlyData,
       borderColor: '#24C76F',
-      pointBackgroundColor: '#ffffff',
+      pointBackgroundColor:isDark.value ?'#2A2C41': '#ffffff',
       pointRadius: 4,
       borderWidth: 1.5,
       tension: 0,
@@ -79,7 +92,7 @@ const chartOptions = computed(() => ({
   scales: {
     x: {
        grid: { display: true,
-        color: "#E5E7EB",
+        color: isDark.value ? "#3F415A" : "#E5E7EB",
         drawBorder: false,
         drawOnChartArea: false,
         drawTicks: true,
@@ -88,9 +101,16 @@ const chartOptions = computed(() => ({
       border: {
         display: false,
       },
+      ticks: {
+        color: isDark.value ? "#c0c3d1" : "#767676",
+      },
     },
     y: {
       beginAtZero: true,
+      grid: {
+        drawBorder: false,
+        color: isDark.value ? "#3f415a" : "#E5E7EB",
+      },
       border: {
         display: false,
       },
@@ -99,6 +119,7 @@ const chartOptions = computed(() => ({
       ticks: {
         stepSize: props.mode === 'monthly' ? 100 : 10, //  눈금 단위 변경
         callback: (value) => `${value}k`,
+        color: isDark.value ? "#c0c3d1" : "#767676",
       },
     }
   }
