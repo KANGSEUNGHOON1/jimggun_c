@@ -13,7 +13,7 @@
         <div
           :class="[
             'w-12 text-center text-base font-medium font-[Pretendard]',
-            route.path === '/worker/worker-home' ? 'text-[#FF6F00]' : 'text-[#111]',
+            route.path === '/worker/worker-home' ? 'text-[#FF6F00]' : 'text-[#505050]',
           ]"
         >
           홈
@@ -28,7 +28,7 @@
         <div
           :class="[
             'w-12 text-center text-base font-medium font-[Pretendard]',
-            route.path === '/worker/worker-notice' ? 'text-[#FF6F00]' : 'text-[#111]',
+            route.path === '/worker/worker-notice' ? 'text-[#FF6F00]' : 'text-[#505050]',
           ]"
         >
           알림
@@ -46,7 +46,7 @@
         <div
           :class="[
             'w-full text-center text-base font-medium font-[Pretendard]',
-            route.path === '/worker/worker-mypage' ? 'text-[#FF6F00]' : 'text-[#111]',
+            route.path === '/worker/worker-mypage' ? 'text-[#FF6F00]' : 'text-[#505050]',
           ]"
         >
           나의업무
@@ -66,7 +66,7 @@
         <div
           :class="[
             'w-full text-center text-base font-medium font-[Pretendard]',
-            route.path === '/worker/worker-settings' ? 'text-[#FF6F00]' : 'text-[#111]',
+            route.path === '/worker/worker-settings' ? 'text-[#FF6F00]' : 'text-[#505050]',
           ]"
         >
           환경설정

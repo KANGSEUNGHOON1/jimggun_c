@@ -288,11 +288,16 @@
                     <div class="flex justify-between w-full">
                       <!-- 왼쪽: 업로드 영역 -->
                       <div class="flex items-start gap-2">
-                        <div v-if="!uploadedImage" @click="triggerFileInput" class="w-16 h-16 border border-dashed border-gray-400 rounded-[10px] flex items-center justify-center text-gray-400 text-xl cursor-pointer">+</div>
+                        <!-- 이미지가 없을 때 -->
+                        <div v-if="!uploadedImages[selectedPlace.reservationId]" @click="triggerFileInput(selectedPlace.reservationId)" class="w-16 h-16 border-[2px] border-dashed border-[#E5E5EC] rounded-[10px] flex items-center justify-center cursor-pointer">
+                          <span class="text-[#E5E5EC] text-3xl font-medium leading-none translate-y-[-2px]">+</span>
+                        </div>
 
-                        <img v-else :src="uploadedImage" @click="triggerFileInput" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" />
+                        <!-- 이미지가 있을 때 -->
+                        <img v-else-if="uploadedImages[selectedPlace.reservationId]" :src="uploadedImages[selectedPlace.reservationId]" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" @click="triggerFileInput(selectedPlace.reservationId)" />
 
-                        <input type="file" ref="imageInput" accept="image/*" class="hidden" @change="handleImageUpload" />
+                        <!-- input 연결도 reservationId로 -->
+                        <input type="file" :ref="(el) => (imageInput[selectedPlace.reservationId] = el)" accept="image/*" class="hidden" @change="(e) => handleImageUpload(e, selectedPlace.reservationId)" />
                       </div>
 
                       <!-- 오른쪽: 픽업완료 버튼만 하단 정렬 -->
@@ -300,7 +305,7 @@
                         <button
                           :disabled="selectedPlace.completed && !overrideUpload"
                           @click="handlePickupComplete"
-                          :class="['px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap', selectedPlace.completed && !overrideUpload ? 'bg-gray-300 text-white cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
+                          :class="['px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap', selectedPlace.completed && !overrideUpload ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
                           {{ selectedPlace.completed && !overrideUpload ? "픽업완료" : selectedPlace.completed && overrideUpload ? "수정하기" : "픽업완료" }}
                         </button>
                       </div>
@@ -319,34 +324,64 @@
             <button @click="switchToMapView" class="list-view-btn absolute top-4 right-4 z-[100]">
               <img src="/images/hong/MapViewBtn.png" alt="지도 보기" class="w-20 h-20" />
             </button>
-            <div class="list-view-wrap max-w-[768px] mx-auto px-8 py-9">
-              <!-- 상단 진행바 -->
-              <div class="w-5/6 flex justify-space-between">
-                <div class="text-[#767676] text-lg font-bold mb-2">10건만 더 하면 임무완료! 힘내세요!</div>
-                <div class="flex">
-                  <div class="ml-4 font-bold text-[#FF6F00] text-base">10</div>
-                  <div class="ml-4 font-bold text-[#767676] text-base">/ 20</div>
-                </div>
-              </div>
-              <div class="flex justify-between items-center mb-4">
-                <div class="w-5/6 h-2 bg-[#FDF3E7] rounded-full">
-                  <div class="h-2 bg-[#FF6F00] rounded-full" style="width: 50%"></div>
-                </div>
-              </div>
-
-              <!-- 리스트 전체 -->
-              <div class="flex flex-col gap-5">
-                <!-- 리스트들 -->
-                <div v-for="item in markerData" :key="item.reservationId" class="w-[700px] h-20 relative rounded-[10px] outline outline-1 outline-offset-[-1px] outline-orange-500 overflow-hidden">
-                  <div class="w-24 h-7 px-3 py-[5px] left-[585px] top-[25px] absolute bg-orange-500 rounded-[10px] inline-flex justify-center items-center gap-2.5 overflow-hidden">
-                    <div class="justify-start text-white text-sm font-semibold font-['Pretendard']">픽업완료</div>
+            <div class="list-view-wrap max-w-[768px] mx-auto px-8 py-10">
+              <!-- 진행바 + 리스트 묶음 -->
+              <div class="flex flex-col gap-7">
+                <!-- 상단 진행바 -->
+                <div>
+                  <div class="w-5/6 flex justify-between">
+                    <div class="text-[#767676] text-lg font-bold mb-2">10건만 더 하면 임무완료! 힘내세요!</div>
+                    <div class="flex">
+                      <div class="ml-4 font-bold text-[#FF6F00] text-base">10</div>
+                      <div class="ml-4 font-bold text-[#767676] text-base">/ 20</div>
+                    </div>
                   </div>
-                  <div class="w-80 h-14 left-[25px] top-[12px] absolute overflow-hidden">
-                    <div class="left-[132px] top-[11px] absolute justify-center text-neutral-900 text-sm font-medium font-['Pretendard']">{{ item.address }}</div>
-                    <div class="w-14 h-14 left-[52px] top-0 absolute rounded-[10px] border border-gray-200"></div>
-                    <div class="left-[68px] top-[4px] absolute justify-center text-gray-200 text-4xl font-medium font-['Pretendard']">+</div>
-                    <div class="w-7 h-7 left-0 top-[14px] absolute bg-orange-50 rounded-full"></div>
-                    <div class="w-3 h-6 left-[9px] top-[17px] absolute justify-start text-orange-500 text-xl font-semibold font-['Pretendard']">{{ item.reservationId }}</div>
+                  <div class="flex justify-between items-center mb-4">
+                    <div class="w-5/6 h-2 bg-[#FDF3E7] rounded-full">
+                      <div class="h-2 bg-[#FF6F00] rounded-full" style="width: 50%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 리스트 전체 -->
+                <div class="flex flex-col gap-5 w-full max-w-[700px]">
+                  <!-- 리스트 아이템 반복 -->
+                  <div v-for="item in markerData" :key="item.reservationId" class="flex items-center justify-between p-4 bg-white rounded-[10px] overflow-hidden" :class="item.completed && !item.overrideUpload ? 'outline outline-1 outline-[#E5E5EC]' : 'outline outline-1 outline-orange-500'">
+                    <!-- 좌측: 아이디 + 플러스 + 테두리박스 -->
+                    <div class="flex items-center gap-3">
+                      <!-- 아이디 동그라미 -->
+                      <div class="w-7 h-7 rounded-full flex items-center justify-center" :class="item.completed && !item.overrideUpload ? 'bg-[#E5E5EC]' : 'bg-orange-50'">
+                        <span class="text-sm font-semibold font-['Pretendard']" :class="item.completed && !item.overrideUpload ? 'text-[#505050]' : 'text-orange-500'">
+                          {{ item.reservationId }}
+                        </span>
+                      </div>
+
+                      <!-- 리스트 업로드 영역 박스 -->
+                      <div class="flex items-start gap-2">
+                        <!-- 이미지 없을 때만 + 버튼 -->
+                        <div v-if="!uploadedImages[item.reservationId] && !item.previewImage" @click="triggerFileInput(item.reservationId)" class="w-16 h-16 border-[2px] border-dashed border-[#E5E5EC] rounded-[10px] flex items-center justify-center cursor-pointer">
+                          <span class="text-[#E5E5EC] text-3xl font-medium leading-none translate-y-[-2px]">+</span>
+                        </div>
+
+                        <!-- 이미지 있을 때 -->
+                        <img v-else :src="uploadedImages[item.reservationId] || item.previewImage" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" @click="triggerFileInput(item.reservationId)" />
+
+                        <input type="file" :ref="(el) => (imageInput[item.reservationId] = el)" accept="image/*" class="hidden" @change="(e) => handleImageUpload(e, item.reservationId)" />
+                      </div>
+
+                      <!-- 주소 -->
+                      <div class="text-neutral-900 text-sm font-medium font-['Pretendard'] whitespace-pre-line break-words max-w-[250px]">
+                        {{ item.address }}
+                      </div>
+                    </div>
+
+                    <!-- 우측: 픽업완료 버튼 -->
+                    <button
+                      @click="handlePickupCompleteFromList(item)"
+                      :disabled="item.completed && !item.overrideUpload"
+                      :class="['px-4 py-2 rounded-[10px] text-sm font-bold whitespace-nowrap', item.completed && !item.overrideUpload ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
+                      {{ item.completed && !item.overrideUpload ? "픽업완료" : item.completed && item.overrideUpload ? "수정하기" : "픽업완료" }}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -359,7 +394,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick, onUnmounted } from "vue";
+import { ref, onMounted, watch, nextTick, onUnmounted, reactive } from "vue";
 import BottomNavBar from "@/components/BottomNavBar.vue";
 
 // 탭
@@ -369,9 +404,9 @@ const selectedPlace = ref(null);
 // 모달 열림상태
 const modalOpen = ref(false);
 // 숨겨진 input 요소
-const imageInput = ref(null);
+const imageInput = reactive({});
 // 이미지 1장만 저장
-const uploadedImage = ref(null);
+const uploadedImages = ref({});
 // 이미지 재업로드 시
 const overrideUpload = ref(false);
 // 지도 / 리스트 전환
@@ -388,38 +423,44 @@ const markerData = ref([
     lng: 128.638,
     title: "대구국제공항",
     reservationId: "1",
-    address: "대구 동구 공항로 221",
+    address: "대구광역시 동구 공항로 221\n대구국제공항 국내선청사",
     name: "홍길동",
     phone: "010-1234-5678",
     notes: "",
     clothes: "M - 1개\nL - 1개",
     image: "marker1-1.png",
     previewImage: "/images/hong/default-photo-1.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
     lat: 35.8797,
     lng: 128.6292,
     title: "동대구역",
     reservationId: "2",
-    address: "대구 동구 동대구로 550",
+    address: "대구광역시 동구 동대구로 550\n동대구역 복합환승센터",
     name: "이영희",
     phone: "010-2345-6789",
-    notes: "CU 편의점 앞에 둘게요",
+    notes: "",
     clothes: "S - 2개",
     image: "marker2-1.png",
     previewImage: "/images/hong/default-photo-2.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
     lat: 35.9428,
     lng: 128.5472,
     title: "칠곡그린빌3차",
     reservationId: "3",
-    address: "대구 북구 구암로 55",
+    address: "대구광역시 북구 구암로 55\n그린빌3차아파트 1104호",
     name: "박철수",
     phone: "010-3456-7890",
     notes: "관리실에 둘게요",
     clothes: "M - 1개\nXL - 2개",
     image: "marker3.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
     lat: 35.8961,
@@ -432,18 +473,22 @@ const markerData = ref([
     notes: "",
     clothes: "L - 1개\nS - 1개",
     image: "marker4.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
-    lat: 35.8777,
-    lng: 128.6002,
-    title: "칠성시장 남문",
+    lat: 35.8898,
+    lng: 128.5669,
+    title: "만평역",
     reservationId: "5",
-    address: "대구 북구 칠성남로 5",
+    address: "대구광역시 북구 노원로 132 (노원동3가)",
     name: "최지훈",
     phone: "010-5678-9012",
-    notes: "",
+    notes: "CU 편의점 앞에 둘게요",
     clothes: "M - 1개\nM - 1개",
     image: "marker5.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
     lat: 35.8889,
@@ -456,6 +501,8 @@ const markerData = ref([
     notes: "",
     clothes: "S - 1개\nL - 2개",
     image: "marker6.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
     lat: 35.8944,
@@ -469,6 +516,8 @@ const markerData = ref([
     clothes: "XL - 1개",
     image: "marker7-1.png",
     previewImage: "/images/hong/default-photo-3.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
     lat: 35.9022,
@@ -478,9 +527,11 @@ const markerData = ref([
     address: "대구 북구 동암로 123",
     name: "서지수",
     phone: "010-8901-2345",
-    notes: "",
+    notes: "CU 편의점 앞에 둘게요",
     clothes: "S - 2개\nM - 1개",
     image: "marker8.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
     lat: 35.9444,
@@ -493,18 +544,22 @@ const markerData = ref([
     notes: "",
     clothes: "L - 1개\nM - 1개",
     image: "marker9.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
   {
-    lat: 35.8948,
-    lng: 128.5831,
-    title: "스마트주차장",
+    lat: 35.8945,
+    lng: 128.5832,
+    title: "일성능수아파트",
     reservationId: "10",
-    address: "대구 북구 구암동 777",
+    address: "대구광역시 북구 쌍용17길 25\n일성능수아파트 1305호",
     name: "이소영",
     phone: "010-1122-3344",
     notes: "",
     clothes: "S - 1개\nS - 1개",
     image: "marker10.png",
+    uploadedImages: null,
+    overrideUpload: false,
   },
 ]);
 
@@ -517,12 +572,22 @@ const createMarker = (place) => {
     image: new kakao.maps.MarkerImage(`/images/hong/${place.image}`, new kakao.maps.Size(44, 51)),
   });
   kakao.maps.event.addListener(marker, "click", () => {
+    // 이미 열린 모달이 있고, 같은 마커를 다시 클릭한 경우 → 닫기
+    if (modalOpen.value && selectedPlace.value?.reservationId === place.reservationId) {
+      modalOpen.value = false;
+      return;
+    }
+
+    // 새로운 마커 클릭 → 정보 갱신 및 모달 열기
     selectedPlace.value = {
       ...place,
       completed: place.image.includes("-1.png"),
     };
-    // 이미지 우선순위 적용
-    uploadedImage.value = place.uploadedImage || place.previewImage || null;
+    // reservationId에 해당하는 이미지만 불러오기
+    const image = uploadedImages["" + place.reservationId] || place.previewImage || null;
+    uploadedImages[place.reservationId] = image;
+
+    uploadedImages[place.reservationId] = image;
 
     // 버튼 상태 초기화 (다시 클릭했을 때 항상 false)
     overrideUpload.value = false;
@@ -549,7 +614,7 @@ function handlePickupComplete() {
     const updated = original.includes("-1.png") ? original : original.replace(".png", "-1.png");
     markerData.value[index].image = updated;
     markerData.value[index].completed = true;
-    markerData.value[index].uploadedImage = uploadedImage.value;
+    markerData.value[index].uploadedImages = uploadedImages.value;
 
     overrideUpload.value = false; // 다시 비활성화로 되돌림
     modalOpen.value = false;
@@ -630,11 +695,24 @@ async function handleTabChangeToTodayWork() {
   }
 }
 // onMounted: 첫 진입이 todayWork일 경우 지도 로딩
+// 리스트 진입 시 1, 2, 7번은 완료 상태로 초기화
 onMounted(() => {
+  ["1", "2", "7"].forEach((id) => {
+    const target = markerData.value.find((item) => item.reservationId === id);
+    if (target) {
+      target.completed = true;
+      target.overrideUpload = false;
+      target.uploadedImages = target.previewImage || "/images/hong/default-photo-1.png";
+      uploadedImages.value[id] = target.uploadedImages;
+    }
+  });
+
+  // 지도 초기화
   if (activeTab.value === "todayWork") {
     handleTabChangeToTodayWork();
   }
-  window.addEventListener("resize", resizeMapHeight); // 브라우저 리사이즈 시 지도 높이 재조정
+
+  window.addEventListener("resize", resizeMapHeight);
 });
 onUnmounted(() => {
   window.removeEventListener("resize", resizeMapHeight); // 컴포넌트 언마운트 시 이벤트 제거
@@ -642,31 +720,75 @@ onUnmounted(() => {
 
 // watch: 탭 전환 감지
 watch(activeTab, (newValue) => {
+  console.log("탭 변경됨:", newValue);
   modalOpen.value = false;
-  uploadedImage.value = null; // 초기화
+
   if (newValue === "todayWork") {
-    handleTabChangeToTodayWork(); // 무조건 지도 다시 생성
+    // 리스트 진입 시 초기화하지 말고 유지
+    handleTabChangeToTodayWork();
+  } else {
+    uploadedImages.value = Object.fromEntries(
+      Object.entries(uploadedImages.value).filter(
+        ([key]) => ["1", "2", "7"].includes(key) // 마커 1,2,7은 초기화에서 제외
+      )
+    );
   }
 });
 
 // 이미지 업로드
-function triggerFileInput() {
-  imageInput.value?.click();
+function triggerFileInput(reservationId) {
+  nextTick(() => {
+    const inputRef = imageInput[reservationId];
+    if (inputRef) inputRef.click();
+  });
 }
 
-function handleImageUpload(event) {
+function handleImageUpload(event, reservationId) {
   const file = event.target.files?.[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    uploadedImage.value = e.target.result;
-    // 완료된 상태일 때만 override 플래그 켜기
-    if (selectedPlace.value?.completed) {
-      overrideUpload.value = true;
+    uploadedImages.value[reservationId] = e.target.result;
+
+    const target = markerData.value.find((item) => item.reservationId === reservationId);
+    if (target) {
+      // 기존 이미지가 없었을 경우 (첫 업로드)
+      if (!target.completed) {
+        target.completed = true;
+        target.overrideUpload = false;
+      }
+      // 기존에 완료 상태였던 경우 → 재업로드
+      else if (target.completed) {
+        target.overrideUpload = true;
+      }
+
+      target.uploadedImages = e.target.result;
     }
   };
   reader.readAsDataURL(file);
+}
+
+// 리스트 완료 비활성화 코드
+function handlePickupCompleteFromList(item) {
+  if (item.completed && !item.overrideUpload) return;
+
+  const index = markerData.value.findIndex((i) => i.reservationId === item.reservationId);
+  if (index !== -1) {
+    const original = markerData.value[index].image;
+    const updated = original.includes("-1.png") ? original : original.replace(".png", "-1.png");
+
+    markerData.value[index] = {
+      ...markerData.value[index],
+      image: updated,
+      completed: true,
+      overrideUpload: false,
+      uploadedImages: uploadedImages.value[item.reservationId],
+    };
+
+    clearMarkers();
+    markerData.value.forEach(createMarker);
+  }
 }
 
 // 내 위치 마커 생성 함수
@@ -694,7 +816,7 @@ function addCurrentLocationMarker() {
   );
 }
 
-// 맵뷰로 되돌아가기
+// 지도 보기로 되돌아가기
 function switchToMapView() {
   listViewMode.value = false;
   nextTick(() => {
