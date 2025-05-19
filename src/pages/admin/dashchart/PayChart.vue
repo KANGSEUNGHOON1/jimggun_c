@@ -78,10 +78,22 @@ const chartOptions = computed(() => ({
   },
   scales: {
     x: {
-      grid: { display: false },
+       grid: { display: true,
+        color: "#E5E7EB",
+        drawBorder: false,
+        drawOnChartArea: false,
+        drawTicks: true,
+        tickLength: 5,
+       },
+      border: {
+        display: false,
+      },
     },
     y: {
       beginAtZero: true,
+      border: {
+        display: false,
+      },
       min: 0,
       max: props.mode === 'monthly' ? 500 : 50, //  monthly일 때 500k
       ticks: {
