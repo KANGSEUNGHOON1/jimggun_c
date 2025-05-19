@@ -1011,7 +1011,7 @@ watch(
   }
 );
 
-// 페이지네이션 관련 함수 수정
+// 페이지네이션 관련 함수 수정(현재(2025-05-19) 사용 x)
 const getPageNumbers = computed(() => {
   const total = totalPages.value;
   const current = Math.min(currentPage.value, total); // 현재 페이지가 마지막 페이지를 초과하지 않도록 제한
@@ -1218,6 +1218,160 @@ const showReservationDetails = (item) => {
 const closeSelectedItem = () => {
   selectedItem.value = null;
 };
+
+// 5-4. 기사배정 모달
+const workerSelected = ref(false);
+const workerSelectModalOpen = () => {
+  workerSelected.value = true;
+};
+// 달력관련
+// 현재 페이지 상태
+const currentPage1 = ref({ week: 1, month: 5, year: 2025 });
+
+// 근무 데이터
+const workData = ref({
+  // 4월 데이터
+  "2025-04-03": { shift: "오전", pay: 22050 },
+  "2025-04-04": { shift: "오전", pay: 21170 },
+  "2025-04-05": { shift: "오전", pay: 28550 },
+  "2025-04-06": { shift: "오전", pay: 25000 },
+  "2025-04-10": { shift: "오전", pay: 22250 },
+  "2025-04-11": { shift: "오전", pay: 21700 },
+  "2025-04-12": { shift: "오전", pay: 30050 },
+  "2025-04-13": { shift: "오전", pay: 25850 },
+  "2025-04-17": { shift: "오전", pay: 19050 },
+  "2025-04-18": { shift: "오전", pay: 21950 },
+  "2025-04-19": { shift: "오전", pay: 29400 },
+  "2025-04-20": { shift: "오전", pay: 23750 },
+  "2025-04-24": { shift: "오후", pay: 20600 },
+  "2025-04-25": { shift: "오후", pay: 21050 },
+  "2025-04-26": { shift: "오후", pay: 30150 },
+  "2025-04-27": { shift: "오후", pay: 25150 },
+
+  // 5월 데이터
+  "2025-05-01": { shift: "오후", pay: 34200 },
+  "2025-05-02": { shift: "오후", pay: 36720 },
+  "2025-05-03": { shift: "오후", pay: 34350 },
+  "2025-05-04": { shift: "오후", pay: 33850 },
+  "2025-05-08": { shift: "오후", pay: 21850 },
+  "2025-05-09": { shift: "오후", pay: 22850 },
+  "2025-05-10": { shift: "오후", pay: 30850 },
+  "2025-05-11": { shift: "오후", pay: 20850 },
+  "2025-05-15": { shift: "오전", pay: 20350 },
+  "2025-05-16": { shift: "오전", pay: 21250 },
+  "2025-05-17": { shift: "오전", pay: 30100 },
+  "2025-05-18": { shift: "오전", pay: 20200 },
+  "2025-05-22": { shift: "오전", pay: 21400 },
+  "2025-05-23": { shift: "오전", pay: 20150 },
+  "2025-05-24": { shift: "오전", pay: 30800 },
+  "2025-05-25": { shift: "오전", pay: 22150 },
+  "2025-05-29": { shift: "오전", pay: 20150 },
+  "2025-05-30": { shift: "오전", pay: 21350 },
+
+  //3월 데이터
+  "2025-03-01": { shift: "오전", pay: 28500 },
+  "2025-03-02": { shift: "오전", pay: 29500 },
+  "2025-03-06": { shift: "오전", pay: 20200 },
+  "2025-03-07": { shift: "오전", pay: 20800 },
+  "2025-03-08": { shift: "오전", pay: 30500 },
+  "2025-03-09": { shift: "오전", pay: 20600 },
+  "2025-03-13": { shift: "오후", pay: 22100 },
+  "2025-03-14": { shift: "오후", pay: 24400 },
+  "2025-03-15": { shift: "오후", pay: 31200 },
+  "2025-03-16": { shift: "오후", pay: 20800 },
+  "2025-03-20": { shift: "오후", pay: 21800 },
+  "2025-03-21": { shift: "오후", pay: 20800 },
+  "2025-03-22": { shift: "오후", pay: 30800 },
+  "2025-03-23": { shift: "오후", pay: 23800 },
+  "2025-03-27": { shift: "오후", pay: 22900 },
+  "2025-03-28": { shift: "오후", pay: 21900 },
+  "2025-03-29": { shift: "오후", pay: 31750 },
+  "2025-03-30": { shift: "오후", pay: 24600 },
+});
+
+// 현재 월 레이블
+const currentLabel = computed(() => {
+  return `${currentPage1.value.year}년 ${currentPage1.value.month}월 ${currentPage1.value.week}주차`;
+});
+// 주(이전) 변경 함수
+function goPrevWeek() {
+  if (currentPage1.value.week === 1) {
+    const prevMonth = currentPage1.value.month === 1 ? 12 : currentPage1.value.month - 1;
+    const prevYear = currentPage1.value.month === 1 ? currentPage1.value.year - 1 : currentPage1.value.year;
+
+    const lastDate = new Date(prevYear, prevMonth, 0);
+    const weeksInPrevMonth = Math.ceil((lastDate.getDate() + new Date(prevYear, prevMonth - 1, 1).getDay()) / 7);
+
+    currentPage1.value = {
+      year: prevYear,
+      month: prevMonth,
+      week: weeksInPrevMonth,
+    };
+  } else {
+    currentPage1.value.week--;
+  }
+}
+// 월(다음) 변경 함수
+function goNextWeek() {
+  const firstDay = new Date(currentPage1.value.year, currentPage1.value.month - 1, 1);
+  const lastDay = new Date(currentPage1.value.year, currentPage1.value.month, 0);
+  const totalWeeks = Math.ceil((lastDay.getDate() + firstDay.getDay()) / 7);
+
+  if (currentPage1.value.week >= totalWeeks) {
+    const nextMonth = currentPage1.value.month === 12 ? 1 : currentPage1.value.month + 1;
+    const nextYear = currentPage1.value.month === 12 ? currentPage1.value.year + 1 : currentPage1.value.year;
+    currentPage1.value = { year: nextYear, month: nextMonth, week: 1 };
+  } else {
+    currentPage1.value.week++;
+  }
+}
+
+// 근무현황 레이블
+const currentMonthLabel = computed(() => {
+  return `${currentPage1.value.year}년 ${String(currentPage1.value.month).padStart(2, "0")}월 근무 현황`;
+});
+
+// 달력 날짜 배열 생성
+const calendarDates = computed(() => {
+  const { year, month, week } = currentPage1.value;
+
+  // 해당 월의 1일이 무슨 요일인지
+  const firstDayOfMonth = new Date(year, month - 1, 1);
+  const firstWeekday = firstDayOfMonth.getDay(); // 0(일) ~ 6(토)
+
+  // 해당 주의 시작일 = 1일 기준으로 몇 일 더해줘야 하는가?
+  const startDate = new Date(year, month - 1, 1);
+  const offset = (week - 1) * 7 - firstWeekday;
+  startDate.setDate(startDate.getDate() + offset);
+
+  const dates = [];
+  const current = new Date(startDate);
+
+  for (let i = 0; i < 7; i++) {
+    dates.push({
+      year: current.getFullYear(),
+      month: current.getMonth() + 1,
+      day: current.getDate(),
+      weekday: current.getDay(),
+      inMonth: current.getMonth() + 1 === month,
+    });
+    current.setDate(current.getDate() + 1);
+  }
+
+  return dates;
+});
+
+// 근무 정보 조회
+function getWorkInfo(date) {
+  if (!date.inMonth) return null;
+  const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
+  return workData.value[dateKey];
+}
+
+// 시프트 클래스 결정
+function getShiftClass(shift) {
+  return shift === "오전" ? "bg-[#45A6FF]/20 text-[#111]" : "bg-[#5FC95E]/20 text-[#111]";
+}
 </script>
 
 <template>
@@ -1337,7 +1491,6 @@ const closeSelectedItem = () => {
         <div class="select1 flex align-center justify-center">
           <select v-model="dispatchStatusFilter" class="w-[85px]">
             <option value="all3">전체배차</option>
-            <option value="wait">배차대기</option>
             <option value="one">1호차</option>
             <option value="two">2호차</option>
             <option value="three">3호차</option>
@@ -1386,7 +1539,7 @@ const closeSelectedItem = () => {
               <th class="w-[350px] text-[13px] text-gray">주소</th>
               <th class="w-[150px] text-[13px] text-gray">예약일자</th>
               <th class="w-[150px] text-[13px] text-gray">픽업일자</th>
-              <th class="text-[13px] text-gray">상태</th>
+              <th class="w-[140px] text-[13px] text-gray">상태</th>
               <th class="text-[13px] text-gray">배차상태</th>
               <th class="pr-[65px] text-[13px] text-gray">액션</th>
             </tr>
@@ -1451,7 +1604,7 @@ const closeSelectedItem = () => {
             <!-- 3-3-4. 다음버튼(페이지단위) -->
             <button
               @click="nextPage"
-              :disabled="currentPage === totalPages"
+              :disabled="currentPage === totalPages || totalPages === 0"
               class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
               >
             </button>
@@ -1475,7 +1628,7 @@ const closeSelectedItem = () => {
           배차변경
         </button>
         <!-- <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">저장</button> -->
-        <button @click="cancelDispatchClick" class="w-36 h-12  bg-white border rounded-[10px] text-black">
+        <button @click="cancelDispatchClick" class="w-36 h-12 bg-white border rounded-[10px] text-black">
           수정취소
         </button>
       </div>
@@ -1484,7 +1637,9 @@ const closeSelectedItem = () => {
         <button @click="handleDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
           배차수정
         </button>
-        <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">기사배정</button>
+        <button @click="workerSelectModalOpen" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
+          기사배정
+        </button>
       </div>
     </div>
   </div>
@@ -1506,7 +1661,9 @@ const closeSelectedItem = () => {
             </div>
             <div class="flex gap-[30px]">
               <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">고객명</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.customerName }}</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.customerName
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
               <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">연락처</span>
@@ -1518,7 +1675,9 @@ const closeSelectedItem = () => {
             </div>
             <div class="flex gap-[30px]">
               <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">상세주소</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.detailaddress }}</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.detailaddress
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
               <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">짐종류</span>
@@ -1556,7 +1715,11 @@ const closeSelectedItem = () => {
       <!-- 5-1-3. 상세정보 버튼들 -->
       <div class="flex flex-row-reverse px-[45px] pt-[10px] pb-[30px] gap-6">
         <button class="w-36 h-12 bg-manager rounded-[10px] text-white">기사배정</button>
-        <button @click="closeSelectedItem" class="w-36 h-12 border border-neutral-500 rounded-[10px] text-black font-light">닫기</button>
+        <button
+          @click="closeSelectedItem"
+          class="w-36 h-12 border border-neutral-500 rounded-[10px] text-black font-light">
+          닫기
+        </button>
       </div>
     </div>
   </div>
@@ -1572,13 +1735,13 @@ const closeSelectedItem = () => {
     <div
       class="flex flex-col align-center gap-[40px] w-[400px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
       <!-- 5-3-1. 모달 제목 -->
-      <h4 class="font-bold p-[20px] text-center text-[18px] border-b-[1px] border-b-[#E5E5EC]"><p class="text-center text-gray-300 font-normal text-[14px]">
-        선택하신 총 <span class="font-bold">{{ selectedItems.size }} 건</span>의 배차상태가 다음과 같이 변경됩니다.
-      </p></h4>
-      
-      <!-- 5-3-2. 변경 안내문 -->
-      
-      <!-- 5-3-3. 변경 전 후 내용 -->
+      <h4 class="font-bold p-[20px] text-center text-[18px] border-b-[1px] border-b-[#E5E5EC]">
+        <p class="text-center text-gray-300 font-normal text-[14px]">
+          선택하신 총 <span class="font-bold">{{ selectedItems.size }} 건</span>의 배차상태가 다음과 같이 변경됩니다.
+        </p>
+      </h4>
+
+      <!-- 5-3-2. 변경 전 후 내용 -->
       <div class="w-1/2 flex flex-col align-center gap-[25px] mx-auto">
         <!-- 변경전 -->
         <div class="w-[200px] flex justify-around">
@@ -1594,21 +1757,98 @@ const closeSelectedItem = () => {
         <div class="w-[200px] flex align-center justify-around">
           <label class="w-[50px] font-semibold">변경 후</label>
           <div class="select3">
-          <select class="w-[70px] h-[20px] block text-black" v-model="selectedDispatchStatus">
-            <option value="one" >1호차</option>
-            <option value="two">2호차</option>
-            <option value="three">3호차</option>
-          </select>
+            <select class="w-[70px] h-[20px] block text-black" v-model="selectedDispatchStatus">
+              <option value="one">1호차</option>
+              <option value="two">2호차</option>
+              <option value="three">3호차</option>
+            </select>
           </div>
         </div>
       </div>
       <!-- 5-3-4. 모달 버튼 -->
       <div class="flex align-center justify-center gap-2 mb-[30px]">
-        <button class="w-36 h-11 border border-neutral-500 rounded-[10px] text-black font-light" @click="closeDispatchChangeModal">
+        <button
+          class="w-36 h-11 border border-neutral-500 rounded-[10px] text-black font-light"
+          @click="closeDispatchChangeModal">
           취소
         </button>
         <button class="w-36 h-11 bg-manager rounded-[10px] text-white" @click="saveDispatchChange">완료</button>
       </div>
+    </div>
+  </div>
+  <!--  5-4. 기사배정 모달 -->
+  <div v-if="workerSelected" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
+    <div
+      class="max-w-[1420px] w-full mx-auto bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      <!-- 5-4-1. 기사배정 모달 제목 -->
+      <h4 class="font-bold m-[30px] text-center text-gray">배정할 요일을 선택해주세요.</h4>
+      <!-- 5-4-2. 주차별 페이지네이션 -->
+      <div class="w-full max-w-xs mx-auto mt-6 mb-[40px]">
+        <div class="flex items-center justify-between px-2">
+          <!-- 5-4-2-1. 주(이전) 이동 -->
+          <button @click="goPrevWeek" class="transition-transform hover:scale-110 active:scale-95">
+            <img src="/images/kang/pre.png" class="w-3 h-3.5" alt="이전 달" />
+          </button>
+          <!-- 5-4-2-2. 현재 주간 표시 -->
+          <span class="text-[#111] text-base font-medium font-['Pretendard']">
+            {{ currentLabel }}
+          </span>
+          <!-- 5-4-2-3. 주(다음) 이동 -->
+          <button @click="goNextWeek" class="transition-transform hover:scale-110 active:scale-95">
+            <img src="/images/kang/next.png" class="w-3 h-3.5" alt="다음 달" />
+          </button>
+        </div>
+      </div>
+      <!-- 5-4-3. 달력 -->
+      <div class="max-w-[1197px] mb-[40px] w-full mx-auto">
+        <!-- 5-4-3-1. 요일 헤더 -->
+        <div class="grid grid-cols-7 bg-white text-center text-sm font-medium text-[#505050]">
+          <div class="py-3 text-[#FF4B0F]">일</div>
+          <div class="py-3">월</div>
+          <div class="py-3">화</div>
+          <div class="py-3">수</div>
+          <div class="py-3">목</div>
+          <div class="py-3">금</div>
+          <div class="py-3 text-[#4299E1]">토</div>
+        </div>
+        <!-- 5-4-3-2. 달력 그리드 -->
+        <div class="grid grid-cols-7 border border-[#D9D9D9] rounded-[10px] overflow-hidden">
+          <div
+            v-for="(date, index) in calendarDates"
+            :key="`${date.year}-${date.month}-${date.day}`"
+            :class="[
+              'h-[120px] bg-white p-1 relative hover:bg-gray-50 transition-colors cursor-pointer',
+              'border-[#D9D9D9]',
+              (index + 1) % 7 !== 0 ? 'border-r' : '', // 오른쪽 줄 제거
+              index < calendarDates.length - 7 ? 'border-b' : '', // 마지막 줄 아래 줄 제거
+            ]">
+            <span
+              class="absolute top-1 right-2 text-[11px]"
+              :class="{
+                'text-[#D9D9D9]': !date.inMonth,
+                'text-[#FF4B0F]': date.inMonth && date.weekday === 0,
+                'text-[#4299E1]': date.inMonth && date.weekday === 6,
+                'text-[#767676]': date.inMonth && date.weekday !== 0 && date.weekday !== 6,
+              }">
+              {{ date.day }}
+            </span>
+
+            <!-- 근무 정보 표시 -->
+            <div v-if="getWorkInfo(date)" class="absolute inset-x-1 top-8">
+              <div
+                :class="getShiftClass(getWorkInfo(date).shift)"
+                class="text-[14px] w-full rounded-md truncate text-right pr-1 mb-1">
+                <p class="pr-1">{{ getWorkInfo(date).shift }}</p>
+              </div>
+              <div
+                class="bg-white text-[#505050] text-[14px] outline outline-1 outline-[#E5E5EC] w-full rounded-md truncate text-right pr-1">
+                <p>₩ {{ getWorkInfo(date).pay.toLocaleString() }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 5-4-4 버튼 -->
     </div>
   </div>
 </template>
@@ -1642,7 +1882,7 @@ select {
   border: 1px solid rgba(217, 217, 217, 1) !important;
   border-radius: 10px;
 }
-.select3{
+.select3 {
   display: flex;
   align-items: center;
   justify-content: center;
