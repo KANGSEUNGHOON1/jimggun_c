@@ -1271,6 +1271,23 @@ const handleDriverChange = (date) => {
 
   console.log("날짜 선택됨:", date);
 
+    const isSameDate =
+    workerChange.value &&
+    workerChange.value.year === date.year &&
+    workerChange.value.month === date.month &&
+    workerChange.value.day === date.day;
+
+  if (isSameDate) {
+    // 같은 날짜 다시 클릭 → 창 닫기
+    workerChange.value = null;
+    selectedDrivers.value = {
+      driver1: "",
+      driver2: "",
+      driver3: "",
+    };
+    return;
+  }
+
   const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
   const currentWorkInfo = workData.value[dateKey];
 
@@ -1332,9 +1349,6 @@ const saveDriverAssignment = () => {
     driver2: "",
     driver3: "",
   };
-
-  // 모달 닫기
-  workerSelected.value = false;
 
   // 저장 완료 알림
   alert("기사 배정이 완료되었습니다.");
@@ -1833,11 +1847,6 @@ function getWorkInfo(date) {
   return workData.value[dateKey];
 }
 
-// 시프트 클래스 결정
-function getShiftClass(shift) {
-  return shift === "오전" ? "bg-[#45A6FF]/20 text-[#111]" : "bg-[#5FC95E]/20 text-[#111]";
-}
-
 // 기사 목록 데이터 수정
 const drivers = ref([
   { id: 1, name: "이팀장" },
@@ -2107,7 +2116,7 @@ const drivers = ref([
     <!-- 4. 배차변경 및 기사배정 버튼 -->
     <div class="flex flex-row-reverse gap-6 mb-[27px]">
       <!-- 4-1. 배차변경 클릭 후 -->
-      <div class="flex gap-6" v-if="modifyDispatchStatus">
+      <div class="flex gap-3" v-if="modifyDispatchStatus">
         <button @click="showDispatchChangeModal" class="w-36 h-12 bg-manager rounded-[10px] text-white">
           배차변경
         </button>
@@ -2117,7 +2126,7 @@ const drivers = ref([
         </button>
       </div>
       <!-- 4-2. 배차변경 클릭 전 -->
-      <div class="flex gap-6" v-if="modifyBtn">
+      <div class="flex gap-3" v-if="modifyBtn">
         <button @click="handleDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
           배차수정
         </button>
@@ -2251,22 +2260,19 @@ const drivers = ref([
       </div>
       <!-- 5-3-4. 모달 버튼 -->
       <div class="flex align-center justify-center gap-2 mb-[30px]">
+        <button class="w-36 h-11 bg-manager rounded-[10px] text-white" @click="saveDispatchChange">완료</button>
         <button
           class="w-36 h-11 border border-neutral-500 rounded-[10px] text-black font-light"
           @click="closeDispatchChangeModal">
           취소
         </button>
-        <button class="w-36 h-11 bg-manager rounded-[10px] text-white" @click="saveDispatchChange">완료</button>
       </div>
     </div>
   </div>
   <!--  5-4. 기사배정 모달 -->
   <div v-if="workerSelected" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div
-      class="max-w-[1320px] w-full mx-auto bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 p-8">
-      <!-- 모달 제목 -->
-      <h4 class="font-bold text-[20px] text-center mb-8">기사 배정</h4>
-
+      class="max-w-[1200px] w-full mx-auto bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 rounded-[10px] py-[70px]">
       <!-- 주차별 페이지네이션 -->
       <div class="w-full max-w-xs mx-auto mb-8">
         <div class="flex items-center justify-between px-2">
@@ -2281,7 +2287,7 @@ const drivers = ref([
       </div>
 
       <!-- 5-4-3. 달력 -->
-      <div class="max-w-[1000px] mb-10 w-full mx-auto">
+      <div class="max-w-[950px] mb-5 w-full mx-auto">
         <!-- 요일 헤더 -->
         <div class="grid grid-cols-7 bg-white text-center text-sm font-medium text-[#505050]">
           <div class="py-3 text-[#FF4B0F]">일</div>
@@ -2300,7 +2306,7 @@ const drivers = ref([
             :key="`${date.year}-${date.month}-${date.day}`"
             @click="handleDriverChange(date)"
             :class="[
-              'h-[180px] bg-white p-1 relative hover:bg-gray-50 transition-colors cursor-pointer',
+              'h-[150px] bg-white p-1 relative hover:bg-gray-50 transition-colors cursor-pointer',
               'border-[#D9D9D9]',
               (index + 1) % 7 !== 0 ? 'border-r' : '',
               index < calendarDates.length - 7 ? 'border-b' : '',
@@ -2337,12 +2343,14 @@ const drivers = ref([
         </div>
       </div>
       <!-- 5-4-4. 요일 별 정보 -->
-      <div class="dayBox11 max-w-[1000px] m-auto flex justify-between mb-8">
-        <div v-if="!workerChange" class="flex justify-center py-4"><p>날짜를 선택해주세요.</p></div>
-        <div v-if="workerChange" class="workerModal flex flex-col gap-6 align-center justify-center ">
+      <div class="dayBox11 max-w-[950px] h-[110px] m-auto flex justify-between">
+        <div v-if="!workerChange" class="flex alignCenter justify-center">
+          <p class="text-gray py-4">날짜를 선택해주세요.</p>
+        </div>
+        <div v-if="workerChange" class="flex flex-col gap-6 align-center justify-center">
           <h4>{{ workerChange.year }}년 {{ workerChange.month }}월 {{ workerChange.day }}일 기사배정 변경</h4>
           <div class="flex gap-3">
-            <div class="workerModal flex flex-col gap-2">
+            <div class="flex flex-col gap-2">
               <p class="text-[14px] font-medium">1호차</p>
               <div class="select3">
                 <select v-model="selectedDrivers.driver1" class="w-[120px]">
@@ -2353,7 +2361,7 @@ const drivers = ref([
                 </select>
               </div>
             </div>
-            <div class="workerModal flex flex-col gap-2">
+            <div class="flex flex-col gap-2">
               <p class="text-[14px] font-medium">2호차</p>
               <div class="select3">
                 <select v-model="selectedDrivers.driver2" class="w-[120px]">
@@ -2364,7 +2372,7 @@ const drivers = ref([
                 </select>
               </div>
             </div>
-            <div class="workerModal flex flex-col gap-2">
+            <div class="flex flex-col gap-2">
               <p class="text-[14px] font-medium">3호차</p>
               <div class="select3">
                 <select v-model="selectedDrivers.driver3" class="w-[120px]">
@@ -2377,20 +2385,27 @@ const drivers = ref([
             </div>
           </div>
         </div>
-      <!-- 5-4-5 버튼 -->
-      <div class="flex flex-row-reverse gap-2">
-        <button
-          v-if="workerChange"
-          @click="saveDriverAssignment"
-          class="w-36 h-12 bg-manager rounded-[10px] text-white hover:bg-[#0066CC] transition-colors">
-          배정완료
-        </button>
-        <button
-          @click="workerSelectModalClose"
-          class="w-36 h-12 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors">
-          닫기
-        </button>
-      </div>
+        <!-- 5-4-5 버튼 -->
+        <div class="flex flex-row-reverse gap-2">
+          <button v-if="!workerChange"
+            @click="workerSelectModalClose"
+            class="w-36 h-11 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors">
+            닫기
+          </button>
+          <div v-if="workerChange" class="flex gap-2">
+          <button
+              @click="saveDriverAssignment"
+              class="w-36 h-11 bg-manager rounded-[10px] text-white hover:bg-[#0066CC] transition-colors">
+              배정완료
+            </button>
+            <button
+              @click="workerChange = false"
+              class="w-36 h-11 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors">
+              취소
+            </button>
+            
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2454,10 +2469,10 @@ tbody td {
 .none {
   display: none;
 }
-.workerModal {
+.alignCenter {
   align-items: center;
 }
-.dayBox11{
+.dayBox11 {
   align-items: end;
 }
 </style>
