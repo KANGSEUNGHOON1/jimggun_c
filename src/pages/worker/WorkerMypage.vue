@@ -69,7 +69,7 @@
               <div
                 class="bg-white text-[#505050] text-[14px] outline outline-1 outline-[#E5E5EC] w-full rounded-md truncate text-right pr-1"
               >
-                <p>₩ {{ getWorkInfo(date).pay.toLocaleString() }}</p>
+                <p>{{ getWorkInfo(date).pay.toLocaleString() }}</p>
               </div>
             </div>
           </div>
