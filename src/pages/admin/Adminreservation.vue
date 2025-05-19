@@ -1221,72 +1221,542 @@ const closeSelectedItem = () => {
 
 // 5-4. 기사배정 모달
 const workerSelected = ref(false);
+const workerChange = ref(null);
+const selectedDrivers = ref({
+  driver1: "",
+  driver2: "",
+  driver3: "",
+});
+
+// 다음주 달력으로 초기화하는 함수
+const initializeNextWeekCalendar = () => {
+  const today = new Date();
+  const nextWeek = new Date(today);
+  nextWeek.setDate(today.getDate() + 7);
+
+  currentPage1.value = {
+    year: nextWeek.getFullYear(),
+    month: nextWeek.getMonth() + 1,
+    week: Math.ceil((nextWeek.getDate() + new Date(nextWeek.getFullYear(), nextWeek.getMonth(), 1).getDay()) / 7),
+  };
+};
+
 const workerSelectModalOpen = () => {
   workerSelected.value = true;
+  initializeNextWeekCalendar();
+  workerChange.value = null;
+  selectedDrivers.value = {
+    driver1: "",
+    driver2: "",
+    driver3: "",
+  };
+
+  // 현재 달력 데이터 로그
+  console.log("현재 달력 데이터:", workData.value);
 };
+
+const workerSelectModalClose = () => {
+  workerSelected.value = false;
+  workerChange.value = null;
+  selectedDrivers.value = {
+    driver1: "",
+    driver2: "",
+    driver3: "",
+  };
+};
+
+// 기사 변경 처리 함수 수정
+const handleDriverChange = (date) => {
+  if (!date.inMonth) return;
+
+  console.log("날짜 선택됨:", date);
+
+  const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
+  const currentWorkInfo = workData.value[dateKey];
+
+  // 현재 선택된 날짜 저장
+  workerChange.value = date;
+
+  // 기존 데이터가 있으면 로드, 없으면 빈 값으로 초기화
+  selectedDrivers.value = {
+    driver1: currentWorkInfo?.driver1 || "",
+    driver2: currentWorkInfo?.driver2 || "",
+    driver3: currentWorkInfo?.driver3 || "",
+  };
+
+  console.log("선택된 기사 정보:", selectedDrivers.value);
+};
+
+// 기사 배정 저장 함수 수정
+const saveDriverAssignment = () => {
+  if (!workerChange.value) {
+    alert("날짜를 선택해주세요.");
+    return;
+  }
+
+  // 기사 중복 배정 체크
+  const drivers = [selectedDrivers.value.driver1, selectedDrivers.value.driver2, selectedDrivers.value.driver3].filter(
+    (driver) => driver !== ""
+  ); // 빈 값 제외
+
+  const uniqueDrivers = new Set(drivers);
+  if (drivers.length !== uniqueDrivers.size) {
+    alert("같은 기사를 중복 배정할 수 없습니다.");
+    return;
+  }
+
+  const dateKey = `${workerChange.value.year}-${String(workerChange.value.month).padStart(2, "0")}-${String(
+    workerChange.value.day
+  ).padStart(2, "0")}`;
+
+  // 기존 데이터가 있는지 확인
+  const existingData = workData.value[dateKey] || {};
+
+  // 새로운 데이터로 업데이트
+  workData.value = {
+    ...workData.value,
+    [dateKey]: {
+      ...existingData,
+      driver1: selectedDrivers.value.driver1,
+      driver2: selectedDrivers.value.driver2,
+      driver3: selectedDrivers.value.driver3,
+      shift: existingData.shift || "오전",
+      pay: existingData.pay || 0,
+    },
+  };
+
+  // 변경사항 저장 후 상태 초기화
+  workerChange.value = null;
+  selectedDrivers.value = {
+    driver1: "",
+    driver2: "",
+    driver3: "",
+  };
+
+  // 모달 닫기
+  workerSelected.value = false;
+
+  // 저장 완료 알림
+  alert("기사 배정이 완료되었습니다.");
+};
+
 // 달력관련
 // 현재 페이지 상태
 const currentPage1 = ref({ week: 1, month: 5, year: 2025 });
 
 // 근무 데이터
 const workData = ref({
+  // 3월 데이터
+  "2025-03-01": {
+    shift: "오전",
+    pay: 28500,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-03-02": {
+    shift: "오전",
+    pay: 29500,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-03-06": {
+    shift: "오전",
+    pay: 20200,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-03-07": {
+    shift: "오전",
+    pay: 20800,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-03-08": {
+    shift: "오전",
+    pay: 30500,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-03-09": {
+    shift: "오전",
+    pay: 20600,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-03-13": {
+    shift: "오후",
+    pay: 22100,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-03-14": {
+    shift: "오후",
+    pay: 24400,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-03-15": {
+    shift: "오후",
+    pay: 31200,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-03-16": {
+    shift: "오후",
+    pay: 20800,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-03-20": {
+    shift: "오후",
+    pay: 21800,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-03-21": {
+    shift: "오후",
+    pay: 20800,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-03-22": {
+    shift: "오후",
+    pay: 30800,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-03-23": {
+    shift: "오후",
+    pay: 23800,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-03-27": {
+    shift: "오후",
+    pay: 22900,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-03-28": {
+    shift: "오후",
+    pay: 21900,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-03-29": {
+    shift: "오후",
+    pay: 31750,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-03-30": {
+    shift: "오후",
+    pay: 24600,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+
   // 4월 데이터
-  "2025-04-03": { shift: "오전", pay: 22050 },
-  "2025-04-04": { shift: "오전", pay: 21170 },
-  "2025-04-05": { shift: "오전", pay: 28550 },
-  "2025-04-06": { shift: "오전", pay: 25000 },
-  "2025-04-10": { shift: "오전", pay: 22250 },
-  "2025-04-11": { shift: "오전", pay: 21700 },
-  "2025-04-12": { shift: "오전", pay: 30050 },
-  "2025-04-13": { shift: "오전", pay: 25850 },
-  "2025-04-17": { shift: "오전", pay: 19050 },
-  "2025-04-18": { shift: "오전", pay: 21950 },
-  "2025-04-19": { shift: "오전", pay: 29400 },
-  "2025-04-20": { shift: "오전", pay: 23750 },
-  "2025-04-24": { shift: "오후", pay: 20600 },
-  "2025-04-25": { shift: "오후", pay: 21050 },
-  "2025-04-26": { shift: "오후", pay: 30150 },
-  "2025-04-27": { shift: "오후", pay: 25150 },
+  "2025-04-03": {
+    shift: "오전",
+    pay: 28500,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-04-04": {
+    shift: "오전",
+    pay: 21170,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-04-05": {
+    shift: "오전",
+    pay: 28550,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-04-06": {
+    shift: "오전",
+    pay: 25000,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-04-10": {
+    shift: "오전",
+    pay: 22250,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-04-11": {
+    shift: "오전",
+    pay: 21700,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-04-12": {
+    shift: "오전",
+    pay: 30050,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-04-13": {
+    shift: "오전",
+    pay: 25850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-04-17": {
+    shift: "오전",
+    pay: 19050,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-04-18": {
+    shift: "오전",
+    pay: 21950,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-04-19": {
+    shift: "오전",
+    pay: 29400,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-04-20": {
+    shift: "오전",
+    pay: 23750,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-04-24": {
+    shift: "오후",
+    pay: 20600,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-04-25": {
+    shift: "오후",
+    pay: 21050,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-04-26": {
+    shift: "오후",
+    pay: 30150,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-04-27": {
+    shift: "오후",
+    pay: 25150,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
 
   // 5월 데이터
-  "2025-05-01": { shift: "오후", pay: 34200 },
-  "2025-05-02": { shift: "오후", pay: 36720 },
-  "2025-05-03": { shift: "오후", pay: 34350 },
-  "2025-05-04": { shift: "오후", pay: 33850 },
-  "2025-05-08": { shift: "오후", pay: 21850 },
-  "2025-05-09": { shift: "오후", pay: 22850 },
-  "2025-05-10": { shift: "오후", pay: 30850 },
-  "2025-05-11": { shift: "오후", pay: 20850 },
-  "2025-05-15": { shift: "오전", pay: 20350 },
-  "2025-05-16": { shift: "오전", pay: 21250 },
-  "2025-05-17": { shift: "오전", pay: 30100 },
-  "2025-05-18": { shift: "오전", pay: 20200 },
-  "2025-05-22": { shift: "오전", pay: 21400 },
-  "2025-05-23": { shift: "오전", pay: 20150 },
-  "2025-05-24": { shift: "오전", pay: 30800 },
-  "2025-05-25": { shift: "오전", pay: 22150 },
-  "2025-05-29": { shift: "오전", pay: 20150 },
-  "2025-05-30": { shift: "오전", pay: 21350 },
-
-  //3월 데이터
-  "2025-03-01": { shift: "오전", pay: 28500 },
-  "2025-03-02": { shift: "오전", pay: 29500 },
-  "2025-03-06": { shift: "오전", pay: 20200 },
-  "2025-03-07": { shift: "오전", pay: 20800 },
-  "2025-03-08": { shift: "오전", pay: 30500 },
-  "2025-03-09": { shift: "오전", pay: 20600 },
-  "2025-03-13": { shift: "오후", pay: 22100 },
-  "2025-03-14": { shift: "오후", pay: 24400 },
-  "2025-03-15": { shift: "오후", pay: 31200 },
-  "2025-03-16": { shift: "오후", pay: 20800 },
-  "2025-03-20": { shift: "오후", pay: 21800 },
-  "2025-03-21": { shift: "오후", pay: 20800 },
-  "2025-03-22": { shift: "오후", pay: 30800 },
-  "2025-03-23": { shift: "오후", pay: 23800 },
-  "2025-03-27": { shift: "오후", pay: 22900 },
-  "2025-03-28": { shift: "오후", pay: 21900 },
-  "2025-03-29": { shift: "오후", pay: 31750 },
-  "2025-03-30": { shift: "오후", pay: 24600 },
+  "2025-05-01": {
+    shift: "오전",
+    pay: 33850,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-05-02": {
+    shift: "오전",
+    pay: 33850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-05-03": {
+    shift: "오전",
+    pay: 34350,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-05-04": {
+    shift: "오전",
+    pay: 33850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-05-05": {
+    shift: "오전",
+    pay: 33850,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-05-06": {
+    shift: "오전",
+    pay: 33850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-05-07": {
+    shift: "오전",
+    pay: 33850,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-05-08": {
+    shift: "오전",
+    pay: 21850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-05-09": {
+    shift: "오전",
+    pay: 22850,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-05-10": {
+    shift: "오전",
+    pay: 30850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-05-11": {
+    shift: "오전",
+    pay: 20850,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-05-12": {
+    shift: "오전",
+    pay: 20850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-05-13": {
+    shift: "오전",
+    pay: 20850,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-05-14": {
+    shift: "오전",
+    pay: 20850,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-05-15": {
+    shift: "오전",
+    pay: 20350,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-05-16": {
+    shift: "오전",
+    pay: 21250,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-05-17": {
+    shift: "오전",
+    pay: 30100,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-05-18": {
+    shift: "오전",
+    pay: 20200,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
+  "2025-05-22": {
+    shift: "오전",
+    pay: 21400,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "이기사",
+  },
+  "2025-05-23": {
+    shift: "오전",
+    pay: 20150,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "정기사",
+  },
+  "2025-05-24": {
+    shift: "오전",
+    pay: 30800,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "안기사",
+  },
+  "2025-05-25": {
+    shift: "오전",
+    pay: 22150,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "이기사",
+  },
+  "2025-05-29": {
+    shift: "오전",
+    pay: 20150,
+    driver1: "이팀장",
+    driver2: "윤기사",
+    driver3: "정기사",
+  },
+  "2025-05-30": {
+    shift: "오전",
+    pay: 21350,
+    driver1: "이팀장",
+    driver2: "홍기사",
+    driver3: "안기사",
+  },
 });
 
 // 현재 월 레이블
@@ -1325,11 +1795,6 @@ function goNextWeek() {
     currentPage1.value.week++;
   }
 }
-
-// 근무현황 레이블
-const currentMonthLabel = computed(() => {
-  return `${currentPage1.value.year}년 ${String(currentPage1.value.month).padStart(2, "0")}월 근무 현황`;
-});
 
 // 달력 날짜 배열 생성
 const calendarDates = computed(() => {
@@ -1372,6 +1837,16 @@ function getWorkInfo(date) {
 function getShiftClass(shift) {
   return shift === "오전" ? "bg-[#45A6FF]/20 text-[#111]" : "bg-[#5FC95E]/20 text-[#111]";
 }
+
+// 기사 목록 데이터 수정
+const drivers = ref([
+  { id: 1, name: "이팀장" },
+  { id: 2, name: "이기사" },
+  { id: 3, name: "홍기사" },
+  { id: 4, name: "정기사" },
+  { id: 5, name: "윤기사" },
+  { id: 6, name: "안기사" },
+]);
 </script>
 
 <template>
@@ -1396,8 +1871,8 @@ function getShiftClass(shift) {
         <div class="w-full flex flex-col px-[30px] py-[26px]">
           <p class="w-2/2 text-[13px] text-gray">미배차 예약 건수 / 전체 예약 건수</p>
           <p class="flex items-end gap-[10px] w-full">
-            <span class="font-bold text-lg">200</span
-            ><span class="text-[13px] pb-[2px] text-manager-orange">- 12</span> /
+            <span class="font-bold text-lg">200</span><span class="text-[13px] pb-[2px] text-manager-orange">- 12</span>
+            /
             <span class="font-bold text-lg">342 건</span>
           </p>
         </div>
@@ -1507,7 +1982,9 @@ function getShiftClass(shift) {
           <span class="leading-[40px]">예약목록</span>
         </div>
         <div class="searchbar flex align-center searchBox w-1/3 max-w-[500px] pr-2">
-          <div class="w-5, h-5 mx-[10px]"><img class="w-full h-full" src="/images/lee/searchicon.png" alt="" /></div>
+          <div class="w-5, h-5 mx-[10px]">
+            <img class="w-full h-full" src="/images/lee/searchicon.png" alt="" />
+          </div>
           <input
             v-model="searchQuery"
             @input="handleInput"
@@ -1564,10 +2041,16 @@ function getShiftClass(shift) {
                 {{ item.address }} <br />
                 {{ item.detailaddress }}
               </td>
-              <td class="align-middle text-[14px]">{{ item.reservationDate }}</td>
+              <td class="align-middle text-[14px]">
+                {{ item.reservationDate }}
+              </td>
               <td class="align-middle text-[14px]">{{ item.pickupDate }}</td>
-              <td class="align-middle text-[14px]">{{ getStatusText(item.status) }}</td>
-              <td class="align-middle text-[14px]">{{ getdispatchStatusText(item.dispatchStatus) }}</td>
+              <td class="align-middle text-[14px]">
+                {{ getStatusText(item.status) }}
+              </td>
+              <td class="align-middle text-[14px]">
+                {{ getdispatchStatusText(item.dispatchStatus) }}
+              </td>
               <td class="pr-[65px] align-middle text-[14px]">
                 <button @click="showReservationDetails(item)">상세</button>
               </td>
@@ -1596,6 +2079,7 @@ function getShiftClass(shift) {
             <!-- 3-3-3. 클릭 시 페이지 이동 -->
             <button
               v-for="page in visiblePages"
+              :key="page"
               @click="goToPage(page)"
               class="w-10"
               :class="['px-3 py-1 text-[14px]', currentPage === page ? 'bg-gray-200 text-white rounded-[5px]' : '']">
@@ -1622,7 +2106,7 @@ function getShiftClass(shift) {
 
     <!-- 4. 배차변경 및 기사배정 버튼 -->
     <div class="flex flex-row-reverse gap-6 mb-[27px]">
-      <!-- 4-1. 배차변경 클릭 전 -->
+      <!-- 4-1. 배차변경 클릭 후 -->
       <div class="flex gap-6" v-if="modifyDispatchStatus">
         <button @click="showDispatchChangeModal" class="w-36 h-12 bg-manager rounded-[10px] text-white">
           배차변경
@@ -1632,7 +2116,7 @@ function getShiftClass(shift) {
           수정취소
         </button>
       </div>
-      <!-- 4-2. 배차변경 클릭 후 -->
+      <!-- 4-2. 배차변경 클릭 전 -->
       <div class="flex gap-6" v-if="modifyBtn">
         <button @click="handleDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
           배차수정
@@ -1645,7 +2129,7 @@ function getShiftClass(shift) {
   </div>
 
   <!-- 5. 모달창 -->
-  <!-- 5-1. 미배차 예약 상세정보 -->
+  <!-- 5-1. 예약 상세정보 -->
   <div v-if="selectedItem" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div
       class="w-1/2 w-max-[1000px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
@@ -1707,14 +2191,13 @@ function getShiftClass(shift) {
             </div>
             <div class="flex gap-[30px]">
               <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">배정기사</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{}}</span>
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.name }}</span>
             </div>
           </div>
         </div>
       </div>
       <!-- 5-1-3. 상세정보 버튼들 -->
       <div class="flex flex-row-reverse px-[45px] pt-[10px] pb-[30px] gap-6">
-        <button class="w-36 h-12 bg-manager rounded-[10px] text-white">기사배정</button>
         <button
           @click="closeSelectedItem"
           class="w-36 h-12 border border-neutral-500 rounded-[10px] text-black font-light">
@@ -1737,7 +2220,8 @@ function getShiftClass(shift) {
       <!-- 5-3-1. 모달 제목 -->
       <h4 class="font-bold p-[20px] text-center text-[18px] border-b-[1px] border-b-[#E5E5EC]">
         <p class="text-center text-gray-300 font-normal text-[14px]">
-          선택하신 총 <span class="font-bold">{{ selectedItems.size }} 건</span>의 배차상태가 다음과 같이 변경됩니다.
+          선택하신 총
+          <span class="font-bold">{{ selectedItems.size }} 건</span>의 배차상태가 다음과 같이 변경됩니다.
         </p>
       </h4>
 
@@ -1779,29 +2263,26 @@ function getShiftClass(shift) {
   <!--  5-4. 기사배정 모달 -->
   <div v-if="workerSelected" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
     <div
-      class="max-w-[1420px] w-full mx-auto bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
-      <!-- 5-4-1. 기사배정 모달 제목 -->
-      <h4 class="font-bold m-[30px] text-center text-gray">배정할 요일을 선택해주세요.</h4>
-      <!-- 5-4-2. 주차별 페이지네이션 -->
-      <div class="w-full max-w-xs mx-auto mt-6 mb-[40px]">
+      class="max-w-[1320px] w-full mx-auto bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 p-8">
+      <!-- 모달 제목 -->
+      <h4 class="font-bold text-[20px] text-center mb-8">기사 배정</h4>
+
+      <!-- 주차별 페이지네이션 -->
+      <div class="w-full max-w-xs mx-auto mb-8">
         <div class="flex items-center justify-between px-2">
-          <!-- 5-4-2-1. 주(이전) 이동 -->
           <button @click="goPrevWeek" class="transition-transform hover:scale-110 active:scale-95">
-            <img src="/images/kang/pre.png" class="w-3 h-3.5" alt="이전 달" />
+            <img src="/images/kang/pre.png" class="w-3 h-3.5" alt="이전 주" />
           </button>
-          <!-- 5-4-2-2. 현재 주간 표시 -->
-          <span class="text-[#111] text-base font-medium font-['Pretendard']">
-            {{ currentLabel }}
-          </span>
-          <!-- 5-4-2-3. 주(다음) 이동 -->
+          <span class="text-[#111] text-base font-medium">{{ currentLabel }}</span>
           <button @click="goNextWeek" class="transition-transform hover:scale-110 active:scale-95">
-            <img src="/images/kang/next.png" class="w-3 h-3.5" alt="다음 달" />
+            <img src="/images/kang/next.png" class="w-3 h-3.5" alt="다음 주" />
           </button>
         </div>
       </div>
+
       <!-- 5-4-3. 달력 -->
-      <div class="max-w-[1197px] mb-[40px] w-full mx-auto">
-        <!-- 5-4-3-1. 요일 헤더 -->
+      <div class="max-w-[1000px] mb-10 w-full mx-auto">
+        <!-- 요일 헤더 -->
         <div class="grid grid-cols-7 bg-white text-center text-sm font-medium text-[#505050]">
           <div class="py-3 text-[#FF4B0F]">일</div>
           <div class="py-3">월</div>
@@ -1811,16 +2292,19 @@ function getShiftClass(shift) {
           <div class="py-3">금</div>
           <div class="py-3 text-[#4299E1]">토</div>
         </div>
-        <!-- 5-4-3-2. 달력 그리드 -->
+
+        <!-- 달력 그리드 -->
         <div class="grid grid-cols-7 border border-[#D9D9D9] rounded-[10px] overflow-hidden">
           <div
             v-for="(date, index) in calendarDates"
             :key="`${date.year}-${date.month}-${date.day}`"
+            @click="handleDriverChange(date)"
             :class="[
-              'h-[120px] bg-white p-1 relative hover:bg-gray-50 transition-colors cursor-pointer',
+              'h-[180px] bg-white p-1 relative hover:bg-gray-50 transition-colors cursor-pointer',
               'border-[#D9D9D9]',
-              (index + 1) % 7 !== 0 ? 'border-r' : '', // 오른쪽 줄 제거
-              index < calendarDates.length - 7 ? 'border-b' : '', // 마지막 줄 아래 줄 제거
+              (index + 1) % 7 !== 0 ? 'border-r' : '',
+              index < calendarDates.length - 7 ? 'border-b' : '',
+              workerChange && workerChange.day === date.day ? 'ring-2 ring-manager' : '',
             ]">
             <span
               class="absolute top-1 right-2 text-[11px]"
@@ -1832,26 +2316,86 @@ function getShiftClass(shift) {
               }">
               {{ date.day }}
             </span>
-
-            <!-- 근무 정보 표시 -->
+            <!-- 기사 정보 표시 -->
             <div v-if="getWorkInfo(date)" class="absolute inset-x-1 top-8">
-              <div
-                :class="getShiftClass(getWorkInfo(date).shift)"
-                class="text-[14px] w-full rounded-md truncate text-right pr-1 mb-1">
-                <p class="pr-1">{{ getWorkInfo(date).shift }}</p>
-              </div>
-              <div
-                class="bg-white text-[#505050] text-[14px] outline outline-1 outline-[#E5E5EC] w-full rounded-md truncate text-right pr-1">
-                <p>₩ {{ getWorkInfo(date).pay.toLocaleString() }}</p>
+              <div class="flex flex-col gap-1">
+                <div class="bg-[#F5F5F5] text-[12px] px-1 py-0.5 rounded truncate">
+                  <span class="text-[#666]">1호차:</span>
+                  {{ getWorkInfo(date).driver1 }}
+                </div>
+                <div class="bg-[#F5F5F5] text-[12px] px-1 py-0.5 rounded truncate">
+                  <span class="text-[#666]">2호차:</span>
+                  {{ getWorkInfo(date).driver2 }}
+                </div>
+                <div class="bg-[#F5F5F5] text-[12px] px-1 py-0.5 rounded truncate">
+                  <span class="text-[#666]">3호차:</span>
+                  {{ getWorkInfo(date).driver3 }}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- 5-4-4 버튼 -->
+      <!-- 5-4-4. 요일 별 정보 -->
+      <div class="dayBox11 max-w-[1000px] m-auto flex justify-between mb-8">
+        <div v-if="!workerChange" class="flex justify-center py-4"><p>날짜를 선택해주세요.</p></div>
+        <div v-if="workerChange" class="workerModal flex flex-col gap-6 align-center justify-center ">
+          <h4>{{ workerChange.year }}년 {{ workerChange.month }}월 {{ workerChange.day }}일 기사배정 변경</h4>
+          <div class="flex gap-3">
+            <div class="workerModal flex flex-col gap-2">
+              <p class="text-[14px] font-medium">1호차</p>
+              <div class="select3">
+                <select v-model="selectedDrivers.driver1" class="w-[120px]">
+                  <option value="">선택</option>
+                  <option v-for="driver in drivers" :key="driver.id" :value="driver.name">
+                    {{ driver.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="workerModal flex flex-col gap-2">
+              <p class="text-[14px] font-medium">2호차</p>
+              <div class="select3">
+                <select v-model="selectedDrivers.driver2" class="w-[120px]">
+                  <option value="">선택</option>
+                  <option v-for="driver in drivers" :key="driver.id" :value="driver.name">
+                    {{ driver.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="workerModal flex flex-col gap-2">
+              <p class="text-[14px] font-medium">3호차</p>
+              <div class="select3">
+                <select v-model="selectedDrivers.driver3" class="w-[120px]">
+                  <option value="">선택</option>
+                  <option v-for="driver in drivers" :key="driver.id" :value="driver.name">
+                    {{ driver.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- 5-4-5 버튼 -->
+      <div class="flex flex-row-reverse gap-2">
+        <button
+          v-if="workerChange"
+          @click="saveDriverAssignment"
+          class="w-36 h-12 bg-manager rounded-[10px] text-white hover:bg-[#0066CC] transition-colors">
+          배정완료
+        </button>
+        <button
+          @click="workerSelectModalClose"
+          class="w-36 h-12 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors">
+          닫기
+        </button>
+      </div>
+      </div>
     </div>
   </div>
 </template>
+
 <style scoped>
 .dateBox {
   padding: 5px 0;
@@ -1909,5 +2453,11 @@ tbody td {
 }
 .none {
   display: none;
+}
+.workerModal {
+  align-items: center;
+}
+.dayBox11{
+  align-items: end;
 }
 </style>
