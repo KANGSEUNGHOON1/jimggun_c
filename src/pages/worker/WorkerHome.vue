@@ -7,8 +7,24 @@
       <div class="workerHomeTab h-full">
         <!-- 탭 버튼 -->
         <div class="flex">
-          <h2 @click="activeTab = 'home'" class="flex-1 text-center cursor-pointer py-[14px] mx-auto text-xl border-b border-input" :class="activeTab === 'home' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#fff] text-[#767676]'">홈</h2>
-          <h2 @click="activeTab = 'todayWork'" class="flex-1 text-center cursor-pointer py-[14px] mx-auto text-xl border-b border-input" :class="activeTab === 'todayWork' ? ' bg-[#FF6F00] text-[#fff]' : 'bg-[#fff] text-[#767676]'">오늘 할 일</h2>
+          <h2
+            @click="activeTab = 'home'"
+            class="flex-1 text-center cursor-pointer py-[14px] mx-auto text-xl border-b"
+            :class="{
+              'bg-[#FF6F00] text-[#fff] border-b-[#FF6F00]': activeTab === 'home',
+              'bg-[#fff] text-[#767676] border-b-input': activeTab !== 'home',
+            }">
+            홈
+          </h2>
+          <h2
+            @click="activeTab = 'todayWork'"
+            class="flex-1 text-center cursor-pointer py-[14px] mx-auto text-xl border-b border-input"
+            :class="{
+              'bg-[#FF6F00] text-[#fff] border-b-[#FF6F00]': activeTab === 'todayWork',
+              'bg-[#fff] text-[#767676] border-b-input': activeTab !== 'todayWork',
+            }">
+            오늘 할 일
+          </h2>
         </div>
 
         <!--홈 탭 내용-->
@@ -196,47 +212,16 @@
             </div>
           </div>
           <!--네비게이션 바-->
-          <div class="fixed bottom-0 w-full max-w-[768px] py-3 px-[100px] bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex mx-auto justify-between items-center gap-20 overflow-hidden z-50">
-            <!-- 홈 아이콘 -->
-            <router-link to="/worker/worker-home">
-              <div class="flex flex-col items-center gap-2.5 w-14">
-                <img src="/images/kang/homeActive.png" alt="home" />
-                <div class="w-12 text-center text-[#FF6F00] text-base font-medium font-['Pretendard']">홈</div>
-              </div></router-link
-            >
-
-            <!-- 알림 아이콘 -->
-            <router-link to="/worker/worker-notice">
-              <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
-                <img src="/images/kang/notice.png" alt="notice" />
-                <div class="w-12 text-center text-[#111] text-base font-medium font-['Pretendard']">알림</div>
-              </div></router-link
-            >
-
-            <!-- 마이페이지 아이콘 -->
-            <router-link to="/worker/worker-mypage">
-              <div class="flex flex-col items-center gap-2.5 w-14">
-                <img src="/images/kang/mypage.png" alt="mypage" />
-                <div class="w-20 text-center text-[#111] text-base font-medium font-['Pretendard']">마이페이지</div>
-              </div></router-link
-            >
-
-            <!-- 환경설정 아이콘 -->
-            <router-link to="/worker/worker-settings">
-              <div class="flex flex-col items-center gap-2.5 w-14 cursor-pointer">
-                <img src="/images/kang/settings.png" alt="settings" />
-                <div class="w-full text-center text-[#111] text-base font-medium font-['Pretendard']">환경설정</div>
-              </div></router-link
-            >
-          </div>
+          <BottomNavBar />
         </section>
         <!-- ------------------------------------------------------------------------------------------------------------------------------------------------------ -->
-        <!--오늘 할 일 탭 내용-->
 
+        <!--오늘 할 일 탭 내용-->
         <section v-if="activeTab === 'todayWork'" class="todayWork-wrap h-full">
-          <div class="todayWorkMapWrap w-full" id="map" style="height: 100%; overflow: hidden; position: relative">
-            <!-- 리스트로 보기 버트 -->
-            <button class="list-view-btn absolute top-4 right-4 z-[100]" @click="handleListView">
+          <!-- 지도로 보기 영역 -->
+          <div v-if="!listViewMode" class="todayWorkMapWrap w-full" id="map" style="height: 100%; overflow: hidden; position: relative">
+            <!-- 리스트로 보기 버튼 -->
+            <button @click="listViewMode = true" class="list-view-btn absolute top-4 right-4 z-[100]">
               <img src="/images/hong/ListViewBtn.png" alt="리스트 보기" class="w-20 h-20" />
             </button>
             <!-- 숨김 마커 이미지들 -->
@@ -259,76 +244,115 @@
               <img src="/images/hong/marker10.png" alt="마커10" />
               <img src="/images/hong/marker10-1.png" alt="마커10-1" />
             </div>
-          </div>
-        </section>
-      </div>
-    </div>
-    <!-- 모달 -->
-    <div v-if="modalOpen && selectedPlace" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[768px] bg-white rounded-xl [box-shadow:0px_-4px_8px_rgba(0,0,0,0.1)] z-50 p-6">
-      <!-- 상단 정보 -->
-      <div class="flex justify-between mb-4">
-        <!-- 왼쪽 컬럼 -->
-        <div class="flex flex-col gap-4 w-1/2 text-sm text-black">
-          <div class="flex gap-2">
-            <span class="text-gray-500 w-20">예약번호</span>
-            <span class="text-base">{{ selectedPlace.reservationId }}</span>
-          </div>
-          <div class="flex gap-2">
-            <span class="text-gray-500 w-20">주소</span>
-            <span class="whitespace-pre-line text-base">{{ selectedPlace.address }}</span>
-          </div>
-          <div class="flex gap-2">
-            <span class="text-gray-500 w-20">수화물</span>
-            <span class="whitespace-pre-line text-base">{{ selectedPlace.clothes }}</span>
-          </div>
-        </div>
+            <!-- 모달 -->
+            <div v-if="modalOpen && selectedPlace" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[768px] bg-white rounded-xl [box-shadow:0px_-4px_8px_rgba(0,0,0,0.1)] z-50 p-6">
+              <!-- 상단 정보 -->
+              <div class="flex justify-between mb-4">
+                <!-- 왼쪽 컬럼 -->
+                <div class="flex flex-col gap-4 w-1/2 text-sm text-black">
+                  <div class="flex gap-2">
+                    <span class="text-gray-500 w-20">예약번호</span>
+                    <span class="text-base">{{ selectedPlace.reservationId }}</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="text-gray-500 w-20">주소</span>
+                    <span class="whitespace-pre-line text-base">{{ selectedPlace.address }}</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="text-gray-500 w-20">수화물</span>
+                    <span class="whitespace-pre-line text-base">{{ selectedPlace.clothes }}</span>
+                  </div>
+                </div>
 
-        <!-- 오른쪽 컬럼 -->
-        <div class="flex flex-col gap-4 w-1/2 text-sm text-black relative">
-          <div class="flex gap-2">
-            <span class="text-gray-500 w-20">이름</span>
-            <span class="text-base">{{ selectedPlace.name }}</span>
-          </div>
-          <div class="flex gap-2">
-            <span class="text-gray-500 w-20">전화</span>
-            <span class="text-base">{{ selectedPlace.phone }}</span>
-          </div>
-          <div class="flex gap-2">
-            <span class="text-gray-500 w-20">요청사항</span>
-            <span class="text-base">{{ selectedPlace.notes || "-" }}</span>
-          </div>
+                <!-- 오른쪽 컬럼 -->
+                <div class="flex flex-col gap-4 w-1/2 text-sm text-black relative">
+                  <div class="flex gap-2">
+                    <span class="text-gray-500 w-20">이름</span>
+                    <span class="text-base">{{ selectedPlace.name }}</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="text-gray-500 w-20">전화</span>
+                    <span class="text-base">{{ selectedPlace.phone }}</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="text-gray-500 w-20">요청사항</span>
+                    <span class="text-base">{{ selectedPlace.notes || "-" }}</span>
+                  </div>
 
-          <!-- 전체 사진 행 -->
-          <div class="flex w-full items-center gap-2">
-            <!-- 사진 라벨 (위 정렬 고정) -->
-            <span class="text-gray-500 w-20 shrink-0">사진</span>
+                  <!-- 전체 사진 행 -->
+                  <div class="flex w-full items-center gap-2">
+                    <!-- 사진 라벨 (위 정렬 고정) -->
+                    <span class="text-gray-500 w-20 shrink-0">사진</span>
 
-            <!-- 오른쪽 영역 (업로드박스 + 버튼) -->
-            <div class="flex justify-between w-full">
-              <!-- 왼쪽: 업로드 영역 -->
-              <div class="flex items-start gap-2">
-                <div v-if="!uploadedImage" @click="triggerFileInput" class="w-16 h-16 border border-dashed border-gray-400 rounded-[10px] flex items-center justify-center text-gray-400 text-xl cursor-pointer">+</div>
+                    <!-- 오른쪽 영역 (업로드박스 + 버튼) -->
+                    <div class="flex justify-between w-full">
+                      <!-- 왼쪽: 업로드 영역 -->
+                      <div class="flex items-start gap-2">
+                        <div v-if="!uploadedImage" @click="triggerFileInput" class="w-16 h-16 border border-dashed border-gray-400 rounded-[10px] flex items-center justify-center text-gray-400 text-xl cursor-pointer">+</div>
 
-                <img v-else :src="uploadedImage" @click="triggerFileInput" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" />
+                        <img v-else :src="uploadedImage" @click="triggerFileInput" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" />
 
-                <input type="file" ref="imageInput" accept="image/*" class="hidden" @change="handleImageUpload" />
-              </div>
+                        <input type="file" ref="imageInput" accept="image/*" class="hidden" @change="handleImageUpload" />
+                      </div>
 
-              <!-- 오른쪽: 픽업완료 버튼만 하단 정렬 -->
-              <div class="self-end">
-                <button
-                  :disabled="selectedPlace.completed && !overrideUpload"
-                  @click="handlePickupComplete"
-                  :class="['px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap', selectedPlace.completed && !overrideUpload ? 'bg-gray-300 text-white cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
-                  {{ selectedPlace.completed && !overrideUpload ? "픽업완료" : selectedPlace.completed && overrideUpload ? "수정하기" : "픽업완료" }}
-                </button>
+                      <!-- 오른쪽: 픽업완료 버튼만 하단 정렬 -->
+                      <div class="self-end">
+                        <button
+                          :disabled="selectedPlace.completed && !overrideUpload"
+                          @click="handlePickupComplete"
+                          :class="['px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap', selectedPlace.completed && !overrideUpload ? 'bg-gray-300 text-white cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
+                          {{ selectedPlace.completed && !overrideUpload ? "픽업완료" : selectedPlace.completed && overrideUpload ? "수정하기" : "픽업완료" }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 닫기 버튼 -->
+                  <button @click="modalOpen = false" class="text-gray-500 text-xl absolute top-0 right-0">✕</button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- 닫기 버튼 -->
-          <button @click="modalOpen = false" class="text-gray-500 text-xl absolute top-0 right-0">✕</button>
-        </div>
+          <!-- 리스트로 보기 영역 -->
+          <div v-else class="todayWorkListWrap w-full relative">
+            <button @click="switchToMapView" class="list-view-btn absolute top-4 right-4 z-[100]">
+              <img src="/images/hong/MapViewBtn.png" alt="지도 보기" class="w-20 h-20" />
+            </button>
+            <div class="list-view-wrap max-w-[768px] mx-auto px-8 py-9">
+              <!-- 상단 진행바 -->
+              <div class="w-5/6 flex justify-space-between">
+                <div class="text-[#767676] text-lg font-bold mb-2">10건만 더 하면 임무완료! 힘내세요!</div>
+                <div class="flex">
+                  <div class="ml-4 font-bold text-[#FF6F00] text-base">10</div>
+                  <div class="ml-4 font-bold text-[#767676] text-base">/ 20</div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mb-4">
+                <div class="w-5/6 h-2 bg-[#FDF3E7] rounded-full">
+                  <div class="h-2 bg-[#FF6F00] rounded-full" style="width: 50%"></div>
+                </div>
+              </div>
+
+              <!-- 리스트 전체 -->
+              <div class="flex flex-col gap-5">
+                <!-- 리스트들 -->
+                <div v-for="item in markerData" :key="item.reservationId" class="w-[700px] h-20 relative rounded-[10px] outline outline-1 outline-offset-[-1px] outline-orange-500 overflow-hidden">
+                  <div class="w-24 h-7 px-3 py-[5px] left-[585px] top-[25px] absolute bg-orange-500 rounded-[10px] inline-flex justify-center items-center gap-2.5 overflow-hidden">
+                    <div class="justify-start text-white text-sm font-semibold font-['Pretendard']">픽업완료</div>
+                  </div>
+                  <div class="w-80 h-14 left-[25px] top-[12px] absolute overflow-hidden">
+                    <div class="left-[132px] top-[11px] absolute justify-center text-neutral-900 text-sm font-medium font-['Pretendard']">{{ item.address }}</div>
+                    <div class="w-14 h-14 left-[52px] top-0 absolute rounded-[10px] border border-gray-200"></div>
+                    <div class="left-[68px] top-[4px] absolute justify-center text-gray-200 text-4xl font-medium font-['Pretendard']">+</div>
+                    <div class="w-7 h-7 left-0 top-[14px] absolute bg-orange-50 rounded-full"></div>
+                    <div class="w-3 h-6 left-[9px] top-[17px] absolute justify-start text-orange-500 text-xl font-semibold font-['Pretendard']">{{ item.reservationId }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -336,6 +360,7 @@
 
 <script setup>
 import { ref, onMounted, watch, nextTick, onUnmounted } from "vue";
+import BottomNavBar from "@/components/BottomNavBar.vue";
 
 // 탭
 const activeTab = ref("home");
@@ -349,6 +374,8 @@ const imageInput = ref(null);
 const uploadedImage = ref(null);
 // 이미지 재업로드 시
 const overrideUpload = ref(false);
+// 지도 / 리스트 전환
+const listViewMode = ref(false);
 
 // 지도 및 마커 상태
 let map = null;
@@ -360,7 +387,7 @@ const markerData = ref([
     lat: 35.8997,
     lng: 128.638,
     title: "대구국제공항",
-    reservationId: "01",
+    reservationId: "1",
     address: "대구 동구 공항로 221",
     name: "홍길동",
     phone: "010-1234-5678",
@@ -373,7 +400,7 @@ const markerData = ref([
     lat: 35.8797,
     lng: 128.6292,
     title: "동대구역",
-    reservationId: "02",
+    reservationId: "2",
     address: "대구 동구 동대구로 550",
     name: "이영희",
     phone: "010-2345-6789",
@@ -386,7 +413,7 @@ const markerData = ref([
     lat: 35.9428,
     lng: 128.5472,
     title: "칠곡그린빌3차",
-    reservationId: "03",
+    reservationId: "3",
     address: "대구 북구 구암로 55",
     name: "박철수",
     phone: "010-3456-7890",
@@ -398,7 +425,7 @@ const markerData = ref([
     lat: 35.8961,
     lng: 128.5904,
     title: "북구문화회관",
-    reservationId: "04",
+    reservationId: "4",
     address: "대구 북구 옥산로 15",
     name: "김민지",
     phone: "010-4567-8901",
@@ -410,7 +437,7 @@ const markerData = ref([
     lat: 35.8777,
     lng: 128.6002,
     title: "칠성시장 남문",
-    reservationId: "05",
+    reservationId: "5",
     address: "대구 북구 칠성남로 5",
     name: "최지훈",
     phone: "010-5678-9012",
@@ -422,7 +449,7 @@ const markerData = ref([
     lat: 35.8889,
     lng: 128.5943,
     title: "북구 건강센터",
-    reservationId: "06",
+    reservationId: "6",
     address: "대구 북구 팔달로 35",
     name: "정유진",
     phone: "010-6789-0123",
@@ -434,7 +461,7 @@ const markerData = ref([
     lat: 35.8944,
     lng: 128.6086,
     title: "침산동 사무실",
-    reservationId: "07",
+    reservationId: "7",
     address: "대구 북구 침산로 70",
     name: "장도현",
     phone: "010-7890-1234",
@@ -447,7 +474,7 @@ const markerData = ref([
     lat: 35.9022,
     lng: 128.589,
     title: "공원 앞 편의점",
-    reservationId: "08",
+    reservationId: "8",
     address: "대구 북구 동암로 123",
     name: "서지수",
     phone: "010-8901-2345",
@@ -459,7 +486,7 @@ const markerData = ref([
     lat: 35.9444,
     lng: 128.5673,
     title: "대구은행 칠곡지점",
-    reservationId: "09",
+    reservationId: "9",
     address: "대구 북구 칠곡중앙대로 77",
     name: "한상우",
     phone: "010-9012-3456",
@@ -568,6 +595,9 @@ const initMap = () => {
 
   clearMarkers();
   markerData.value.forEach(createMarker);
+
+  // 내 위치 마커 추가
+  addCurrentLocationMarker();
 };
 
 // 카카오맵 SDK 로딩 및 지도 실행
@@ -639,8 +669,40 @@ function handleImageUpload(event) {
   reader.readAsDataURL(file);
 }
 
+// 내 위치 마커 생성 함수
+function addCurrentLocationMarker() {
+  if (!navigator.geolocation) return;
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      const locPosition = new kakao.maps.LatLng(latitude, longitude);
+      const marker = new kakao.maps.Marker({
+        position: locPosition,
+        image: new kakao.maps.MarkerImage("/images/hong/mylocationImg.png", new kakao.maps.Size(70, 90)),
+        title: "내 위치",
+      });
+
+      marker.setMap(map);
+
+      // 지도 중심도 내 위치로 이동
+      map.setCenter(locPosition);
+    },
+    (error) => {
+      console.error("위치 정보를 가져올 수 없습니다.", error);
+    }
+  );
+}
+
+// 맵뷰로 되돌아가기
+function switchToMapView() {
+  listViewMode.value = false;
+  nextTick(() => {
+    initMap(); // 지도 다시 초기화
+  });
+}
+
 // 리스트로 보기 버튼
-function handleListView() {}
 </script>
 <style scoped>
 /* marker 숨김용 */
