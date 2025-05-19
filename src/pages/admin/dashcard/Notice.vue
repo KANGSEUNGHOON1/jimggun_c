@@ -13,7 +13,7 @@
         <img :src="notice.icon" :alt="notice.alt" class="w-5 h-5" />
         {{ notice.text }}
       </div>
-      <div class="text-gray mr-2 text-[13px]">{{ notice.date }}</div>
+      <div class="text-gray mr-2 text-[13px] font-light">{{ notice.date }}</div>
     </li>
   </ul>
 </template>

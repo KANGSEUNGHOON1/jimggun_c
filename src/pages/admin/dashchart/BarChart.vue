@@ -1,28 +1,26 @@
 <template>
-  <Bar
-    :data="chartData"
-    :options="chartOptions"
-    :plugins="[DataLabelsPlugin]" />
+  <Bar :data="chartData" :options="chartOptions" :plugins="[DataLabelsPlugin, customDashedGridPlugin]" />
 </template>
 
 <script setup>
-import { Bar } from "vue-chartjs";
+import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   BarElement,
   CategoryScale,
   LinearScale,
   Tooltip,
-  Legend,
-} from "chart.js";
-import DataLabelsPlugin from "chartjs-plugin-datalabels";
+  Legend
+} from 'chart.js'
+import DataLabelsPlugin from 'chartjs-plugin-datalabels'
 
-// ✅ Chart.js 핵심 요소 등록 (plugin은 글로벌 등록 ❌)
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+// Chart.js 필수 요소 등록
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
-const labels = ["활동 중 기사", "배차 완료", "배차 대기", "취소/지연 예약"];
-const values = [524, 308, 360, 440];
-const colors = ["#8B5CF6", "#A78BFA", "#C4B5FD", "#DC55F7"];
+// 데이터 정의
+const labels = ['활동 중 기사', '배차 완료', '배차 대기', '취소/지연 예약']
+const values = [524, 308, 360, 440]
+const colors = ['#8B5CF6', '#A78BFA', '#C4B5FD', '#DC55F7']
 
 const chartData = {
   labels,
@@ -31,31 +29,71 @@ const chartData = {
       data: values,
       backgroundColor: colors,
       borderRadius: 50,
-      barThickness: 15,
-    },
-  ],
-};
+      barThickness: 15
+    }
+  ]
+}
 
+// ✅ 점선 수동 렌더링 플러그인 정의
+const customDashedGridPlugin = {
+  id: 'customDashedGridPlugin',
+  beforeDraw(chart) {
+    const { ctx, chartArea, scales } = chart
+    const xAxis = scales.x
+
+    ctx.save()
+    ctx.strokeStyle = '#E5E7EB'
+    ctx.lineWidth = 1
+
+    xAxis.ticks.forEach((tick, index) => {
+      const value = tick.value
+      const x = xAxis.getPixelForTick(index)
+
+      // ✅ 0값은 실선, 나머지는 점선
+       if (value === 0) {
+        // ✅ 0값만 실선 + 두께 2px + 지정 색상
+        ctx.setLineDash([])
+        ctx.strokeStyle = '#505050'
+        
+        
+      } else {
+        // ✅ 나머지는 점선 + 연한 기본 선 (선택사항: 투명색이나 흐린 회색)
+        ctx.setLineDash([4, 4])
+        ctx.strokeStyle = '#E5E7EB' // 또는 '#ccc', '#ddd'
+        
+      }
+
+      ctx.beginPath()
+      ctx.moveTo(x, chartArea.top)
+      ctx.lineTo(x, chartArea.bottom)
+      ctx.stroke()
+    })
+
+    ctx.restore()
+  }
+}
+
+
+// 옵션 정의
 const chartOptions = {
-  indexAxis: "y", // 수평 막대
+  indexAxis: 'y', // 수평 막대
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     tooltip: { enabled: false },
     legend: { display: false },
-    // ✅ 여기서 datalabels 개별 등록
     datalabels: {
-      display: true, // 반드시 있어야 보임!
-      anchor: "end",
-      align: "end",
+      display: true,
+      anchor: 'end',
+      align: 'end',
       offset: 6,
-      color: "#505050", // 진회색 텍스트
+      color: '#505050',
       font: {
         size: 12,
-        weight: "medium",
+        weight: '500'
       },
-      formatter: (value) => `${value}건`,
-    },
+      formatter: (value) => `${value}건`
+    }
   },
   scales: {
     x: {
@@ -63,22 +101,36 @@ const chartOptions = {
       max: 600,
       ticks: {
         stepSize: 100,
-        color: "#999999",
-        font: { size: 12 },
+        color: '#999999',
+        font: { 
+          size: 11,
+          weight:'300',
+         }
       },
       grid: {
-        drawBorder: false,
-        color: (ctx) => (Number(ctx.tick.value) === 0 ? "#767676" : "#E5E5EC"),
-        lineWidth: (ctx) => (Number(ctx.tick.value) === 0 ? 2 : 1),
-        borderDash: (ctx) => (Number(ctx.tick.value) === 0 ? [] : [4, 4]),
+        display: false, // ✅ Chart.js 기본 grid 숨김
+        drawTicks: false,
+        drawBorder: false
       },
+      border: {
+        display: false
+      }
     },
     y: {
       ticks: {
-        display: false,
+        display: false
       },
-      grid: { display: false },
-    },
-  },
-};
+      grid: {
+        display: false
+      },
+      border: {
+        display: false,
+      }
+    }
+  }
+}
 </script>
+
+<style scoped>
+
+</style>

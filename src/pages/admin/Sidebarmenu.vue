@@ -43,7 +43,7 @@ const isHoveredOrActive = (item) => {
         alt="icon"
         class="w-6 h-6 object-contain"
       />
-      <span class="text-[15px] font-normal hover:font-semibold ">{{ item.label }}</span>
+      <span class="text-[15px] ">{{ item.label }}</span>
     </div>
   </div>
 </template>

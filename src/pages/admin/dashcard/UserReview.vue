@@ -18,13 +18,13 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <div class=""><img src="/images/jung/review5.png" alt=""></div>
-            <span class="font-semibold">{{ review.name }}</span>
+            <span class="font-medium">{{ review.name }}</span>
           </div>
         </div>
         <!-- 후기 내용 -->
          <div class="flex justify-between items-end">
-        <p class="text-[13px] mt-1.5  leading-snug">{{ review.content }}</p>
-        <span class="text-xs ">{{ review.date }}</span>
+        <p class="text-[13px] mt-1.5  leading-snug font-light">{{ review.content }}</p>
+        <span class="text-xs text-gray-200 font-light ">{{ review.date }}</span>
         </div>
       </div>
     </div>

@@ -8,9 +8,9 @@
       <div class="w-full h-full flex justify-between items-center">
         <!-- 텍스트 -->
         <div>
-          <div class="font-semibold text-gray text-sm">일 매출</div>
+          <div class="font-normal text-gray text-[15px]">일 매출</div>
           <div class="pt-0.5 flex items-center">
-            <div class="text-lg font-bold">12,580,000</div>
+            <div class="text-xl font-bold">12,580,000</div>
             <div class="font-bold ml-1">원</div>
             <div class="p-1 ml-3">
               <img src="/images/jung/up.png" alt="up"/>
@@ -21,18 +21,18 @@
         </div>
         <!-- 아이콘 -->
         <div
-          class="bg-[url('/images/jung/daypay.png')] w-11 h-11 bg-no-repeat bg-gray-100 rounded-full bg-center"></div>
+          class="bg-[url('/images/jung/daypay.png')] bg-[calc(50%+2px)_center] w-11 h-11 bg-no-repeat bg-gray-100 rounded-full "></div>
       </div>
     </section>
     <section class="dash-card p-6">
       <div class="w-full h-full flex justify-between items-center">
         <!-- 텍스트 -->
         <div>
-          <div class="font-semibold text-gray text-sm">
+          <div class="font-normal text-gray text-[15px]">
             비회원 예약 수 / 총 예약 수
           </div>
           <div class="pt-0.5 flex items-center">
-            <div class="text-lg font-bold">95 / 342</div>
+            <div class="text-xl font-bold">95 / 342</div>
             <div class="p-1 ml-3">
               <img src="/images/jung/up.png" alt="up" />
             </div>
@@ -49,9 +49,9 @@
       <div class="w-full h-full flex justify-between items-center">
         <!-- 텍스트 -->
         <div>
-          <div class="font-semibold text-gray text-sm">오늘 방문자 수</div>
+          <div class="font-normal text-gray text-[15px]">오늘 방문자 수</div>
           <div class="pt-0.5 flex items-center">
-            <div class="text-lg font-bold">2,458</div>
+            <div class="text-xl font-bold">2,458</div>
             <div class="p-1 ml-3">
               <img src="/images/jung/up.png" alt="up" />
             </div>
@@ -68,9 +68,9 @@
       <div class="w-full h-full flex justify-between items-center">
         <!-- 텍스트 -->
         <div>
-          <div class="font-semibold text-gray text-sm">오늘 회원가입 수</div>
+          <div class="font-normal text-gray text-[15px]">오늘 회원가입 수</div>
           <div class="pt-0.5 flex items-center">
-            <div class="text-lg font-bold">187</div>
+            <div class="text-xl font-bold">187</div>
             <div class="p-1 ml-3">
               <img src="/images/jung/down.png" alt="up" />
             </div>
@@ -155,7 +155,7 @@
       </div>
 
       <div
-        class="flex justify-center gap-4 mt-4 text-xs text-gray-300 font-nomal">
+        class="flex justify-center gap-4 mt-4 text-xs text-gray-300 font-normal">
         <div
           v-for="(label, i) in legends"
           :key="i"
@@ -190,6 +190,7 @@
         </div>
       </div>
       <div class="dash-box"><alarm /></div>
+
     </section>
 
     <!-- 네 번째 행 -->
@@ -197,7 +198,7 @@
       <div class="flex items-center justify-between pr-6">
         <div class="dash-title">고객 소통 현황</div>
  <div class="flex gap-1 items-center cursor-pointer">
-          <div class="text-gray-200 text-xs">전체보기</div>
+          <div class="text-gray text-xs">전체보기</div>
           <img src="/images/jung/lefticon.png" alt="화살" />
         </div>
       </div>
@@ -207,7 +208,7 @@
       <div class="flex items-center justify-between pr-6">
         <div class="dash-title">공지 및 알림</div>
         <div class="flex gap-1 items-center cursor-pointer">
-          <div class="text-gray-200 text-xs">전체보기</div>
+          <div class="text-gray text-xs">전체보기</div>
           <img src="/images/jung/lefticon.png" alt="화살" />
         </div>
       </div>
