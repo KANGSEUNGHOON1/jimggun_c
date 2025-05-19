@@ -118,13 +118,11 @@
             <div class="text-[#767676] text-lg font-medium font-['Pretendard']">0</div>
           </div>
           <!-- 인센티브 -->
-          <div class="flex flex-col items-end justify-center bg-white rounded-[10px] p1-4 py-5">
-            <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1 text-right pr-5">
-              이 달의 추가수당
-            </div>
-            <div
-              class="text-[#FF6F00] text-lg font-medium font-['Pretendard'] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] py-2 w-[180px] text-right pr-5"
-            >
+          <div
+            class="flex flex-col items-center justify-center w-[220px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5 ml-5"
+          >
+            <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1">이 달의 추가 수당</div>
+            <div class="text-[#FF6F00] text-lg font-medium font-['Pretendard']">
               ₩ {{ totalMonthlyPay.toLocaleString() }}
             </div>
           </div>
@@ -138,25 +136,17 @@
 
       <!-- 근무 통계 차트 -->
       <div class="w-full max-w-[730px] mx-auto mt-8 mb-[140px] py-6 px-4 bg-white rounded-lg shadow-sm">
-        <h2 class="text-[#111] text-xl font-medium font-['Pretendard'] mb-6">근무 통계</h2>
+        <h2 class="text-[#111] text-xl font-medium font-['Pretendard'] mb-6">추가 수당 통계</h2>
 
         <!-- 차트 컨테이너 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 w-full">
           <!-- 주간 근무 시간 차트 -->
           <div class="bg-white p-4 rounded-lg border border-[#E5E5EC]">
-            <h3 class="text-[#505050] text-base font-medium mb-4">주간 근무 현황</h3>
+            <h3 class="text-[#505050] text-base font-medium mb-4">추가 수당 비교</h3>
             <div v-if="weeklyChartData.datasets[0].data.some((value) => value > 0)" class="h-[250px]">
               <Bar :data="weeklyChartData" :options="weeklyChartOptions" />
             </div>
-            <div v-else class="h-[250px] flex items-center justify-center text-[#767676]">데이터가 없습니다</div>
-          </div>
 
-          <!-- 시급 추이 차트 -->
-          <div class="bg-white p-4 rounded-lg border border-[#E5E5EC]">
-            <h3 class="text-[#505050] text-base font-medium mb-4">추가 수당 추이</h3>
-            <div v-if="payChartData.datasets[0].data.some((value) => value !== null)" class="h-[250px]">
-              <Line :data="payChartData" :options="payChartOptions" />
-            </div>
             <div v-else class="h-[250px] flex items-center justify-center text-[#767676]">데이터가 없습니다</div>
           </div>
         </div>
@@ -362,6 +352,24 @@ const totalMonthlyPay = computed(() => {
     .reduce((sum, [_, info]) => sum + info.pay, 0);
 });
 
+// 지난달 합계 계산
+function getWeeklyPayByMonth(year, month) {
+  const weeklyData = [0, 0, 0, 0, 0];
+
+  Object.entries(workData.value)
+    .filter(([date]) => {
+      const [y, m] = date.split('-').map(Number);
+      return y === year && m === month;
+    })
+    .forEach(([date, info]) => {
+      const day = parseInt(date.split('-')[2]);
+      const weekIndex = Math.floor((day - 1) / 7);
+      weeklyData[weekIndex] += info.pay;
+    });
+
+  return weeklyData;
+}
+
 // 월 변경 함수
 function goPrev() {
   if (currentPage.value.month === 1) {
@@ -512,65 +520,39 @@ const markerData = [
   },
 ];
 
+// 존재하지 않는 주차 값
+function padToFiveWeeks(data) {
+  while (data.length < 5) data.push(0);
+  return data;
+}
+
 // 주간 차트 데이터 계산
 const weeklyChartData = computed(() => {
-  const year = currentPage.value.year;
-  const month = currentPage.value.month;
-  const weeks = ['1주차', '2주차', '3주차', '4주차', '5주차'];
-  const weeklyData = [0, 0, 0, 0, 0];
+  const currentYear = currentPage.value.year;
+  const currentMonth = currentPage.value.month;
 
-  Object.entries(workData.value)
-    .filter(([date]) => {
-      const [y, m] = date.split('-').map(Number);
-      return y === year && m === month;
-    })
-    .forEach(([date, info]) => {
-      const day = parseInt(date.split('-')[2]);
-      const weekIndex = Math.floor((day - 1) / 7);
-      weeklyData[weekIndex] += info.pay;
-    });
+  const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+  const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+
+  const currentWeekly = padToFiveWeeks(getWeeklyPayByMonth(currentYear, currentMonth));
+  const prevWeekly = padToFiveWeeks(getWeeklyPayByMonth(prevYear, prevMonth));
+
+  const weeks = ['1주차', '2주차', '3주차', '4주차', '5주차'];
 
   return {
     labels: weeks,
     datasets: [
       {
-        label: '주간 수입',
-        data: weeklyData,
-        backgroundColor: '#FF6F00',
-
+        label: `${prevYear}년 ${prevMonth}월`,
+        data: prevWeekly,
+        backgroundColor: prevWeekly.map((val, i) => (val === 0 ? 'rgba(229, 229, 236, 0.2)' : '#FDF3E7')),
         borderRadius: 5,
       },
-    ],
-  };
-});
-
-// 시급 추이 차트 데이터 계산
-const payChartData = computed(() => {
-  const year = currentPage.value.year;
-  const month = currentPage.value.month;
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  const payData = Array(31).fill(null);
-
-  Object.entries(workData.value)
-    .filter(([date]) => {
-      const [y, m] = date.split('-').map(Number);
-      return y === year && m === month;
-    })
-    .forEach(([date, info]) => {
-      const day = parseInt(date.split('-')[2]);
-      payData[day - 1] = info.pay;
-    });
-
-  return {
-    labels: days,
-    datasets: [
       {
-        label: '일일 수입',
-        data: payData,
-        borderColor: 'rgba(69, 166, 255, 0.8)',
-        backgroundColor: '#4299E1',
-        tension: 0.4,
-        fill: true,
+        label: `${currentYear}년 ${currentMonth}월`,
+        data: currentWeekly,
+        backgroundColor: '#FF6F00',
+        borderRadius: 5,
       },
     ],
   };
@@ -582,30 +564,8 @@ const weeklyChartOptions = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: (context) => `₩ ${context.raw.toLocaleString()}`,
-      },
-    },
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      ticks: {
-        callback: (value) => `₩ ${value.toLocaleString()}`,
-      },
-    },
-  },
-};
-
-const payChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
+      display: true,
+      position: 'bottom',
     },
     tooltip: {
       callbacks: {
