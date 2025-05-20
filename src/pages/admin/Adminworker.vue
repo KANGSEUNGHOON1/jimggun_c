@@ -39,39 +39,59 @@
     </div>
 
     <!-- 테이블 -->
-    <div class="overflow-auto">
-      <!-- 테이블 헤더 -->
-      <div
-        class="grid grid-cols-[150px_150px_200px_300px_150px_150px_150px_150px_150px] pl-8 text-center rounded-tl-lg rounded-tr-lg border-b border-[#111] bg-[#F9FAFB] text-[13px] font-semibold text-[#767676] h-12 px-2 items-center"
-      >
-        <div>기사 ID</div>
-        <div>기사명</div>
-        <div>연락처</div>
-        <div>주소</div>
-        <div>입사일자</div>
-        <div>현재상태</div>
-        <div>직급</div>
-        <div>배정지역</div>
-        <div>액션</div>
-      </div>
+    <table class="w-full text-sm text-center shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+      <colgroup>
+        <col style="width: 50px" />
+        <col style="width: 150px" />
+        <col style="width: 150px" />
+        <col style="width: 200px" />
+        <col style="width: 300px" />
+        <col style="width: 150px" />
+        <col style="width: 150px" />
+        <col style="width: 150px" />
+        <col style="width: 150px" />
+        <col style="width: 150px" />
+      </colgroup>
+      <thead class="bg-[#F9FAFB] text-[#767676] font-semibold h-12 border-b border-[#111]">
+        <tr>
+          <th class="rounded-tl-lg">
+            <input v-if="isEditMode" type="checkbox" :checked="isAllSelected" @change="toggleSelectAll" />
+          </th>
+          <th>기사 ID</th>
+          <th>기사명</th>
+          <th>연락처</th>
+          <th>주소</th>
+          <th>입사일자</th>
+          <th>현재상태</th>
+          <th>직급</th>
+          <th>배정지역</th>
+          <th class="rounded-tr-lg">액션</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="driver in paginatedDrivers"
+          :key="driver.workerId"
+          class="h-14 border-b bg-white border-[#111] text-[#111]"
+        >
+          <td class="text-center">
+            <input v-if="isEditMode" type="checkbox" :value="driver.workerId" v-model="selectedDrivers" />
+          </td>
+          <td>{{ driver.workerId }}</td>
+          <td>{{ driver.workerName }}</td>
+          <td>{{ driver.workerPhone }}</td>
+          <td>{{ driver.workerAddress }}</td>
+          <td>{{ driver.joinDate }}</td>
+          <td>{{ driver.status }}</td>
+          <td>{{ driver.rank }}</td>
+          <td>{{ driver.region }}</td>
+          <td>
+            <button @click="openDetail(driver)">상세</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <!-- 테이블 내용 -->
-      <div
-        v-for="driver in paginatedDrivers"
-        :key="driver.workerId"
-        class="grid grid-cols-[150px_150px_200px_300px_150px_150px_150px_150px_150px] pl-8 text-center border-b border-[#111] bg-[#fff] h-14 px-2 items-center text-[13px] font-semibold text-[#111]"
-      >
-        <div>{{ driver.workerId }}</div>
-        <div>{{ driver.workerName }}</div>
-        <div>{{ driver.workerPhone }}</div>
-        <div class="text-sm font-medium">{{ driver.workerAddress }}</div>
-        <div>{{ driver.joinDate }}</div>
-        <div>{{ driver.status }}</div>
-        <div>{{ driver.rank }}</div>
-        <div>{{ driver.region }}</div>
-        <div>{{ driver.action }}</div>
-      </div>
-    </div>
     <!-- 페이지네이션 영역 -->
     <div class="flex justify-center items-center gap-2 py-4 bg-[#fff] rounded-bl-lg rounded-br-lg">
       <!-- 이전 버튼 -->
@@ -93,15 +113,182 @@
       </button>
     </div>
     <!-- 버튼 영역 -->
-    <div class="flex justify-end gap-4 mt-6 mb-10">
-      <button class="w-36 h-12 bg-zinc-300 rounded-[10px] text-base font-medium">신규기사추가</button>
-      <button class="w-36 h-12 bg-zinc-300 rounded-[10px] text-base font-medium">기사목록수정</button>
+    <div class="flex justify-between mt-6 mb-10 items-center">
+      <!-- 삭제 버튼 (선택된 항목이 있을 때만 보임) -->
+      <button
+        v-if="isEditMode && selectedDrivers.length > 0"
+        @click="deleteSelectedDrivers"
+        class="h-12 bg-red-500 text-white px-6 rounded-[10px] text-base font-medium"
+      >
+        선택 삭제
+      </button>
+
+      <div class="flex gap-4 ml-auto">
+        <!-- 수정 모드 아닐 때 -->
+        <button
+          v-if="!isEditMode"
+          class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white text-base font-medium"
+          @click="isModalOpen = true"
+        >
+          신규기사추가
+        </button>
+        <button
+          v-if="!isEditMode"
+          class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white text-base font-medium"
+          @click="isEditMode = true"
+        >
+          기사목록수정
+        </button>
+
+        <!-- 수정 모드일 때 -->
+        <template v-else>
+          <button class="w-36 h-12 bg-manager text-white rounded-[10px] text-base font-medium" @click="saveChanges">
+            저장
+          </button>
+          <button
+            class="w-36 h-12 bg-white border text-[#111] rounded-[10px] text-base font-medium"
+            @click="cancelEdit"
+          >
+            취소
+          </button>
+        </template>
+      </div>
+    </div>
+  </div>
+  <!-- 기사 등록 모달 -->
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+    @click="isModalOpen = false"
+  >
+    <div class="bg-white rounded-xl shadow-lg" @click.stop>
+      <h2 class="text-xl font-bold px-[30px] py-[30px] border-b border-[#E5E5EC]">신규 기사 추가</h2>
+      <div class="flex">
+        <!-- 왼쪽 사진 업로드 영역 -->
+        <div
+          class="w-48 h-48 ml-[60px] mr-[90px] mt-[150px] mb-[200px] relative rounded-[10px] cursor-pointer"
+          @click="triggerFileInput"
+        >
+          <!-- 업로드 안 된 상태 -->
+          <template v-if="!newDriver.photo">
+            <div
+              class="left-[67px] top-[40px] absolute justify-center text-gray-200 text-8xl font-medium font-['Pretendard']"
+            >
+              +
+            </div>
+            <div class="w-[200px] h-[200px] left-0 top-0 absolute rounded-[10px] border border-gray-200"></div>
+          </template>
+
+          <!-- 미리보기 -->
+          <template v-else>
+            <img :src="newDriver.photo" class="w-48 h-48 object-cover rounded-[10px]" />
+          </template>
+
+          <!-- 숨겨진 input[type="file"] -->
+          <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="onImageUpload" />
+        </div>
+        <!--오른쪽 영역-->
+        <div class="ml-1 mr-[150px] mt-[67px]">
+          <div class="grid grid-cols-1 gap-4">
+            <div class="flex items-center mb-2">
+              <span class="w-24 text-[16px] text-[#505050]">기사 ID</span
+              ><input
+                v-model="newDriver.workerId"
+                type="text"
+                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
+              />
+            </div>
+            <div class="flex items-center mb-2">
+              <span class="w-24 text-[16px] text-[#505050]">이름</span
+              ><input
+                v-model="newDriver.workerName"
+                type="text"
+                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
+              />
+            </div>
+            <div class="flex items-center mb-2">
+              <span class="w-24 text-[16px] text-[#505050]">연락처</span
+              ><input
+                v-model="newDriver.workerPhone"
+                type="text"
+                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
+              />
+            </div>
+            <div class="flex items-center mb-2">
+              <span class="w-24 text-[16px] text-[#505050]">주소</span
+              ><input
+                v-model="newDriver.workerAddress"
+                type="text"
+                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
+              />
+            </div>
+            <div class="flex items-center mb-2">
+              <span class="w-24 text-[16px] text-[#505050]">입사일자</span
+              ><input
+                v-model="newDriver.joinDate"
+                type="date"
+                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
+              />
+            </div>
+
+            <!-- <select v-model="newDriver.region" class="input">
+              <option value="배차하기">배차하기</option>
+              <option value="배차완료">배차완료</option>
+            </select> -->
+          </div>
+
+          <div class="flex justify-end gap-2 mt-6">
+            <button class="px-4 py-2 rounded bg-manager text-white" @click="addNewDriver">신규등록</button>
+            <button class="px-6 py-2 rounded bg-white border" @click="isModalOpen = false">취소</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 상세보기 모달 -->
+  <div
+    v-if="isDetailModalOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    @click="isDetailModalOpen = false"
+  >
+    <div class="bg-white w-[500px] p-6 rounded-xl" @click.stop>
+      <h2 class="text-xl font-bold mb-4">기사 상세 정보</h2>
+      <div class="grid gap-2 text-sm">
+        <div><strong>ID:</strong> {{ selectedDriver.workerId }}</div>
+        <div><strong>이름:</strong> {{ selectedDriver.workerName }}</div>
+        <div><strong>연락처:</strong> {{ selectedDriver.workerPhone }}</div>
+        <div><strong>주소:</strong> {{ selectedDriver.workerAddress }}</div>
+        <div><strong>입사일:</strong> {{ selectedDriver.joinDate }}</div>
+        <div><strong>직급:</strong> {{ selectedDriver.rank }}</div>
+        <div><strong>지역:</strong> {{ selectedDriver.region }}</div>
+        <div><strong>상태:</strong> {{ selectedDriver.status }}</div>
+        <div>
+          <strong>사진:</strong><br />
+          <img :src="selectedDriver.photo" class="w-32 h-32 object-cover mt-2 rounded" v-if="selectedDriver.photo" />
+        </div>
+        <div>
+          <strong>메모:</strong>
+          <textarea
+            v-model="selectedDriver.memo"
+            rows="3"
+            class="w-full border border-zinc-300 rounded mt-1 p-2 text-sm"
+            placeholder="기사에 대한 메모를 입력하세요"
+          ></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <button class="px-4 py-2 bg-gray-300 rounded" @click="isDetailModalOpen = false">닫기</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue';
+
+const isEditMode = ref(false);
+const selectedDrivers = ref([]);
 
 // 더미데이터
 
@@ -492,4 +679,122 @@ const filteredDrivers = computed(() => {
 watch([searchKeyword, selectedRank, selectedRegion], () => {
   currentPage.value = 1;
 });
+
+// 삭제 저장 취소 버튼
+function deleteSelectedDrivers() {
+  drivers.value = drivers.value.filter((driver) => !selectedDrivers.value.includes(driver.workerId));
+  selectedDrivers.value = [];
+}
+
+function saveChanges() {
+  isEditMode.value = false;
+  selectedDrivers.value = [];
+}
+
+function cancelEdit() {
+  isEditMode.value = false;
+  selectedDrivers.value = [];
+}
+
+// 전체 선택 기능
+const isAllSelected = computed(() => {
+  const currentIds = paginatedDrivers.value.map((d) => d.workerId);
+  return currentIds.length > 0 && currentIds.every((id) => selectedDrivers.value.includes(id));
+});
+
+function toggleSelectAll(event) {
+  const isChecked = event.target.checked;
+  const currentPageIds = paginatedDrivers.value.map((d) => d.workerId);
+
+  if (isChecked) {
+    // 현재 페이지의 기사들 중 아직 선택되지 않은 것만 추가
+    selectedDrivers.value = Array.from(new Set([...selectedDrivers.value, ...currentPageIds]));
+  } else {
+    // 현재 페이지 기사들만 제거
+    selectedDrivers.value = selectedDrivers.value.filter((id) => !currentPageIds.includes(id));
+  }
+}
+
+//모달
+// 모달 열기 상태
+const isModalOpen = ref(false);
+
+// 신규 기사 입력 값
+const newDriver = ref({
+  workerId: '',
+  workerName: '',
+  workerPhone: '',
+  workerAddress: '',
+  joinDate: '',
+  status: '활동중',
+  rank: '일반',
+  region: '배차하기',
+  photo: '', // 사진 URL
+  memo: '',
+  action: '상세',
+});
+// 기사 추가 함수
+function addNewDriver() {
+  if (
+    newDriver.value.workerId &&
+    newDriver.value.workerName &&
+    newDriver.value.workerPhone &&
+    newDriver.value.workerAddress &&
+    newDriver.value.joinDate
+  ) {
+    drivers.value.unshift({ ...newDriver.value });
+    isModalOpen.value = false;
+
+    // 초기화
+    newDriver.value = {
+      workerId: '',
+      workerName: '',
+      workerPhone: '',
+      workerAddress: '',
+      joinDate: '',
+      status: '활동중',
+      rank: '일반',
+      region: '배차하기',
+      action: '상세',
+    };
+  } else {
+    alert('모든 필드를 입력해 주세요.');
+  }
+}
+
+// 이미지 업로드
+// 숨겨진 input 엘리먼트를 참조
+const fileInputRef = ref(null);
+
+// 클릭 시 input[type="file"] 실행
+function triggerFileInput() {
+  fileInputRef.value?.click();
+}
+
+// 파일 업로드 처리 함수
+function onImageUpload(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      newDriver.value.photo = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// 상세
+const selectedDriver = ref(null);
+const isDetailModalOpen = ref(false);
+
+function openDetail(driver) {
+  selectedDriver.value = driver;
+  isDetailModalOpen.value = true;
+}
 </script>
+<style setup>
+td,
+th {
+  vertical-align: middle;
+}
+</style>
