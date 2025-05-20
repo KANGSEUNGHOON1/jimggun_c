@@ -12,4 +12,50 @@
   .dash-box{
     @apply px-6 pb-6 
   }
+   .shadow-btn {
+    @apply shadow-none; /* Tailwind 기본값 제거 (옵션) */
+    box-shadow:
+     1px 1px 2px rgba(17, 17, 17, 0.06),
+     -1px 0 4px rgba(255, 255, 255, 0.25),
+     -3px -1px 5px rgba(255, 255, 255, 0.25),
+     -3px -1px 10px rgba(232, 235, 242),
+     -3px -1px 5px rgba(232, 235, 242),
+     2px 4px 4px rgba(232, 235, 242),
+     inset -1px -1px 1px rgba(255, 255, 255, 0.1), 
+    inset 1px 1px 1px rgba(255, 255, 255)
+  }
+  .shadow-btnBox {
+    @apply shadow-none; /* Tailwind 기본값 제거 (옵션) */
+    box-shadow: 
+    -1px -1px 1px rgba(255, 255, 255, 0.25),
+    1px 1px 1px rgba(255, 255, 255, 0.25),
+    2px 4px 5px rgba(255, 255, 255, 0.1),
+    2px 4px 4px rgba(255, 255, 255, 0.25),
+    inset -1px -1px 1px rgba(232, 235, 242, 0.5), 
+    inset 2px 2px 2px rgba(17, 17, 17, 0.02), 
+    inset 2px 2px 2px rgba(17, 17, 17, 0.02), 
+    inset 3px 3px 5px rgba(232, 235, 242);
+  }
+  .shadowDark-btn {
+    @apply shadow-none; /* Tailwind 기본값 제거 (옵션) */
+    box-shadow:
+     -1px 1px 2px rgba(30, 32, 49, 0.1),
+     3px -1px 5px rgba(30, 32, 49),
+     3px -1px 10px rgba(30, 32, 49, 0.5),
+     3px -1px 5px rgba(30, 32, 49, 0.03),
+     -2px 4px 4px rgba(30, 32, 49, 0.5),
+     -2px 4px 4px rgba(17, 17, 17, 0.5),
+     inset 1px -1px 5px rgba(90, 94, 109, 0.1), 
+     inset 1px -1px 1px rgba(90, 94, 109, 0.1), 
+     inset -1px 1px 1px rgba(90, 94, 109,0.5); 
+  }
+  .shadowDark-btnBox {
+    @apply shadow-none; /* Tailwind 기본값 제거 (옵션) */
+    box-shadow: 
+    -1px 1px 1px rgba(255, 255, 255, 0.03),
+    inset 1px -1px 1px rgba(30, 32, 49, 0.1), 
+    inset -2px 2px 2px rgba(30, 32, 49, 0.5), 
+    inset -2px 2px 10px rgba(17, 17, 17, 0.5), 
+    inset -3px 3px 5px rgba(30, 32, 49, 0.5); 
+  }
 }
