@@ -119,7 +119,7 @@ const chartOptions = computed(() => ({
         font: {
           size: 11,
         },
-        color: isDark.value ? "#9FA3B5" : "#767676",
+        color: isDark.value ? "#6E7284" : "#767676",
       },
     },
     tooltip: {
@@ -132,7 +132,7 @@ const chartOptions = computed(() => ({
     x: {
       grid: {
         display: true,
-        color: isDark.value ? "#3f415a" : "#E5E7EB",
+        color: isDark.value ? "#3F415A" : "#E5E7EB",
         drawBorder: false,
         drawOnChartArea: false,
       },
@@ -140,14 +140,14 @@ const chartOptions = computed(() => ({
         display: false,
       },
       ticks: {
-        color: isDark.value ? "#c0c3d1" : "#767676",
+        color: isDark.value ? "#9FA3B5" : "#767676",
       },
     },
     y: {
       beginAtZero: true,
       grid: {
         drawBorder: false,
-        color: isDark.value ? "#3f415a" : "#E5E7EB",
+        color: isDark.value ? "#3F415A" : "#E5E7EB",
       },
       border: {
         display: false,
@@ -156,7 +156,7 @@ const chartOptions = computed(() => ({
         stepSize: 100,
         callback: (value) => `${value}`,
         font: { size: 12 },
-        color: isDark.value ? "#c0c3d1" : "#767676",
+        color: isDark.value ? "#9FA3B5" : "#767676",
       },
     },
   },

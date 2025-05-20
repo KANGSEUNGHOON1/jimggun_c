@@ -47,6 +47,8 @@ export default {
           font: {
             DEFAULT: "#C0C3D1",
             100:'#9FA3B5',
+            200:'#6E7284',
+            300:'#5A5E6D',
           },
         },
       },

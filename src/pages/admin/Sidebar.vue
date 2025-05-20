@@ -24,6 +24,7 @@
       title="운영 현황"
       :items="[{ label: '대시 보드',
       icon: '/images/jung/sbdash.png',
+      darkIcon: '/images/jung/sbdash-dark.png',
       iconHover: '/images/jung/hdash.png',
       route: '/admin/dashboard' }]" />
 
@@ -32,10 +33,12 @@
       :items="[
         { label: '예약 관리',
          icon: '/images/jung/sbres.png',
+         darkIcon: '/images/jung/sbres-dark.png',
          iconHover: '/images/jung/hres.png',
          route: '/admin/adminreservation' },
         { label: '기사 관리',
         icon: '/images/jung/sbworker.png',
+        darkIcon: '/images/jung/sbworker-dark.png',
         iconHover: '/images/jung/hworker.png',
          route: '/admin/adminworker' },
       ]" />
@@ -44,24 +47,29 @@
       title="정산 운영"
       :items="[{ label: '결제 관리', 
       icon: '/images/jung/sbcard.png',
+      darkIcon: '/images/jung/sbcard-dark.png',
       iconHover: '/images/jung/hcard.png',},
        { label: '프로모션',
        icon: '/images/jung/sbpromotion.png',
+       darkIcon: '/images/jung/sbpromotion-dark.png',
        iconHover: '/images/jung/hpromotion.png', }]" />
 
     <Sidebarmenu
       title="고객 운영"
       :items="[{ label: '사용자 관리',
       icon: '/images/jung/sbuser.png',
+      darkIcon: '/images/jung/sbuser-dark.png',
     iconHover: '/images/jung/huser.png', },
        { label: '리뷰 관리',
         icon: '/images/jung/sbreview.png',
+        darkIcon: '/images/jung/sbreview-dark.png',
         iconHover: '/images/jung/hreview.png' }]" />
 
     <Sidebarmenu
       title="시스템 운영"
       :items="[{ label: '관리자 설정',
       icon: '/images/jung/sbsetting.png',
+      darkIcon: '/images/jung/sbsetting-dark.png',
       iconHover: '/images/jung/hsetting.png' }]" />
   </div>
 </template>

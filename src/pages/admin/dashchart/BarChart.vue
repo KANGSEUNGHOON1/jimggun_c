@@ -1,5 +1,11 @@
 <template>
-  <Bar :data="chartData" :options="chartOptions" :plugins="[DataLabelsPlugin, customDashedGridPlugin]" :key="isDark" />
+  <Bar
+  :data="chartData"
+  :options="chartOptions"
+  :plugins="[DataLabelsPlugin, dashedPlugin]"
+  :key="isDark"
+/>
+
 </template>
 
 <script setup>
@@ -50,32 +56,26 @@ const chartData = {
 }
 
 //  점선 수동 렌더링 플러그인 정의
-const customDashedGridPlugin = {
+// computed로 다크모드 대응되는 dashed plugin 생성
+const dashedPlugin = computed(() => ({
   id: 'customDashedGridPlugin',
   beforeDraw(chart) {
     const { ctx, chartArea, scales } = chart
     const xAxis = scales.x
 
     ctx.save()
-    ctx.strokeStyle =isDark.value ? '#3F415A':'#E5E7EB'
     ctx.lineWidth = 1
 
     xAxis.ticks.forEach((tick, index) => {
       const value = tick.value
       const x = xAxis.getPixelForTick(index)
 
-      //  0값은 실선, 나머지는 점선
-       if (value === 0) {
-        // 0값만 실선 + 두께 2px + 지정 색상
+      if (value === 0) {
         ctx.setLineDash([])
-        ctx.strokeStyle = isDark.value ? '#C0C3D1':'#505050'
-        
-        
+        ctx.strokeStyle = isDark.value ? '#C0C3D1' : '#505050'
       } else {
-        //  나머지는 점선 + 연한 기본 선 (선택사항: 투명색이나 흐린 회색)
         ctx.setLineDash([4, 4])
-        ctx.strokeStyle =isDark.value ? '#3F415A':'#E5E7EB' // 또는 '#ccc', '#ddd'
-        
+        ctx.strokeStyle = isDark.value ? '#3F415A' : '#E5E7EB'
       }
 
       ctx.beginPath()
@@ -86,12 +86,11 @@ const customDashedGridPlugin = {
 
     ctx.restore()
   }
-}
+}))
 
-
-// 옵션 정의
-const chartOptions = {
-  indexAxis: 'y', // 수평 막대
+// chartOptions도 computed로 변경
+const chartOptions = computed(() => ({
+  indexAxis: 'y',
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -102,7 +101,7 @@ const chartOptions = {
       anchor: 'end',
       align: 'end',
       offset: 6,
-      color: isDark.value ? '#9FA3B5':'#505050',
+      color: isDark.value ? '#9FA3B5' : '#505050',
       font: {
         size: 12,
         weight: '500'
@@ -116,14 +115,11 @@ const chartOptions = {
       max: 600,
       ticks: {
         stepSize: 100,
-        color:isDark.value ? '#3F415A': '#999999',
-        font: { 
-          size: 11,
-          weight:'300',
-         }
+        color: isDark.value ? '#5A5E6D' : '#999999',
+        font: { size: 11, weight: '300' }
       },
       grid: {
-        display: false, // ✅ Chart.js 기본 grid 숨김
+        display: false,
         drawTicks: false,
         drawBorder: false
       },
@@ -132,18 +128,13 @@ const chartOptions = {
       }
     },
     y: {
-      ticks: {
-        display: false
-      },
-      grid: {
-        display: false
-      },
-      border: {
-        display: false,
-      }
+      ticks: { display: false },
+      grid: { display: false },
+      border: { display: false }
     }
   }
-}
+}))
+
 </script>
 
 <style scoped>

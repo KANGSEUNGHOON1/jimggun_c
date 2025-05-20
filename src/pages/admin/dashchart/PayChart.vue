@@ -102,7 +102,7 @@ const chartOptions = computed(() => ({
         display: false,
       },
       ticks: {
-        color: isDark.value ? "#c0c3d1" : "#767676",
+        color: isDark.value ? "#9FA3B5" : "#767676",
       },
     },
     y: {
@@ -119,7 +119,7 @@ const chartOptions = computed(() => ({
       ticks: {
         stepSize: props.mode === 'monthly' ? 100 : 10, //  눈금 단위 변경
         callback: (value) => `${value}k`,
-        color: isDark.value ? "#c0c3d1" : "#767676",
+        color: isDark.value ? "#9FA3B5" : "#767676",
       },
     }
   }

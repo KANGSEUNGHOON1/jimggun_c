@@ -3,7 +3,7 @@
     <v-chart
       :option="pieOption"
       autoresize
-      style="width: 100%; height: 100%; min-height: 280px; " />
+      style="width: 100%; height: 100%; min-height: 280px;  " :key="isDark"  />
   </div>
 </template>
 
@@ -56,55 +56,52 @@ const pieData = [
 const totalReservation = pieData.reduce((sum, item) => sum + item.value, 0);
 
 //  옵션 정의
-const pieOption = {
+const pieOption = computed(() => ({
   tooltip: {
     trigger: "item",
   },
-
   series: [
     {
-   label: {
-  show: true,
-  position: "outside",
-  formatter: (params) => {
-    const percent = params.percent;
-    const formattedPercent = Number.isInteger(percent)
-      ? `${percent}%`
-      : `${percent.toFixed(1)}%`;
-    return `{name|${params.name}}{percent|(${formattedPercent})}`;
-  },
-  rich: {
-    name: {
-      align: "center",
-      verticalAlign: "middle",
-      fontSize: 12,
-      fontWeight: "bold",
-      color:isDark.value ? '#C0C3D1': "#505050",
-      lineHeight: 18
-    },
-    percent: {
-      align: "center",
-      verticalAlign: "middle",
-      fontSize: 12,
-      color:isDark.value ? '#9FA3B5': "#505050",
-      lineHeight: 18
-    }
-  }
-},
-
+      label: {
+        show: true,
+        position: "outside",
+        formatter: (params) => {
+          const percent = params.percent;
+          const formattedPercent = Number.isInteger(percent)
+            ? `${percent}%`
+            : `${percent.toFixed(1)}%`;
+          return `{name|${params.name}}{percent|(${formattedPercent})}`;
+        },
+        rich: {
+          name: {
+            align: "center",
+            verticalAlign: "middle",
+            fontSize: 12,
+            fontWeight: "bold",
+            color: isDark.value ? '#C0C3D1' : "#505050",
+            lineHeight: 18
+          },
+          percent: {
+            align: "center",
+            verticalAlign: "middle",
+            fontSize: 12,
+            color: isDark.value ? '#9FA3B5' : "#505050",
+            lineHeight: 18
+          }
+        }
+      },
       labelLine: {
         show: true,
         length: 15,
         length2: 10,
       },
       type: "pie",
-      // top: "-50",
       radius: ["40%", "65%"],
       data: pieData,
       itemStyle: {
-        borderRadius: 10, //  조각의 라운드 처리
-        borderColor:isDark.value ? '#2A2C41': "#ffffff", //  구역 간 구분선
-        borderWidth: 4, //  구분선 두께
+        borderRadius: 10,
+        borderColor: isDark.value ? '#2A2C41' : "#ffffff",
+        borderWidth: 4,
       },
       emphasis: {
         scale: true,
@@ -116,46 +113,45 @@ const pieOption = {
       },
     },
   ],
-  // 중앙 텍스트 자동 삽입
- graphic: {
-  type: "group",
-  left: "center",
-  top: "center",
-  children: [
-    {
-      type: "text",
-      left: "center",
-      top: "center",
-      style: {
-        text: `${totalReservation.toLocaleString()}`,
-        textAlign: "center",
-         textVerticalAlign: "middle",
-         fill: isDark.value ? "#ffffff" : "#111111", 
-        fontSize: 18, //  숫자 크기
-        fontWeight: "bold",
+  graphic: {
+    type: "group",
+    left: "center",
+    top: "center",
+    children: [
+      {
+        type: "text",
+        left: "center",
+        top: "center",
+        style: {
+          text: `${totalReservation.toLocaleString()}`,
+          textAlign: "center",
+          textVerticalAlign: "middle",
+          fill: isDark.value ? "#ffffff" : "#111111",
+          fontSize: 18,
+          fontWeight: "bold",
+        },
+        top: -12,
+        left: 0,
       },
-      top: -12, // 위쪽으로 조금 이동
-      left: 0,
-    },
-    {
-      type: "text",
-      left: "center",
-      top: "center",
-      style: {
-        text: "총 예약 건",
-        textAlign: "center",
-         textVerticalAlign: "middle",
-        fill: isDark.value ? "#ffffff" : "#111111", 
-        fontSize: 12, // 아래 텍스트 크기
-        fontWeight: 500,
+      {
+        type: "text",
+        left: "center",
+        top: "center",
+        style: {
+          text: "총 예약 건",
+          textAlign: "center",
+          textVerticalAlign: "middle",
+          fill: isDark.value ? "#C0C3D1" : "#111111",
+          fontSize: 12,
+          fontWeight: 500,
+        },
+        top: 13,
+        left: 5,
       },
-      top: 13,
-      left: 5,
-    },
-  ],
-},
+    ],
+  },
+}));
 
-};
 </script>
 
 <style scoped>
