@@ -44,8 +44,7 @@
               (index + 1) % 7 !== 0 ? 'border-r' : '', // 오른쪽 줄 제거
               index < calendarDates.length - 7 ? 'border-b' : '', // 마지막 줄 아래 줄 제거
             ]"
-            @click="isModalOpen = true"
-          >
+            @click="isModalOpen = true">
             <span
               class="absolute top-1 right-2 text-[11px]"
               :class="{
@@ -53,23 +52,17 @@
                 'text-[#FF4B0F]': date.inMonth && date.weekday === 0,
                 'text-[#4299E1]': date.inMonth && date.weekday === 6,
                 'text-[#767676]': date.inMonth && date.weekday !== 0 && date.weekday !== 6,
-              }"
-            >
+              }">
               {{ date.day }}
             </span>
 
             <!-- 근무 정보 표시 -->
             <div v-if="getWorkInfo(date)" class="absolute inset-x-1 top-8">
-              <div
-                :class="getShiftClass(getWorkInfo(date).shift)"
-                class="text-[14px] w-full rounded-md truncate text-right pr-1 mb-1"
-              >
+              <div :class="getShiftClass(getWorkInfo(date).shift)" class="text-[14px] w-full rounded-md truncate text-right pr-1 mb-1">
                 <p class="pr-1">{{ getWorkInfo(date).shift }}</p>
               </div>
-              <div
-                class="bg-white text-[#505050] text-[14px] outline outline-1 outline-[#E5E5EC] w-full rounded-md truncate text-right pr-1"
-              >
-                <p>{{ getWorkInfo(date).pay.toLocaleString() }}</p>
+              <div class="bg-white text-[#505050] text-[14px] outline outline-1 outline-[#E5E5EC] w-full rounded-md truncate text-right pr-1">
+                <p class="pr-1">{{ getWorkInfo(date).pay.toLocaleString() }}</p>
               </div>
             </div>
           </div>
@@ -77,9 +70,7 @@
       </div>
 
       <!-- 근무 현황 -->
-      <div
-        class="w-full max-w-[730px] mx-auto mt-[45px] mb-[45px] py-4 px-1 bg-white rounded-md transition-all duration-300"
-      >
+      <div class="w-full max-w-[730px] mx-auto mt-[45px] mb-[45px] py-4 px-1 bg-white rounded-md transition-all duration-300">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-[#111] text-xl pl-2 font-medium font-['Pretendard']">
             {{ currentMonthLabel }}
@@ -88,43 +79,31 @@
 
         <div class="flex flex-wrap justify-between gap-5 items-center">
           <!-- 출근 -->
-          <div
-            class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5 hover:shadow-lg transition-all duration-200"
-          >
+          <div class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5 hover:shadow-lg transition-all duration-200">
             <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1">출근</div>
             <div class="text-[#FF6F00] text-lg font-medium font-['Pretendard']">
               {{ attendanceCount }}
             </div>
           </div>
           <!-- 결근 -->
-          <div
-            class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5"
-          >
+          <div class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5">
             <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1">결근</div>
             <div class="text-[#767676] text-lg font-medium font-['Pretendard']">0</div>
           </div>
           <!-- 지각 -->
-          <div
-            class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5"
-          >
+          <div class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5">
             <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1">지각</div>
             <div class="text-[#767676] text-lg font-medium font-['Pretendard']">0</div>
           </div>
           <!-- 조퇴 -->
-          <div
-            class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5"
-          >
+          <div class="flex flex-col items-center justify-center w-[100px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5">
             <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1">조퇴</div>
             <div class="text-[#767676] text-lg font-medium font-['Pretendard']">0</div>
           </div>
           <!-- 인센티브 -->
-          <div
-            class="flex flex-col items-center justify-center w-[220px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5 ml-5"
-          >
+          <div class="flex flex-col items-center justify-center w-[220px] bg-white rounded-[10px] outline outline-1 outline-[#E5E5EC] shadow-[0px_4px_10px_0px_rgba(17,17,17,0.1)] px-7 py-5 ml-5">
             <div class="text-[#505050] text-base font-medium font-['Pretendard'] mb-1">이 달의 추가 수당</div>
-            <div class="text-[#FF6F00] text-lg font-medium font-['Pretendard']">
-              ₩ {{ totalMonthlyPay.toLocaleString() }}
-            </div>
+            <div class="text-[#FF6F00] text-lg font-medium font-['Pretendard']">₩ {{ totalMonthlyPay.toLocaleString() }}</div>
           </div>
         </div>
 
@@ -156,37 +135,25 @@
       <BottomNavBar />
 
       <!-- 모달창 -->
-      <div
-        v-if="isModalOpen"
-        class="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
-        @click="isModalOpen = false"
-      >
+      <div v-if="isModalOpen" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50" @click="isModalOpen = false">
         <!-- 모달 내용 영역 -->
-        <div
-          class="bg-white w-[90%] max-w-xl max-h-[80vh] overflow-y-auto rounded-lg shadow-lg p-6 relative"
-          @click.stop
-        >
-          <button @click="isModalOpen = false" class="absolute top-3 right-4 text-xl text-[#767676] hover:text-[#111]">
-            ✕
-          </button>
-          <h3 class="text-lg font-semibold text-[#111] mb-4">예약 리스트</h3>
+        <div class="bg-white w-[90%] max-w-xl max-h-[80vh] rounded-[10px] shadow-lg py-8 pl-8 relative overflow-hidden" @click.stop>
+          <!-- 닫기 버튼 -->
+          <button @click="isModalOpen = false" class="absolute top-6 right-4 text-xl text-[#767676] hover:text-[#111]">✕</button>
 
-          <div class="flex flex-col gap-3">
-            <div
-              v-for="place in markerData"
-              :key="place.reservationId"
-              class="border border-[#E5E5EC] rounded-lg p-4 shadow-sm"
-            >
+          <h3 class="text-lg font-semibold text-[#111] mb-4 ml-4">예약 리스트</h3>
+
+          <!-- ✅ 내부 스크롤 영역 -->
+          <div class="overflow-y-auto max-h-[calc(80vh-90px)] flex flex-col gap-4 pr-8">
+            <div v-for="place in markerData" :key="place.reservationId" class="border border-[#E5E5EC] rounded-lg p-4">
               <div class="flex justify-between items-center mb-2">
                 <span class="font-bold text-[#FF6F00]">예약번호 {{ place.reservationId }}</span>
               </div>
               <div class="text-sm text-[#111] mb-1"><strong>주소:</strong> {{ place.address }}</div>
               <div class="text-sm text-[#111] mb-1"><strong>이름:</strong> {{ place.name }}</div>
               <div class="text-sm text-[#111] mb-1"><strong>전화:</strong> {{ place.phone }}</div>
-              <div class="text-sm text-[#111] mb-1 whitespace-pre-line">
-                <strong>수화물:</strong> {{ place.clothes }}
-              </div>
-              <div class="text-sm text-[#111]"><strong>요청사항:</strong> {{ place.notes || '-' }}</div>
+              <div class="text-sm text-[#111] mb-1 whitespace-pre-line"><strong>수화물:</strong> {{ place.clothes }}</div>
+              <div class="text-sm text-[#111]"><strong>요청사항:</strong> {{ place.notes || "-" }}</div>
             </div>
           </div>
         </div>
@@ -196,20 +163,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { Bar, Line } from 'vue-chartjs';
-import BottomNavBar from '@/components/BottomNavBar.vue';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import { ref, computed, onMounted } from "vue";
+import { Bar, Line } from "vue-chartjs";
+import BottomNavBar from "@/components/BottomNavBar.vue";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from "chart.js";
 
 // Chart.js 등록
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
@@ -220,62 +177,62 @@ const currentPage = ref({ month: 5, year: 2025 });
 // 근무 데이터
 const workData = ref({
   // 4월 데이터
-  '2025-04-03': { shift: '오전', pay: 22050 },
-  '2025-04-04': { shift: '오전', pay: 21170 },
-  '2025-04-05': { shift: '오전', pay: 28550 },
-  '2025-04-06': { shift: '오전', pay: 25000 },
-  '2025-04-10': { shift: '오전', pay: 22250 },
-  '2025-04-11': { shift: '오전', pay: 21700 },
-  '2025-04-12': { shift: '오전', pay: 30050 },
-  '2025-04-13': { shift: '오전', pay: 25850 },
-  '2025-04-17': { shift: '오전', pay: 19050 },
-  '2025-04-18': { shift: '오전', pay: 21950 },
-  '2025-04-19': { shift: '오전', pay: 29400 },
-  '2025-04-20': { shift: '오전', pay: 23750 },
-  '2025-04-24': { shift: '오후', pay: 20600 },
-  '2025-04-25': { shift: '오후', pay: 21050 },
-  '2025-04-26': { shift: '오후', pay: 30150 },
-  '2025-04-27': { shift: '오후', pay: 25150 },
+  "2025-04-03": { shift: "오전", pay: 22050 },
+  "2025-04-04": { shift: "오전", pay: 21170 },
+  "2025-04-05": { shift: "오전", pay: 28550 },
+  "2025-04-06": { shift: "오전", pay: 25000 },
+  "2025-04-10": { shift: "오전", pay: 22250 },
+  "2025-04-11": { shift: "오전", pay: 21700 },
+  "2025-04-12": { shift: "오전", pay: 30050 },
+  "2025-04-13": { shift: "오전", pay: 25850 },
+  "2025-04-17": { shift: "오전", pay: 19050 },
+  "2025-04-18": { shift: "오전", pay: 21950 },
+  "2025-04-19": { shift: "오전", pay: 29400 },
+  "2025-04-20": { shift: "오전", pay: 23750 },
+  "2025-04-24": { shift: "오후", pay: 20600 },
+  "2025-04-25": { shift: "오후", pay: 21050 },
+  "2025-04-26": { shift: "오후", pay: 30150 },
+  "2025-04-27": { shift: "오후", pay: 25150 },
 
   // 5월 데이터
-  '2025-05-01': { shift: '오후', pay: 34200 },
-  '2025-05-02': { shift: '오후', pay: 36720 },
-  '2025-05-03': { shift: '오후', pay: 34350 },
-  '2025-05-04': { shift: '오후', pay: 33850 },
-  '2025-05-08': { shift: '오후', pay: 21850 },
-  '2025-05-09': { shift: '오후', pay: 22850 },
-  '2025-05-10': { shift: '오후', pay: 30850 },
-  '2025-05-11': { shift: '오후', pay: 20850 },
-  '2025-05-15': { shift: '오전', pay: 20350 },
-  '2025-05-16': { shift: '오전', pay: 21250 },
-  '2025-05-17': { shift: '오전', pay: 30100 },
-  '2025-05-18': { shift: '오전', pay: 20200 },
-  '2025-05-22': { shift: '오전', pay: 21400 },
-  '2025-05-23': { shift: '오전', pay: 20150 },
-  '2025-05-24': { shift: '오전', pay: 30800 },
-  '2025-05-25': { shift: '오전', pay: 22150 },
-  '2025-05-29': { shift: '오전', pay: 20150 },
-  '2025-05-30': { shift: '오전', pay: 21350 },
+  "2025-05-01": { shift: "오후", pay: 34200 },
+  "2025-05-02": { shift: "오후", pay: 36720 },
+  "2025-05-03": { shift: "오후", pay: 34350 },
+  "2025-05-04": { shift: "오후", pay: 33850 },
+  "2025-05-08": { shift: "오후", pay: 21850 },
+  "2025-05-09": { shift: "오후", pay: 22850 },
+  "2025-05-10": { shift: "오후", pay: 30850 },
+  "2025-05-11": { shift: "오후", pay: 20850 },
+  "2025-05-15": { shift: "오전", pay: 20350 },
+  "2025-05-16": { shift: "오전", pay: 21250 },
+  "2025-05-17": { shift: "오전", pay: 30100 },
+  "2025-05-18": { shift: "오전", pay: 20200 },
+  "2025-05-22": { shift: "오전", pay: 21400 },
+  "2025-05-23": { shift: "오전", pay: 20150 },
+  "2025-05-24": { shift: "오전", pay: 30800 },
+  "2025-05-25": { shift: "오전", pay: 22150 },
+  "2025-05-29": { shift: "오전", pay: 20150 },
+  "2025-05-30": { shift: "오전", pay: 21350 },
 
   //3월 데이터
-  '2025-03-01': { shift: '오전', pay: 28500 },
-  '2025-03-02': { shift: '오전', pay: 29500 },
-  '2025-03-06': { shift: '오전', pay: 20200 },
-  '2025-03-07': { shift: '오전', pay: 20800 },
-  '2025-03-08': { shift: '오전', pay: 30500 },
-  '2025-03-09': { shift: '오전', pay: 20600 },
-  '2025-03-13': { shift: '오후', pay: 22100 },
-  '2025-03-14': { shift: '오후', pay: 24400 },
-  '2025-03-15': { shift: '오후', pay: 31200 },
-  '2025-03-16': { shift: '오후', pay: 20800 },
-  '2025-03-20': { shift: '오후', pay: 21800 },
-  '2025-03-21': { shift: '오후', pay: 20800 },
-  '2025-03-22': { shift: '오후', pay: 30800 },
-  '2025-03-23': { shift: '오후', pay: 23800 },
-  '2025-03-27': { shift: '오후', pay: 22900 },
-  '2025-03-28': { shift: '오후', pay: 21900 },
-  '2025-03-29': { shift: '오후', pay: 31750 },
-  '2025-03-30': { shift: '오후', pay: 24600 },
+  "2025-03-01": { shift: "오전", pay: 28500 },
+  "2025-03-02": { shift: "오전", pay: 29500 },
+  "2025-03-06": { shift: "오전", pay: 20200 },
+  "2025-03-07": { shift: "오전", pay: 20800 },
+  "2025-03-08": { shift: "오전", pay: 30500 },
+  "2025-03-09": { shift: "오전", pay: 20600 },
+  "2025-03-13": { shift: "오후", pay: 22100 },
+  "2025-03-14": { shift: "오후", pay: 24400 },
+  "2025-03-15": { shift: "오후", pay: 31200 },
+  "2025-03-16": { shift: "오후", pay: 20800 },
+  "2025-03-20": { shift: "오후", pay: 21800 },
+  "2025-03-21": { shift: "오후", pay: 20800 },
+  "2025-03-22": { shift: "오후", pay: 30800 },
+  "2025-03-23": { shift: "오후", pay: 23800 },
+  "2025-03-27": { shift: "오후", pay: 22900 },
+  "2025-03-28": { shift: "오후", pay: 21900 },
+  "2025-03-29": { shift: "오후", pay: 31750 },
+  "2025-03-30": { shift: "오후", pay: 24600 },
 });
 
 // 현재 월 레이블
@@ -285,7 +242,7 @@ const currentLabel = computed(() => {
 
 // 근무현황 레이블
 const currentMonthLabel = computed(() => {
-  return `${currentPage.value.year}년 ${String(currentPage.value.month).padStart(2, '0')}월 근무 현황`;
+  return `${currentPage.value.year}년 ${String(currentPage.value.month).padStart(2, "0")}월 근무 현황`;
 });
 
 // 달력 날짜 배열 생성
@@ -327,26 +284,26 @@ const calendarDates = computed(() => {
 // 근무 정보 조회
 function getWorkInfo(date) {
   if (!date.inMonth) return null;
-  const dateKey = `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+  const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
   return workData.value[dateKey];
 }
 
 // 시프트 클래스 결정
 function getShiftClass(shift) {
-  return shift === '오전' ? 'bg-[#45A6FF]/20 text-[#111]' : 'bg-[#5FC95E]/20 text-[#111]';
+  return shift === "오전" ? "bg-[#45A6FF]/20 text-[#111]" : "bg-[#5FC95E]/20 text-[#111]";
 }
 
 // 출근 수 계산
 const attendanceCount = computed(() => {
   const year = currentPage.value.year;
-  const month = String(currentPage.value.month).padStart(2, '0');
+  const month = String(currentPage.value.month).padStart(2, "0");
   return Object.keys(workData.value).filter((key) => key.startsWith(`${year}-${month}`)).length;
 });
 
 // 인센티브 합계 계산
 const totalMonthlyPay = computed(() => {
   const year = currentPage.value.year;
-  const month = String(currentPage.value.month).padStart(2, '0');
+  const month = String(currentPage.value.month).padStart(2, "0");
   return Object.entries(workData.value)
     .filter(([date]) => date.startsWith(`${year}-${month}`))
     .reduce((sum, [_, info]) => sum + info.pay, 0);
@@ -358,11 +315,11 @@ function getWeeklyPayByMonth(year, month) {
 
   Object.entries(workData.value)
     .filter(([date]) => {
-      const [y, m] = date.split('-').map(Number);
+      const [y, m] = date.split("-").map(Number);
       return y === year && m === month;
     })
     .forEach(([date, info]) => {
-      const day = parseInt(date.split('-')[2]);
+      const day = parseInt(date.split("-")[2]);
       const weekIndex = Math.floor((day - 1) / 7);
       weeklyData[weekIndex] += info.pay;
     });
@@ -401,122 +358,122 @@ const markerData = [
   {
     lat: 35.8997,
     lng: 128.638,
-    title: '대구국제공항',
-    reservationId: '01',
-    address: '대구 동구 공항로 221',
-    name: '홍길동',
-    phone: '010-1234-5678',
-    notes: '',
-    clothes: 'M - 1개\nL - 1개',
-    image: 'marker1.png',
+    title: "대구국제공항",
+    reservationId: "1",
+    address: "대구 동구 공항로 221",
+    name: "홍길동",
+    phone: "010-1234-5678",
+    notes: "",
+    clothes: "M - 1개 , L - 1개",
+    image: "marker1.png",
   },
   {
     lat: 35.8797,
     lng: 128.6292,
-    title: '동대구역',
-    reservationId: '02',
-    address: '대구 동구 동대구로 550',
-    name: '이영희',
-    phone: '010-2345-6789',
-    notes: 'CU 편의점 앞에 둘게요',
-    clothes: 'S - 2개',
-    image: 'marker2.png',
+    title: "동대구역",
+    reservationId: "2",
+    address: "대구 동구 동대구로 550",
+    name: "이영희",
+    phone: "010-2345-6789",
+    notes: "CU 편의점 앞에 둘게요",
+    clothes: "S - 2개",
+    image: "marker2.png",
   },
   {
     lat: 35.9428,
     lng: 128.5472,
-    title: '칠곡그린빌3차',
-    reservationId: '03',
-    address: '대구 북구 구암로 55',
-    name: '박철수',
-    phone: '010-3456-7890',
-    notes: '관리실에 둘게요',
-    clothes: 'M - 1개\nXL - 2개',
-    image: 'marker3.png',
+    title: "칠곡그린빌3차",
+    reservationId: "3",
+    address: "대구 북구 구암로 55",
+    name: "박철수",
+    phone: "010-3456-7890",
+    notes: "관리실에 둘게요",
+    clothes: "M - 1개 , XL - 2개",
+    image: "marker3.png",
   },
   {
     lat: 35.8961,
     lng: 128.5904,
-    title: '북구문화회관',
-    reservationId: '04',
-    address: '대구 북구 옥산로 15',
-    name: '김민지',
-    phone: '010-4567-8901',
-    notes: '',
-    clothes: 'L - 1개\nS - 1개',
-    image: 'marker4.png',
+    title: "북구문화회관",
+    reservationId: "4",
+    address: "대구 북구 옥산로 15",
+    name: "김민지",
+    phone: "010-4567-8901",
+    notes: "",
+    clothes: "L - 1개 , S - 1개",
+    image: "marker4.png",
   },
   {
     lat: 35.8777,
     lng: 128.6002,
-    title: '칠성시장 남문',
-    reservationId: '05',
-    address: '대구 북구 칠성남로 5',
-    name: '최지훈',
-    phone: '010-5678-9012',
-    notes: '',
-    clothes: 'M - 1개\nM - 1개',
-    image: 'marker5.png',
+    title: "칠성시장 남문",
+    reservationId: "5",
+    address: "대구 북구 칠성남로 5",
+    name: "최지훈",
+    phone: "010-5678-9012",
+    notes: "",
+    clothes: "M - 1개 , M - 1개",
+    image: "marker5.png",
   },
   {
     lat: 35.8889,
     lng: 128.5943,
-    title: '북구 건강센터',
-    reservationId: '06',
-    address: '대구 북구 팔달로 35',
-    name: '정유진',
-    phone: '010-6789-0123',
-    notes: '',
-    clothes: 'S - 1개\nL - 2개',
-    image: 'marker6.png',
+    title: "북구 건강센터",
+    reservationId: "6",
+    address: "대구 북구 팔달로 35",
+    name: "정유진",
+    phone: "010-6789-0123",
+    notes: "",
+    clothes: "S - 1개 , L - 2개",
+    image: "marker6.png",
   },
   {
     lat: 35.8944,
     lng: 128.6086,
-    title: '침산동 사무실',
-    reservationId: '07',
-    address: '대구 북구 침산로 70',
-    name: '장도현',
-    phone: '010-7890-1234',
-    notes: '',
-    clothes: 'XL - 1개',
-    image: 'marker7.png',
+    title: "침산동 사무실",
+    reservationId: "7",
+    address: "대구 북구 침산로 70",
+    name: "장도현",
+    phone: "010-7890-1234",
+    notes: "",
+    clothes: "XL - 1개",
+    image: "marker7.png",
   },
   {
     lat: 35.9022,
     lng: 128.589,
-    title: '공원 앞 편의점',
-    reservationId: '08',
-    address: '대구 북구 동암로 123',
-    name: '서지수',
-    phone: '010-8901-2345',
-    notes: '',
-    clothes: 'S - 2개\nM - 1개',
-    image: 'marker8.png',
+    title: "공원 앞 편의점",
+    reservationId: "8",
+    address: "대구 북구 동암로 123",
+    name: "서지수",
+    phone: "010-8901-2345",
+    notes: "",
+    clothes: "S - 2개 , M - 1개",
+    image: "marker8.png",
   },
   {
     lat: 35.9444,
     lng: 128.5673,
-    title: '대구은행 칠곡지점',
-    reservationId: '09',
-    address: '대구 북구 칠곡중앙대로 77',
-    name: '한상우',
-    phone: '010-9012-3456',
-    notes: '',
-    clothes: 'L - 1개\nM - 1개',
-    image: 'marker9.png',
+    title: "대구은행 칠곡지점",
+    reservationId: "9",
+    address: "대구 북구 칠곡중앙대로 77",
+    name: "한상우",
+    phone: "010-9012-3456",
+    notes: "",
+    clothes: "L - 1개 , M - 1개",
+    image: "marker9.png",
   },
   {
     lat: 35.8948,
     lng: 128.5831,
-    title: '스마트주차장',
-    reservationId: '10',
-    address: '대구 북구 구암동 777',
-    name: '이소영',
-    phone: '010-1122-3344',
-    notes: '',
-    clothes: 'S - 1개\nS - 1개',
-    image: 'marker10.png',
+    title: "스마트주차장",
+    reservationId: "10",
+    address: "대구 북구 구암동 777",
+    name: "이소영",
+    phone: "010-1122-3344",
+    notes: "",
+    clothes: "S - 1개 , S - 1개",
+    image: "marker10.png",
   },
 ];
 
@@ -537,7 +494,7 @@ const weeklyChartData = computed(() => {
   const currentWeekly = padToFiveWeeks(getWeeklyPayByMonth(currentYear, currentMonth));
   const prevWeekly = padToFiveWeeks(getWeeklyPayByMonth(prevYear, prevMonth));
 
-  const weeks = ['1주차', '2주차', '3주차', '4주차', '5주차'];
+  const weeks = ["1주차", "2주차", "3주차", "4주차", "5주차"];
 
   return {
     labels: weeks,
@@ -545,13 +502,13 @@ const weeklyChartData = computed(() => {
       {
         label: `${prevYear}년 ${prevMonth}월`,
         data: prevWeekly,
-        backgroundColor: prevWeekly.map((val, i) => (val === 0 ? 'rgba(229, 229, 236, 0.2)' : '#FDF3E7')),
+        backgroundColor: prevWeekly.map((val, i) => (val === 0 ? "rgba(229, 229, 236, 0.2)" : "#FDF3E7")),
         borderRadius: 5,
       },
       {
         label: `${currentYear}년 ${currentMonth}월`,
         data: currentWeekly,
-        backgroundColor: '#FF6F00',
+        backgroundColor: "#FF6F00",
         borderRadius: 5,
       },
     ],
@@ -565,7 +522,7 @@ const weeklyChartOptions = {
   plugins: {
     legend: {
       display: true,
-      position: 'bottom',
+      position: "bottom",
     },
     tooltip: {
       callbacks: {
