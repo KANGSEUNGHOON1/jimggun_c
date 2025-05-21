@@ -2,6 +2,8 @@
 import { ref , computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+// 언어변경
+import { useI18n } from "vue-i18n";
 // 라이브러리
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -10,6 +12,13 @@ import "swiper/css/autoplay";
 // gotop버튼
 import GototopBtn from "@/components/GototopBtn.vue";
 
+
+// 언어변경
+const { t, locale, messages } = useI18n();
+
+const changeLang = (lang) => {
+  locale.value = lang;
+};
 
 // 예약바로기 미니버튼 로그인 상태 기반 라우팅
 const router = useRouter();
@@ -24,58 +33,24 @@ function handleGoToReservation() {
 }
 
 // 슬라이드 이미지 데이터
+// 슬라이드 이미지 데이터
+const mainBannerData = computed(() => {
+  // t: 번역 함수 (t('hello') → 현재 언어로 번역된 "hello" 표시)
+// locale: 현재 선택된 언어 코드 ('ko', 'en' 등)
+  const currentMessages = messages.value[locale.value];
+  const data = currentMessages?.mainBanner || [];
+
+  return data.map((slide, index) => ({
+    ...slide,
+    id: index + 1,
+    image: slide.image || `/images/hong/slideImg${index + 1}.png`,
+    imageWidth:
+      slide.imageWidth ||
+      (index === 3 ? "280px" : index === 2 ? "350px" : "400px"),
+  }));
+});
+
 // 메인배너 더미데이터
-const mainBannerData = ref([
-  {
-    id: 1,
-    title1: "무거운 짐",
-    title2: "짐꾼이 옮겨드립니다!",
-    title3: "짐꾼은 무거운 여행짐을",
-    title3Span: "집에서 숙소",
-    title3After: "까지",
-    title4Span: "",
-    title4: "대신 들어드리는 여행 도우미 입니다.",
-    image: "/images/hong/slideImg1.png",
-    imageWidth: "400px",
-  },
-  {
-    id: 2,
-    title1: "간단한 예약",
-    title2: "짐꾼은 많이 묻지 않습니다!",
-    title3: "짐꾼의 몇 번의 클릭으로",
-    title3Span: "빠르고 편리하게",
-    title3After: "",
-    title4Span: "",
-    title4: "예약할 수 있습니다.",
-    image: "/images/hong/slideImg2.png",
-    imageWidth: "400px",
-  },
-  {
-    id: 3,
-    title1: "직접 찾아갑니다",
-    title2: "간단하고 편리한 서비스!",
-    title3: "짐꾼은 고객님이 앞에 두신 짐을",
-    title3Span: "",
-    title3After: "",
-    title4Span: "직접 찾아가서",
-    title4: " 수거해갑니다.",
-    image: "/images/hong/slideImg3.png",
-    imageWidth: "350px",
-  },
-  {
-    id: 4,
-    title1: "여행은 가볍게",
-    title2: "짐꾼이 짐을 맡아드립니다!",
-    title3: "짐꾼은 고객님의 소중한 짐을",
-    title3Span: "",
-    title3After: "",
-    title4Span: "안전하게 보관",
-    title4: " 해드립니다.",
-    image: "/images/hong/slideImg4.png",
-    image1: "/images/hong/slideImg4-1.png",
-    imageWidth: "280px",
-  },
-]);
 </script>
 
 <template>
@@ -109,19 +84,19 @@ const mainBannerData = ref([
       <div class="reservationMini">
         <form>
           <div class="mini-text mini-text1">
-            <label for="mini1">출발지</label>
-            <input type="text" id="mini1" placeholder="집 앞" />
+            <label for="mini1">{{ t("pickup") }}</label>
+            <input type="text" id="mini1" :placeholder="t('athome')" />
           </div>
           <div class="mini-text mini-text1">
-            <label for="mini1">짐 맡길 일정</label>
+            <label for="mini1">{{t("scheduled")}}</label>
             <input type="text" id="mini1" placeholder="2025.03.21 / 10:00" />
           </div>
           <div class="mini-text mini-text1">
-            <label for="mini1">도착지</label>
-            <input type="text" id="mini1" placeholder="대구역" />
+            <label for="mini1">{{t("destination")}}</label>
+            <input type="text" id="mini1" :placeholder="t('station')" />
           </div>
           <div class="mini-text">
-            <label for="mini1">짐 찾을 일정</label>
+            <label for="mini1">{{t("pickuptime")}}</label>
             <input type="text" id="mini1" placeholder="2025.03.22 / 11:00" />
           </div>
         </form>
@@ -129,7 +104,7 @@ const mainBannerData = ref([
           <p>바로 예약</p>
         </router-link> -->
         <div class="mini-button" @click="handleGoToReservation">
-        <p>바로 예약</p>
+        <p>{{t("reservation")}}</p>
         </div>
       </div>
     </section>
@@ -137,9 +112,9 @@ const mainBannerData = ref([
     <!-- 파트 1 -->
     <section class="a1-part1 inner">
       <div class="a1-part1-title">
-        <h3>짐꾼 혜택</h3>
-        <p>지금 받을 수 있는</p>
-        <p>혜택을 확인해보세요.</p>
+        <h3>{{t("benefits")}}</h3>
+        <p>{{t("checkbenefits1")}}</p>
+        <p>{{t("checkbenefits2")}}</p>
       </div>
       <ul class="a1-part1-boxes">
         <li class="part1-box1 part1-box">
@@ -147,8 +122,8 @@ const mainBannerData = ref([
             <img src="/images/hong/s-banner-1.png" alt="혜택1" />
           </div>
           <div class="box-text box1-text">
-            <h3>짐꾼 혜택 몰아보기</h3>
-            <p>앱 다운로드 고객 한정 할인 중</p>
+            <h3>{{t("allBenefits")}}</h3>
+            <p>{{t("appDownload")}}</p>
           </div>
         </li>
         <li class="part1-box2 part1-box">
@@ -156,8 +131,8 @@ const mainBannerData = ref([
             <img src="/images/hong/s-banner-3.png" alt="혜택2" />
           </div>
           <div class="box-text box2-text">
-            <h3>꼼꼼하게 지키는 짐꾼 케어</h3>
-            <p>다양하게 보장되는 보험들을 체크해보세요</p>
+            <h3>{{t("thoroughCare")}}</h3>
+            <p>{{t("options")}}</p>
           </div>
         </li>
         <li class="part1-box3 part1-box">
@@ -166,7 +141,7 @@ const mainBannerData = ref([
           </div>
           <div class="box-text box3-text">
             <h3>Guid for Foreign Users</h3>
-            <p>외국인 이용 가이드</p>
+            <p>{{t("guide")}}</p>
           </div>
         </li>
       </ul>
@@ -176,9 +151,9 @@ const mainBannerData = ref([
     <section class="a1-part2">
       <!-- 파트2 - 제목 -->
       <div class="part2-title">
-        <h3>여행가방 걱정 끝</h3>
-        <p>짐꾼은 집 앞에서 역·공항으로, 역·공항에서 숙소로</p>
-        <p>여행 짐을 안전하게 옮겨주는 캐리어 운반 서비스입니다.</p>
+        <h3>{{t("travelFree")}}</h3>
+        <p>{{t("travelFree1")}}</p>
+        <p>{{t("travelFree2")}}</p>
       </div>
 
       <!-- 파트2 - 내용 -->
@@ -192,14 +167,14 @@ const mainBannerData = ref([
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon1.png" alt="해외출장" />
-                <h3>해외출장</h3>
+                <h3>{{t("business")}}</h3>
               </div>
               <!-- 말풍선 글 1-->
               <div class="p2-contents-texts1 p2-underline">
-                <h3>출장갈때, <span> 더 편하게 짐꾼! </span></h3>
+                <h3>{{t("businessTrip")}} <span> {{t("businessTripSpan")}} </span></h3>
                 <p>
-                  미팅 끝나고 가는 출장까지, <br />
-                  짐은 짐꾼에 맡기고 두 손 가볍게 <br />이동하세요!
+                  {{t("TravelLight1")}} <br />
+                  {{t("TravelLight2")}} <br />{{t("TravelLight3")}}
                 </p>
               </div>
             </div>
@@ -208,12 +183,12 @@ const mainBannerData = ref([
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon2.png" alt="골프투어" />
-                <h3>골프투어</h3>
+                <h3>{{t("golf")}}</h3>
               </div>
               <!-- 말풍선 글 2 -->
               <div class="p2-contents-texts2 p2-underline">
-                <h3>골프투어도, <span> 더 즐겁게 짐꾼! </span></h3>
-                <p>골프, 스쿠버다이빙, 서핑, 스키! <br />즐거운만큼 무거운 취미 용품들 <br />짐꾼이 안전하게 배송해드릴게요!</p>
+                <h3>{{t("golf1")}} <span> {{t("golf2")}} </span></h3>
+                <p>{{t("golfText1")}} <br />{{t("golfText2")}} <br />{{t("golfText3")}}</p>
               </div>
             </div>
           </div>
@@ -224,26 +199,26 @@ const mainBannerData = ref([
             <div class="p2-contents">
               <!-- 말풍선 글 3 -->
               <div class="p2-contents-texts3 p2-underline">
-                <h3>주말여행 갈 때, <span> 더 빠르게 짐꾼! </span></h3>
-                <p>짧은 주말을 이용해 떠나는 여행! <br />회사에 들고가자니 눈치보이는 <br />캐리어 짐꾼이 먼저 옮겨드릴게요!</p>
+                <h3>{{t("weektrip1")}} <span> {{t("weektrip2")}} </span></h3>
+                <p>{{t("weektriptext1")}} <br />{{t("weektriptext2")}} <br />{{t("weektriptext3")}}</p>
               </div>
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon3.png" alt="주말여행" />
-                <h3>주말여행</h3>
+                <h3>{{t("week")}}</h3>
               </div>
             </div>
             <!-- 4 -->
             <div class="p2-contents">
               <!-- 말풍선 글 4 -->
               <div class="p2-contents-texts4 p2-underline">
-                <h3>퇴근 후 여행, <span> 더 가볍게 짐꾼! </span></h3>
-                <p>사람 많고, 정신없는 출근시간 <br />지옥철에 크고 무거운 캐리어와 <br />함께 타는 건 이제 그만!</p>
+                <h3>{{t("Evening1")}} <span> {{t("Evening2")}} </span></h3>
+                <p>{{t("Eveningtext1")}} <br />{{t("Eveningtext2")}} <br />{{t("Eveningtext3")}}</p>
               </div>
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon4.png" alt="퇴근여행" />
-                <h3>퇴근여행</h3>
+                <h3>{{t("Evening")}}</h3>
               </div>
             </div>
           </div>
@@ -256,14 +231,14 @@ const mainBannerData = ref([
             <!-- 아이콘 영역 -->
             <div class="t-1-icon">
               <img src="/public/images/hong/part2-icon1.png" alt="해외출장-T" />
-              <h3>해외출장</h3>
+              <h3>{{t("business")}}</h3>
             </div>
             <!-- 말풍선 영역 -->
             <div class="t-1-bubble p2-underline">
-              <h2>출장갈때, <span>더 편하게 짐꾼!</span></h2>
+              <h2>{{t("businessTrip")}} <span>{{t("businessTripSpan")}}&nbsp</span></h2>
               <p>
-                미팅 끝나고 가는 출장까지, <br />
-                짐은 짐꾼에 맡기고 두 손 가볍게 <br />이동하세요!
+                {{t("TravelLight1")}} <br />
+                {{t("TravelLight2")}} <br />{{t("TravelLight3")}}
               </p>
             </div>
           </div>
@@ -271,13 +246,13 @@ const mainBannerData = ref([
           <div class="t-content2">
             <!-- 말풍선 영역 -->
             <div class="t-2-bubble p2-underline p2-underline2">
-              <h2>주말여행 갈 때, <span>더 빠르게 짐꾼!</span></h2>
-              <p>짧은 주말을 이용해 떠나는 여행! <br />회사에 들고가자니 눈치보이는 <br />캐리어 짐꾼이 먼저 옮겨드릴게요!</p>
+              <h2>{{t("weektrip1")}} <span>{{t("weektrip2")}}</span></h2>
+              <p>{{t("weektriptext1")}} <br />{{t("weektriptext2")}} <br />{{t("weektriptext3")}}</p>
             </div>
             <!-- 아이콘 영역 -->
             <div class="t-2-icon">
               <img src="/public/images/hong/part2-icon3.png" alt="주말여행-T" />
-              <h3>주말여행</h3>
+              <h3>{{t("week")}}</h3>
             </div>
           </div>
           <!-- 3 -->
@@ -285,25 +260,25 @@ const mainBannerData = ref([
             <!-- 아이콘 영역 -->
             <div class="t-1-icon">
               <img src="/public/images/hong/part2-icon2.png" alt="골프투어-T" />
-              <h3>골프투어</h3>
+              <h3>{{t("golf")}}</h3>
             </div>
             <!-- 말풍선 영역 -->
             <div class="t-1-bubble p2-underline p2-underline2">
-              <h2>골프투어도, <span>더 즐겁게 짐꾼!</span></h2>
-              <p>골프, 스쿠버다이빙, 서핑, 스키! <br />즐거운만큼 무거운 취미 용품들 <br />짐꾼이 안전하게 배송해드릴게요!</p>
+              <h2>{{t("golf1")}} <span>{{t("golf2")}}</span></h2>
+              <p>{{t("golfText2")}} <br />{{t("golfText2")}} <br />{{t("golfText3")}}</p>
             </div>
           </div>
           <!-- 4 -->
           <div class="t-content4">
             <!-- 말풍선 영역 -->
             <div class="t-2-bubble p2-underline p2-underline2">
-              <h2>퇴근 후 여행, <span>더 가볍게 짐꾼!</span></h2>
-              <p>사람 많고, 정신없는 출근시간 <br />지옥철에 크고 무거운 캐리어와 <br />함께 타는 건 이제 그만!</p>
+              <h2>{{t("Evening1")}} <span>{{t("Evening2")}}</span></h2>
+              <p>{{t("Eveningtext1")}} <br />{{t("Eveningtext2")}} <br />{{t("Eveningtext3")}}</p>
             </div>
             <!-- 아이콘 영역 -->
             <div class="t-2-icon">
               <img src="/public/images/hong/part2-icon4.png" alt="퇴근여행-T" />
-              <h3>퇴근여행</h3>
+              <h3>{{t("Evening")}}</h3>
             </div>
           </div>
         </div>
@@ -327,11 +302,11 @@ const mainBannerData = ref([
         <div class="appTextPart">
           <div class="appTexts">
             <div class="appTexts-spans">
-              <span class="jimggun-span">짐꾼</span>
-              <span class="appdownload-span">앱 다운받기</span>
+              <span class="jimggun-span">{{t("jimggun")}}</span>
+              <span class="appdownload-span">{{t("download")}}</span>
             </div>
-            <p>여행가방 없이 떠나는 새로운 여행</p>
-            <p>짐꾼에서 경험하세요!</p>
+            <p>{{t("journeywithoutluggage")}}</p>
+            <p>{{t("experienceitwithMovers")}}</p>
           </div>
           <!-- 다운로드 버튼들 -->
           <div class="downloadBtns">
@@ -342,7 +317,7 @@ const mainBannerData = ref([
                 <span class="playstoreENG">Google Play</span>
               </div>
               <div class="androidBtnText">
-                <span class="playstoreKOR">안드로이드</span>
+                <span class="playstoreKOR">{{t("Android")}}</span>
                 <span class="playstoreAdd">AOS</span>
               </div>
             </div>
@@ -361,9 +336,9 @@ const mainBannerData = ref([
       </div>
       <!-- 두번째 박스 -->
       <div class="part3-box2">
-        <h3>짐꾼이 처음인 당신을 위한 쿠폰 혜택</h3>
-        <p>신규회원 모두에게 가입 즉시 사용할 수 있는 쿠폰을 넣어드립니다.</p>
-        <p>할인 혜택으로 여행을 가볍게 시작해보세요</p>
+        <h3>{{t("coupon")}}</h3>
+        <p>{{t("coupontext1")}}</p>
+        <p>{{t("coupontext2")}}</p>
         <div class="couponImg">
           <img src="/images/hong/part3-coupon.png" alt="쿠폰 이미지" />
         </div>
@@ -842,12 +817,13 @@ const mainBannerData = ref([
             .p2-underline {
               span {
                 position: relative;
+                box-shadow: inset 0 -6px 0 rgba(255, 111, 0, 0.5);
                 &::after {
                   content: "";
                   position: absolute;
-                  left: -2%;
-                  right: -2%;
+                  right: 0;
                   bottom: 0;
+                  // width: 100%;
                   height: 5px;
                   background-color: rgba(255, 111, 0, 0.5);
                 }
@@ -950,12 +926,13 @@ const mainBannerData = ref([
             .p2-underline {
               span {
                 position: relative;
+                box-shadow: inset 0 -6px 0 rgba(255, 111, 0, 0.5);
                 &::after {
                   content: "";
                   position: absolute;
-                  left: -2%;
-                  right: -2%;
+                  right: 0;
                   bottom: 0;
+                  // width: 100%;
                   height: 5px;
                   background-color: rgba(255, 111, 0, 0.5);
                 }
@@ -985,12 +962,12 @@ const mainBannerData = ref([
             position: relative;
             &::after {
               content: "";
-              position: absolute;
-              left: -2%;
-              right: -2%;
-              bottom: 0;
-              height: 5px;
-              background-color: rgba(255, 111, 0, 0.5);
+                  position: absolute;
+                  right: 0;
+                  bottom: 0;
+                  width: 100%;
+                  height: 5px;
+                  background-color: rgba(255, 111, 0, 0.5);
             }
           }
         }

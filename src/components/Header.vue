@@ -103,12 +103,12 @@ function goToReservation() {
           <!-- 로그인 상태일 때 -->
           <template v-if="isLoggedIn">
             <router-link to="/mypage">{{ t("mypage") }}</router-link>
-            <router-link to="/" @click.prevent="handleLogout">로그아웃</router-link>
+            <router-link to="/" @click.prevent="handleLogout">{{ t("logout") }}</router-link>
           </template>
 
           <!-- 로그아웃 상태일 때 -->
           <template v-else>
-            <router-link to="/login">로그인</router-link>
+            <router-link to="/login">{{t("login")}}</router-link>
           </template>
 
           <!-- 햄버거바 -->

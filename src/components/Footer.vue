@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+import { useI18n } from "vue-i18n";
+
+const { t, locale, messages } = useI18n();
+</script>
 
 <template>
   <!-- 전체 레이아웃 -->
@@ -13,28 +17,28 @@
       <div class="footercontents">
         <!-- 왼쪽 텍스트 정보 -->
         <div class="footerLeftText">
-          <p>대표자 : 1조</p>
-          <p>주소 : 대구 중앙대로 394 제일빌딩 5F</p>
-          <p>사업자등록번호 : 123-45-67890</p>
-          <p>개인정보보호책임자 : 1조</p>
-          <p>이메일 : jimggun@gmail.com</p>
+          <p>{{t("boss")}}</p>
+          <p>{{t("address")}}</p>
+          <p>{{t("businessNumber")}}</p>
+          <p>{{t("privacyOfficer")}}</p>
+          <p>{{t("email")}} : jimggun@gmail.com</p>
           <p>Copyright ⓒ JIMGGUN Corp. All Rights Reserved.</p>
         </div>
         <!-- 오른쪽 -->
         <div class="footerRightText">
           <p class="footerPhonNumber">1234-5678</p>
           <div class="footerTime">
-            <p>오전 9시 ~ 오후 6시</p>
-            <p>(토요일, 공휴일 휴무)</p>
+            <p>{{t("operating")}}</p>
+            <p>{{t("holiday")}}</p>
           </div>
           <div class="footerRightButtons">
-            <a href="#">제휴문의</a>
-            <router-link to="/cs">고객센터</router-link>
+            <a href="#">{{t("partnership")}}</a>
+            <router-link to="/cs">{{t("support")}}</router-link>
           </div>
           <div class="footerRightServices">
-            <p>서비스 이용약관</p>
+            <p>{{t("termsService")}}</p>
             <span>|</span>
-            <p>개인정보처리방침</p>
+            <p>{{t("privacyPolicy")}}</p>
           </div>
         </div>
       </div>
