@@ -24,16 +24,21 @@
         <!-- 직급 콤보박스 -->
         <select v-model="selectedRank" class="w-32 h-9 rounded-[10px] border-2 border-zinc-300 px-2 text-sm">
           <option value="">전체 직급</option>
-          <option value="일반">일반</option>
-          <option value="라이트">라이트</option>
-          <option value="시니어">시니어</option>
+          <option value="기사">기사</option>
+          <option value="팀장">팀장</option>
         </select>
 
         <!-- 배정 지역 콤보박스 -->
         <select v-model="selectedRegion" class="w-32 h-9 rounded-[10px] border-2 border-zinc-300 px-2 text-sm">
           <option value="">전체 배정 지역</option>
-          <option value="배차하기">배차하기</option>
-          <option value="배차완료">배차완료</option>
+          <option value="중구">중구</option>
+          <option value="남구">남구</option>
+          <option value="북구">북구</option>
+          <option value="서구">동구</option>
+          <option value="서구">서구</option>
+          <option value="달서구">달서구</option>
+          <option value="수성구">수성구</option>
+          <option value="달성군">달성군</option>
         </select>
       </div>
     </div>
@@ -52,7 +57,7 @@
         <col style="width: 150px" />
         <col style="width: 150px" />
       </colgroup>
-      <thead class="bg-[#F9FAFB] text-[#767676] font-semibold h-12 border-b border-[#111]">
+      <thead class="bg-[#F9FAFB] text-[#767676] font-semibold h-12 border-b border-[#E5E5EC]">
         <tr>
           <th class="rounded-tl-lg">
             <input v-if="isEditMode" type="checkbox" :checked="isAllSelected" @change="toggleSelectAll" />
@@ -62,17 +67,17 @@
           <th>연락처</th>
           <th>주소</th>
           <th>입사일자</th>
-          <th>현재상태</th>
+          <th>업무분류</th>
           <th>직급</th>
           <th>배정지역</th>
-          <th class="rounded-tr-lg">액션</th>
+          <th class="rounded-tr-lg">상세정보</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="driver in paginatedDrivers"
           :key="driver.workerId"
-          class="h-14 border-b bg-white border-[#111] text-[#111]"
+          class="h-14 border-b bg-white border-[#E5E5EC] text-[#111]"
         >
           <td class="text-center">
             <input v-if="isEditMode" type="checkbox" :value="driver.workerId" v-model="selectedDrivers" />
@@ -137,7 +142,7 @@
           class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white text-base font-medium"
           @click="isEditMode = true"
         >
-          기사목록수정
+          기사목록삭제
         </button>
 
         <!-- 수정 모드일 때 -->
@@ -163,85 +168,94 @@
   >
     <div class="bg-white rounded-xl shadow-lg" @click.stop>
       <h2 class="text-xl font-bold px-[30px] py-[30px] border-b border-[#E5E5EC]">신규 기사 추가</h2>
-      <div class="flex">
+      <div class="flex gap-10 px-[30px] pt-[30px] pb-[20px]">
         <!-- 왼쪽 사진 업로드 영역 -->
-        <div
-          class="w-48 h-48 ml-[60px] mr-[90px] mt-[150px] mb-[200px] relative rounded-[10px] cursor-pointer"
-          @click="triggerFileInput"
-        >
-          <!-- 업로드 안 된 상태 -->
-          <template v-if="!newDriver.photo">
-            <div
-              class="left-[67px] top-[40px] absolute justify-center text-gray-200 text-8xl font-medium font-['Pretendard']"
-            >
-              +
-            </div>
-            <div class="w-[200px] h-[200px] left-0 top-0 absolute rounded-[10px] border border-gray-200"></div>
-          </template>
+        <div class="flex items-center justify-center">
+          <div class="w-48 h-48 relative cursor-pointer" @click="triggerFileInput">
+            <!-- 업로드 안 된 상태 -->
+            <template v-if="!newDriver.photo">
+              <div
+                class="left-[67px] top-[40px] absolute justify-center text-gray-200 text-8xl font-medium font-['Pretendard']"
+              >
+                +
+              </div>
+              <div class="w-[200px] h-[200px] left-0 top-0 absolute rounded-[10px] border border-gray-200"></div>
+            </template>
 
-          <!-- 미리보기 -->
-          <template v-else>
-            <img :src="newDriver.photo" class="w-48 h-48 object-cover rounded-[10px]" />
-          </template>
+            <!-- 미리보기 -->
+            <template v-else>
+              <img :src="newDriver.photo" class="w-48 h-48 object-cover rounded-[10px]" />
+            </template>
 
-          <!-- 숨겨진 input[type="file"] -->
-          <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="onImageUpload" />
+            <!-- 숨겨진 input[type="file"] -->
+            <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="onImageUpload" />
+          </div>
         </div>
         <!--오른쪽 영역-->
-        <div class="ml-1 mr-[150px] mt-[67px]">
-          <div class="grid grid-cols-1 gap-4">
-            <div class="flex items-center mb-2">
-              <span class="w-24 text-[16px] text-[#505050]">기사 ID</span
-              ><input
-                v-model="newDriver.workerId"
-                type="text"
-                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
-              />
-            </div>
-            <div class="flex items-center mb-2">
-              <span class="w-24 text-[16px] text-[#505050]">이름</span
-              ><input
-                v-model="newDriver.workerName"
-                type="text"
-                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
-              />
-            </div>
-            <div class="flex items-center mb-2">
-              <span class="w-24 text-[16px] text-[#505050]">연락처</span
-              ><input
-                v-model="newDriver.workerPhone"
-                type="text"
-                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
-              />
-            </div>
-            <div class="flex items-center mb-2">
-              <span class="w-24 text-[16px] text-[#505050]">주소</span
-              ><input
-                v-model="newDriver.workerAddress"
-                type="text"
-                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
-              />
-            </div>
-            <div class="flex items-center mb-2">
-              <span class="w-24 text-[16px] text-[#505050]">입사일자</span
-              ><input
-                v-model="newDriver.joinDate"
-                type="date"
-                class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px]"
-              />
-            </div>
 
-            <!-- <select v-model="newDriver.region" class="input">
-              <option value="배차하기">배차하기</option>
-              <option value="배차완료">배차완료</option>
-            </select> -->
+        <div class="flex-1 grid grid-cols-1 gap-2">
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">기사 ID</span
+            ><input
+              v-model="newDriver.workerId"
+              type="text"
+              class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px] pl-2"
+            />
           </div>
-
-          <div class="flex justify-end gap-2 mt-6">
-            <button class="px-4 py-2 rounded bg-manager text-white" @click="addNewDriver">신규등록</button>
-            <button class="px-6 py-2 rounded bg-white border" @click="isModalOpen = false">취소</button>
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">이름</span
+            ><input
+              v-model="newDriver.workerName"
+              type="text"
+              class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px] pl-2"
+            />
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">연락처</span
+            ><input
+              v-model="newDriver.workerPhone"
+              type="text"
+              class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px] pl-2"
+            />
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">주소</span
+            ><input
+              v-model="newDriver.workerAddress"
+              type="text"
+              class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px] pl-2"
+            />
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">입사일자</span
+            ><input
+              v-model="newDriver.joinDate"
+              type="date"
+              class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px] pl-2 pr-2"
+            />
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">배정지역</span
+            ><select
+              v-model="newDriver.region"
+              class="input border border-[#E5E5EC] w-[200px] h-[40px] rounded-[10px] pl-2"
+            >
+              <option value="중구">중구</option>
+              <option value="남구">남구</option>
+              <option value="북구">북구</option>
+              <option value="서구">동구</option>
+              <option value="서구">서구</option>
+              <option value="달서구">달서구</option>
+              <option value="수성구">수성구</option>
+              <option value="달성군">달성군</option>
+            </select>
           </div>
         </div>
+      </div>
+      <!-- 하단 버튼 영역  -->
+      <div class="flex justify-end gap-2 px-[30px] pb-[30px]">
+        <button class="px-4 py-2 rounded bg-manager text-white" @click="addNewDriver">신규등록</button>
+        <button class="px-6 py-2 rounded bg-white border" @click="isModalOpen = false">취소</button>
       </div>
     </div>
   </div>
@@ -278,7 +292,9 @@
         </div>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <button class="px-4 py-2 bg-gray-300 rounded" @click="isDetailModalOpen = false">닫기</button>
+        <button class="px-4 py-2 bg-neutral-500 rounded-[10px] text-white" @click="isDetailModalOpen = false">
+          닫기
+        </button>
       </div>
     </div>
   </div>
@@ -299,9 +315,9 @@ const drivers = ref([
     workerPhone: '010-1234-5678',
     workerAddress: '대구 북구 대학로 80',
     joinDate: '2021년 4월 17일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '북구',
     action: '상세',
   },
   {
@@ -310,9 +326,9 @@ const drivers = ref([
     workerPhone: '010-2345-6789',
     workerAddress: '대구 달서구 월배로 240',
     joinDate: '2023년 8월 5일',
-    status: 'Zzz',
-    rank: '라이트',
-    region: '배차하기',
+    status: '픽업',
+    rank: '팀장',
+    region: '달서구',
     action: '상세',
   },
   {
@@ -321,9 +337,9 @@ const drivers = ref([
     workerPhone: '010-3456-7890',
     workerAddress: '대구 중구 중앙대로 273',
     joinDate: '2020년 1월 22일',
-    status: '활동중',
-    rank: '시니어',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '중구',
     action: '상세',
   },
   {
@@ -332,9 +348,9 @@ const drivers = ref([
     workerPhone: '010-4567-8901',
     workerAddress: '대구 수성구 들안로 123',
     joinDate: '2022년 11월 13일',
-    status: 'Zzz',
-    rank: '일반',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '수성구',
     action: '상세',
   },
   {
@@ -343,9 +359,9 @@ const drivers = ref([
     workerPhone: '010-5678-9012',
     workerAddress: '대구 동구 안심로 42',
     joinDate: '2024년 2월 3일',
-    status: '활동중',
-    rank: '시니어',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '동구',
     action: '상세',
   },
   {
@@ -354,9 +370,9 @@ const drivers = ref([
     workerPhone: '010-6789-0123',
     workerAddress: '대구 서구 평리로 201',
     joinDate: '2020년 6월 25일',
-    status: 'Zzz',
-    rank: '라이트',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '서구',
     action: '상세',
   },
   {
@@ -365,9 +381,9 @@ const drivers = ref([
     workerPhone: '010-7890-1234',
     workerAddress: '대구 남구 이천로 51',
     joinDate: '2021년 9월 9일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '남구',
     action: '상세',
   },
   {
@@ -376,9 +392,9 @@ const drivers = ref([
     workerPhone: '010-8901-2345',
     workerAddress: '대구 북구 태전로 15',
     joinDate: '2023년 3월 12일',
-    status: 'Zzz',
-    rank: '라이트',
-    region: '배차하기',
+    status: '픽업',
+    rank: '팀장',
+    region: '북구',
     action: '상세',
   },
   {
@@ -387,9 +403,9 @@ const drivers = ref([
     workerPhone: '010-9012-3456',
     workerAddress: '대구 달성군 화원로 101',
     joinDate: '2022년 7월 30일',
-    status: '활동중',
-    rank: '시니어',
-    region: '배차완료',
+    status: '픽업',
+    rank: '팀장',
+    region: '달성군',
     action: '상세',
   },
   {
@@ -398,9 +414,9 @@ const drivers = ref([
     workerPhone: '010-1122-3344',
     workerAddress: '대구 중구 남성로 45',
     joinDate: '2020년 12월 18일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '중구',
     action: '상세',
   },
   {
@@ -409,9 +425,9 @@ const drivers = ref([
     workerPhone: '010-2233-4455',
     workerAddress: '대구 수성구 상록로 32',
     joinDate: '2023년 4월 6일',
-    status: 'Zzz',
-    rank: '시니어',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '수성구',
     action: '상세',
   },
   {
@@ -420,9 +436,9 @@ const drivers = ref([
     workerPhone: '010-3344-5566',
     workerAddress: '대구 동구 율하동로 74',
     joinDate: '2021년 10월 15일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차하기',
+    status: '배송',
+    rank: '기사',
+    region: '동구',
     action: '상세',
   },
   {
@@ -431,9 +447,9 @@ const drivers = ref([
     workerPhone: '010-4455-6677',
     workerAddress: '대구 중구 동덕로 88',
     joinDate: '2020년 5월 21일',
-    status: '활동중',
-    rank: '라이트',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '중구',
     action: '상세',
   },
   {
@@ -442,9 +458,9 @@ const drivers = ref([
     workerPhone: '010-5566-7788',
     workerAddress: '대구 북구 학정로 57',
     joinDate: '2022년 11월 3일',
-    status: 'Zzz',
-    rank: '일반',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '북구',
     action: '상세',
   },
   {
@@ -453,9 +469,9 @@ const drivers = ref([
     workerPhone: '010-6677-8899',
     workerAddress: '대구 달서구 성서로 231',
     joinDate: '2024년 1월 10일',
-    status: '활동중',
-    rank: '시니어',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '달서구',
     action: '상세',
   },
   {
@@ -464,9 +480,9 @@ const drivers = ref([
     workerPhone: '010-7788-9900',
     workerAddress: '대구 남구 이천로 123',
     joinDate: '2021년 6월 8일',
-    status: 'Zzz',
-    rank: '라이트',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '남구',
     action: '상세',
   },
   {
@@ -475,9 +491,9 @@ const drivers = ref([
     workerPhone: '010-8899-0011',
     workerAddress: '대구 달성군 유가읍 테크노대로 5',
     joinDate: '2020년 8월 30일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '달성군',
     action: '상세',
   },
   {
@@ -486,9 +502,9 @@ const drivers = ref([
     workerPhone: '010-9900-1122',
     workerAddress: '대구 북구 복현로 7',
     joinDate: '2022년 2월 14일',
-    status: '활동중',
-    rank: '시니어',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '북구',
     action: '상세',
   },
   {
@@ -497,9 +513,9 @@ const drivers = ref([
     workerPhone: '010-1020-3040',
     workerAddress: '대구 서구 문화로 55',
     joinDate: '2023년 9월 25일',
-    status: 'Zzz',
-    rank: '라이트',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '서구',
     action: '상세',
   },
   {
@@ -508,9 +524,9 @@ const drivers = ref([
     workerPhone: '010-1122-3344',
     workerAddress: '대구 동구 동촌로 96',
     joinDate: '2020년 3월 19일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '동구',
     action: '상세',
   },
   {
@@ -519,9 +535,9 @@ const drivers = ref([
     workerPhone: '010-2234-5566',
     workerAddress: '대구 북구 구암로 90',
     joinDate: '2023년 8월 4일',
-    status: '활동중',
-    rank: '라이트',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '북구',
     action: '상세',
   },
   {
@@ -530,9 +546,9 @@ const drivers = ref([
     workerPhone: '010-9988-7766',
     workerAddress: '대구 수성구 범어로 22',
     joinDate: '2022년 12월 9일',
-    status: 'Zzz',
-    rank: '일반',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '수성구',
     action: '상세',
   },
   {
@@ -541,9 +557,9 @@ const drivers = ref([
     workerPhone: '010-1122-3345',
     workerAddress: '대구 동구 화랑로 50',
     joinDate: '2021년 1월 15일',
-    status: '활동중',
-    rank: '시니어',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '동구',
     action: '상세',
   },
   {
@@ -552,9 +568,9 @@ const drivers = ref([
     workerPhone: '010-3344-1122',
     workerAddress: '대구 달서구 본리로 10',
     joinDate: '2020년 10월 21일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '달서구',
     action: '상세',
   },
   {
@@ -563,9 +579,9 @@ const drivers = ref([
     workerPhone: '010-4455-6678',
     workerAddress: '대구 남구 이천로 31',
     joinDate: '2020년 12월 30일',
-    status: 'Zzz',
-    rank: '시니어',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '남구',
     action: '상세',
   },
   {
@@ -574,9 +590,9 @@ const drivers = ref([
     workerPhone: '010-5566-7789',
     workerAddress: '대구 달성군 현풍로 86',
     joinDate: '2024년 1월 2일',
-    status: '활동중',
-    rank: '라이트',
-    region: '배차하기',
+    status: '배송',
+    rank: '기사',
+    region: '달성군',
     action: '상세',
   },
   {
@@ -585,9 +601,9 @@ const drivers = ref([
     workerPhone: '010-6677-8890',
     workerAddress: '대구 서구 비산동로 123',
     joinDate: '2021년 9월 11일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '서구',
     action: '상세',
   },
   {
@@ -596,9 +612,9 @@ const drivers = ref([
     workerPhone: '010-7788-9901',
     workerAddress: '대구 중구 남산로 2길 7',
     joinDate: '2022년 6월 8일',
-    status: 'Zzz',
-    rank: '시니어',
-    region: '배차하기',
+    status: '배송',
+    rank: '기사',
+    region: '중구',
     action: '상세',
   },
   {
@@ -607,9 +623,9 @@ const drivers = ref([
     workerPhone: '010-8899-0012',
     workerAddress: '대구 동구 동촌로 15',
     joinDate: '2023년 5월 17일',
-    status: '활동중',
-    rank: '일반',
-    region: '배차하기',
+    status: '픽업',
+    rank: '기사',
+    region: '동구',
     action: '상세',
   },
   {
@@ -618,9 +634,9 @@ const drivers = ref([
     workerPhone: '010-9900-1123',
     workerAddress: '대구 북구 침산로 70',
     joinDate: '2020년 7월 28일',
-    status: 'Zzz',
-    rank: '라이트',
-    region: '배차완료',
+    status: '픽업',
+    rank: '기사',
+    region: '북구',
     action: '상세',
   },
 ]);
@@ -791,6 +807,14 @@ function openDetail(driver) {
   selectedDriver.value = driver;
   isDetailModalOpen.value = true;
 }
+
+// 모달이 열릴 때 오늘 날짜 자동 설정
+watch(isModalOpen, (newVal) => {
+  if (newVal) {
+    const today = new Date().toISOString().split('T')[0];
+    newDriver.value.joinDate = today;
+  }
+});
 </script>
 <style setup>
 td,
