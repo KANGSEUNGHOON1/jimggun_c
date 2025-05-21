@@ -2,7 +2,10 @@
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+// 언어변경
+import { useI18n } from "vue-i18n";
 
+const { t, locale, messages } = useI18n();
 // 플로팅 버튼들 전체
 // 로그인 상태 기반 라우터 설정
 const router = useRouter();
@@ -53,7 +56,7 @@ onMounted(() => {
     <a href="#" class="topBtn" ref="smoothlyBtn">↑</a>
     <div class="resBtn" @click="handleGoToReservation">
       <img src="/images/hong/gotopBtn-logo-w.png" alt="gotopBtn로고" />
-      <span>고용하기</span>
+      <span>{{t("reservation")}}</span>
     </div>
   </div>
 </template>
