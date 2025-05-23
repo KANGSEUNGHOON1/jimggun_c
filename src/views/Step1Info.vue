@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router';
 import ModalInquire from '@/components/ModalInquire.vue'; // 모달 컴포넌트 임포트
 import DatePicker from '@/components/DatePicker.vue'; // 날짜 선택 컴포넌트 임포트
 import TimePicker from '@/components/TimePicker.vue';
+// 예약바로가기 정보 Pinia 갖고오기 
+import { useReservationStore } from '@/stores/reservation';
 
 const isModalOpen = ref(false);
 const route = useRoute();
@@ -139,8 +141,6 @@ const totalPrice = computed(() => {
 
 // 날짜 선택 관련 상태
 const isDatePickerOpen = ref(false);
-const selectedDepartureDate = ref('');
-const selectedArrivalDate = ref('');
 const datePickerType = ref(''); // 'departure' 또는 'arrival'
 //위치잡기
 const datePickerPosition = ref({ top: 0, left: 0 });
@@ -158,14 +158,14 @@ const openDatePicker = (type, event) => {
 };
 
 // 날짜 선택 완료
-const handleDateSelect = (date) => {
-  if (datePickerType.value === 'departure') {
-    selectedDepartureDate.value = date;
-  } else if (datePickerType.value === 'arrival') {
-    selectedArrivalDate.value = date;
-  }
-  isDatePickerOpen.value = false;
-};
+// const handleDateSelect = (date) => {
+//   if (datePickerType.value === 'departure') {
+//     selectedDepartureDate.value = date;
+//   } else if (datePickerType.value === 'arrival') {
+//     selectedArrivalDate.value = date;
+//   }
+//   isDatePickerOpen.value = false;
+// };
 
 // 외부 클릭 감지 함수
 const handleClickOutside = (event) => {
@@ -255,18 +255,16 @@ watch(isTimePickerOpen, (newValue) => {
 
 const isDepartureModalOpen = ref(false);
 const isArrivalModalOpen = ref(false);
-const departurePlace = ref('');
-const arrivalPlace = ref('');
 
-const handleDepartureSelect = (area) => {
-  departurePlace.value = area;
-  isDepartureModalOpen.value = false;
-};
+// const handleDepartureSelect = (area) => {
+//   departurePlace.value = area;
+//   isDepartureModalOpen.value = false;
+// };
 
-const handleArrivalSelect = (area) => {
-  arrivalPlace.value = area;
-  isArrivalModalOpen.value = false;
-};
+// const handleArrivalSelect = (area) => {
+//   arrivalPlace.value = area;
+//   isArrivalModalOpen.value = false;
+// };
 // 수하물 입력값 나타내기
 const selectedLuggage = computed(() => {
   return products.value
@@ -355,6 +353,36 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
+
+// 1. reservationStore에서 값 불러오기
+const reservationStore = useReservationStore();
+
+// 2. computed로 읽기
+const departurePlace = computed(() => reservationStore.departurePlace);
+const arrivalPlace = computed(() => reservationStore.arrivalPlace);
+const selectedDepartureDate = computed(() => reservationStore.departureDate);
+const selectedArrivalDate = computed(() => reservationStore.arrivalDate);
+
+// 3. 선택 시 setter로 값 수정
+const handleDepartureSelect = (place) => {
+  reservationStore.setDeparturePlace(place);
+  isDepartureModalOpen.value = false;
+};
+
+const handleArrivalSelect = (place) => {
+  reservationStore.setArrivalPlace(place);
+  isArrivalModalOpen.value = false;
+};
+
+const handleDateSelect = (date) => {
+  if (datePickerType.value === 'departure') {
+    reservationStore.setDepartureDate(date);
+  } else if (datePickerType.value === 'arrival') {
+    reservationStore.setArrivalDate(date);
+  }
+  isDatePickerOpen.value = false;
+};
+
 </script>
 
 <template>

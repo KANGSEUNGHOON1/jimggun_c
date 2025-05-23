@@ -1,25 +1,47 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100 p-8">
-    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-      <h2 class="text-center text-2xl font-bold text-gray-800 mb-8">로그인</h2>
-      <form @submit.prevent="handleLogin" class="space-y-6">
-        <div class="space-y-2">
-          <label for="email" class="block text-sm font-medium text-gray-700">이메일</label>
-          <input type="email" id="email" placeholder="이메일을 입력하세요" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required />
+<!-- 바깥 배경색 -->
+  <div class="bg-white md:bg-[#FDF3E7] min-h-screen flex flex-col">
+    <!-- 중앙 박스: max-width 768px -->
+    <div class="w-full max-w-[768px] mx-auto h-screen bg-white flex flex-col items-center justify-center">
+      <!-- 로그인 박스: 내부 폭 510px -->
+      <div class="w-full max-w-[510px] text-center font-sans">
+        <!-- 로고 -->
+        <div class="mb-6">
+          <img src="/images/jimggun_logo.png" alt="로고" class="w-[126px] mx-auto" />
         </div>
 
-        <div class="space-y-2">
-          <label for="password" class="block text-sm font-medium text-gray-700">비밀번호</label>
-          <div class="relative">
-            <input id="password" :type="showPassword ? 'text' : 'password'" placeholder="비밀번호를 입력하세요" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" required />
-            <button @click="togglePassword" type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800">
-              {{ showPassword ? "숨기기" : "보기" }}
-            </button>
-          </div>
-        </div>
+        <!-- 로그인 인풋 -->
+        <form class="flex flex-col items-center w-full space-y-3 mt-[50px]">
+          <input
+            type="text"
+            placeholder="아이디"
+            v-model="formData.userId"
+            autocomplete="username"
+            class="w-[88%] h-[60px] border border-[#e5e5ec] rounded-[10px] text-sm text-gray-400 px-[23px] py-[21px]"
+          />
+          <input
+            type="password"
+            placeholder="비밀번호"
+            v-model="formData.password"
+            autocomplete="current-password"
+            class="w-[88%] h-[60px] border border-[#e5e5ec] rounded-[10px] text-sm text-gray-400 px-[23px] py-[21px]"
+          />
+        </form>
 
-        <button type="submit" class="w-full py-3 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200">로그인</button>
-      </form>
+        <!-- 로그인 버튼 -->
+        <button
+          class="w-[88%] h-[60px] bg-[#FF6F00] text-white text-lg font-bold mt-[60px] rounded-[10px] hover:bg-[#e65f00] transition-colors"
+          @click="handleLogin"
+        >
+          로그인
+        </button>
+
+        <!-- 텍스트 링크 -->
+        <div class="flex justify-center items-center text-sm text-gray-400 gap-2 mt-[30px]">
+          <p class="pr-2 border-r border-[#e5e5ec]">회원번호 찾기</p>
+          <p class="pr-2">비밀번호 찾기</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -28,7 +50,11 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-const showPassword = ref(false);
+const formData = ref({
+  userId: '',
+  password: ''
+});
+
 const router = useRouter();
 
 const handleLogin = () => {
@@ -44,7 +70,4 @@ const handleLogin = () => {
   }
 };
 
-const togglePassword = () => {
-  showPassword.value = !showPassword.value;
-};
 </script>

@@ -30,6 +30,9 @@ import Sidebar from "@/pages/admin/Sidebar.vue";
 import Sidebarmenu from "@/pages/admin/Sidebarmenu.vue";
 import Adminreservation from "@/pages/admin/Adminreservation.vue";
 
+// 404 NotFound
+import NotFound from "@/views/NotFound.vue";
+
 const routes = [
   { path: "/", component: A1_home },
   { path: "/information", component: A2_information },
@@ -73,6 +76,12 @@ const routes = [
       { path: "sidebarmenu", component: Sidebarmenu },
       { path: "adminreservation", component: Adminreservation },
     ],
+  },
+  // 404
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound,
   },
 ];
 

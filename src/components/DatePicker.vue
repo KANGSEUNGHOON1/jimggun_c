@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
 const props = defineProps({
   type: {
@@ -87,9 +87,16 @@ const daysInMonth = computed(() => {
 
 // 월 이동
 const changeMonth = (offset) => {
-  currentMonth.value = (currentMonth.value + offset + 12) % 12;
-  currentYear.value =
-    currentMonth.value === 11 ? currentYear.value + 1 : currentYear.value;
+  const newMonth = currentMonth.value + offset;
+  if (newMonth > 11) {
+    currentMonth.value = 0;
+    currentYear.value++;
+  } else if (newMonth < 0) {
+    currentMonth.value = 11;
+    currentYear.value--;
+  } else {
+    currentMonth.value = newMonth;
+  }
 };
 
 // 날짜 선택 핸들러 수정
@@ -113,10 +120,26 @@ const formatDate = (date) => {
 const currentMonthDisplay = computed(() => {
   return `${currentYear.value}년 ${currentMonth.value + 1}월`;
 });
+
+// 추가 - 외부 클릭시 모달 닫기
+const overlayRef = ref(null);
+const handleClickOutside = (event) => {
+  if (overlayRef.value && !overlayRef.value.contains(event.target)) {
+    emit("close");
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("mousedown", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("mousedown", handleClickOutside);
+});
 </script>
 
 <template>
-  <div class="date-picker-overlay" @click="emit('close')">
+  <div class="date-picker-overlay" ref="overlayRef" @click="emit('close')">
     <div class="date-picker" @click.stop>
       <div class="date-picker-header">
         <button @click="changeMonth(-1)">&lt;</button>
@@ -124,10 +147,7 @@ const currentMonthDisplay = computed(() => {
         <button @click="changeMonth(1)">&gt;</button>
       </div>
       <div class="date-picker-grid">
-        <div
-          class="weekday"
-          v-for="day in ['일', '월', '화', '수', '목', '금', '토']"
-          :key="day">
+        <div class="weekday" v-for="day in ['일', '월', '화', '수', '목', '금', '토']" :key="day">
           {{ day }}
         </div>
         <div
@@ -136,8 +156,7 @@ const currentMonthDisplay = computed(() => {
           class="day"
           :class="{
             'current-month': day.isCurrentMonth,
-            selected:
-              selectedDate && formatDate(day.date) === formatDate(selectedDate),
+            selected: selectedDate && formatDate(day.date) === formatDate(selectedDate),
             disabled: isDateDisabled(day.date),
           }"
           @click="handleDateSelect(day.date)">
