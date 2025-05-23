@@ -108,7 +108,7 @@ function goToReservation() {
 
           <!-- 로그아웃 상태일 때 -->
           <template v-else>
-            <router-link to="/login">{{t("login")}}</router-link>
+            <router-link to="/login">{{ t("login") }}</router-link>
           </template>
 
           <!-- 햄버거바 -->
@@ -120,9 +120,9 @@ function goToReservation() {
 
           <!-- 언어 선택 -->
           <div class="headerSubLangs">
-            <a href="#" @click.prevent="changeLang('kor')">KOR</a>
+            <a href="#" @click.prevent="changeLang('kor')" :class="{ activeLang: locale === 'kor' }"> KOR </a>
             <span>|</span>
-            <a href="#" @click.prevent="changeLang('eng')">ENG</a>
+            <a href="#" @click.prevent="changeLang('eng')" :class="{ activeLang: locale === 'eng' }"> ENG </a>
           </div>
         </div>
       </div>
@@ -153,7 +153,7 @@ function goToReservation() {
     background-color: $white;
     justify-content: space-between;
     // 로고
-    .headerLogoWrap{
+    .headerLogoWrap {
       padding-top: 10px;
       padding-bottom: 15px;
       .headerLogo {
@@ -195,8 +195,6 @@ function goToReservation() {
           }
         }
       }
-      .headerNav.open {
-      }
       // 로그인
       .headerSubnav {
         display: flex;
@@ -211,6 +209,15 @@ function goToReservation() {
         span {
           color: $font-gray;
           padding: 0 5px;
+        }
+      }
+      // 언어지원
+      .headerSubLangs {
+        a {
+          font-weight: 400; // 기본
+          &.activeLang {
+            font-weight: 600; // 클릭 시 진하게
+          }
         }
       }
     }
