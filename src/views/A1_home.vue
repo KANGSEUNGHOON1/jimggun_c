@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 // 언어변경
@@ -11,6 +11,12 @@ import "swiper/css";
 import "swiper/css/autoplay";
 // gotop버튼
 import GototopBtn from "@/components/GototopBtn.vue";
+// 출발지/도착지 모달 컴포넌트 불러오기
+import ModalInquire from "@/components/ModalInquire.vue";
+// 날짜선택시 달력 모달 컴포너트 불러오기
+import DatePicker from "@/components/DatePicker.vue";
+// 예약바로가기 정보 예약페이지로 넘기기
+import { useReservationStore } from "@/stores/reservation";
 
 // 언어변경
 const { t, locale, messages } = useI18n();
@@ -19,19 +25,6 @@ const changeLang = (lang) => {
   locale.value = lang;
 };
 
-// 예약바로기 미니버튼 로그인 상태 기반 라우팅
-const router = useRouter();
-const authStore = useAuthStore();
-const isLoggedIn = computed(() => authStore.getIsLoggedIn);
-function handleGoToReservation() {
-  if (isLoggedIn.value) {
-    router.push("/reservation");
-  } else {
-    router.push("/reslogin");
-  }
-}
-
-// 슬라이드 이미지 데이터
 // 슬라이드 이미지 데이터
 const mainBannerData = computed(() => {
   // t: 번역 함수 (t('hello') → 현재 언어로 번역된 "hello" 표시)
@@ -47,7 +40,76 @@ const mainBannerData = computed(() => {
   }));
 });
 
-// 메인배너 더미데이터
+// 예약바로기 미니버튼 로그인 상태 기반 라우팅
+const router = useRouter();
+const authStore = useAuthStore();
+const isLoggedIn = computed(() => authStore.getIsLoggedIn);
+
+// 예약바로가기 출발지/도착지 모달 띄우기
+const isDepartureModalOpen = ref(false);
+const isArrivalModalOpen = ref(false);
+const departurePlace = ref("");
+const arrivalPlace = ref("");
+
+const handleDepartureSelect = (place) => {
+  departurePlace.value = place;
+  isDepartureModalOpen.value = false;
+};
+
+const handleArrivalSelect = (place) => {
+  arrivalPlace.value = place;
+  isArrivalModalOpen.value = false;
+};
+// 예약바로가기 달력 모달 띄우기
+const isDatePickerOpen = ref(false);
+const selectedType = ref(""); // 'departure' or 'arrival'
+const selectedDepartureDate = ref("");
+const selectedArrivalDate = ref("");
+const datePickerPosition = ref({ top: 0, left: 0 });
+// 날짜 선택 input 클릭 시 달력 열기
+const openDatePicker = (type, event) => {
+  selectedType.value = type;
+  const rect = event.target.getBoundingClientRect();
+  datePickerPosition.value = {
+    top: rect.bottom + window.scrollY + 5,
+    left: rect.left + window.scrollX,
+  };
+  isDatePickerOpen.value = true;
+};
+// 날짜 선택 완료
+const handleDateSelect = (date) => {
+  if (selectedType.value === "departure") {
+    selectedDepartureDate.value = date;
+
+    // 맡긴 다음 날을 자동으로 찾을 날짜로 설정
+    const nextDay = new Date(date);
+    nextDay.setDate(nextDay.getDate() + 1);
+    const formatted = nextDay.toISOString().split("T")[0]; // YYYY-MM-DD
+    selectedArrivalDate.value = formatted;
+  } else {
+    selectedArrivalDate.value = date;
+  }
+  isDatePickerOpen.value = false;
+};
+
+// 예약바로가기 정보 예약페이지로 넘기기
+const reservationStore = useReservationStore();
+
+const handleGoToReservation = () => {
+  reservationStore.setReservation({
+    departurePlace: departurePlace.value,
+    arrivalPlace: arrivalPlace.value,
+    departureDate: selectedDepartureDate.value,
+    arrivalDate: selectedArrivalDate.value,
+  });
+
+  // 로그인 여부에 따라 라우팅
+  if (isLoggedIn.value) {
+    router.push("/reservation");
+  } else {
+    router.push("/reslogin");
+  }
+};
 </script>
 
 <template>
@@ -80,21 +142,25 @@ const mainBannerData = computed(() => {
       <!-- 바로 예약하기 -->
       <div class="reservationMini">
         <form>
+          <!-- 출발지 입력 -->
           <div class="mini-text mini-text1">
-            <label for="mini1">{{ t("pickup") }}</label>
-            <input type="text" id="mini1" :placeholder="t('athome')" />
+            <label for="mini-dep">{{ t("pickup") }}</label>
+            <input id="mini-dep" type="text" :value="departurePlace" readonly :placeholder="t('athome')" @click="isDepartureModalOpen = true" />
           </div>
+          <!-- 맡길 날짜 -->
           <div class="mini-text mini-text1">
-            <label for="mini1">{{ t("scheduled") }}</label>
-            <input type="text" id="mini1" placeholder="2025.03.21 / 10:00" />
+            <label for="mini-dep">{{ t("scheduled") }}</label>
+            <input id="mini-dep" type="text" :value="selectedDepartureDate" readonly placeholder="맡길 날짜" @click="openDatePicker('departure', $event)" />
           </div>
+          <!-- 도착지 입력 -->
           <div class="mini-text mini-text1">
-            <label for="mini1">{{ t("destination") }}</label>
-            <input type="text" id="mini1" :placeholder="t('station')" />
+            <label for="mini-arr">{{ t("destination") }}</label>
+            <input id="mini-arr" type="text" :value="arrivalPlace" readonly :placeholder="t('station')" @click="isArrivalModalOpen = true" />
           </div>
+          <!-- 찾을 날짜 -->
           <div class="mini-text">
-            <label for="mini1">{{ t("pickuptime") }}</label>
-            <input type="text" id="mini1" placeholder="2025.03.22 / 11:00" />
+            <label for="mini-arr">{{ t("pickuptime") }}</label>
+            <input id="mini-arr" type="text" :value="selectedArrivalDate" readonly placeholder="찾을 날짜" @click="openDatePicker('arrival', $event)" />
           </div>
         </form>
         <!-- <router-link :to="isLoggedIn ? '/reservation' : '/reslogin'" class="mini-button">
@@ -105,6 +171,25 @@ const mainBannerData = computed(() => {
         </div>
       </div>
     </section>
+
+    <!-- 바로 예약하기 모달 -->
+    <!-- 출발지 모달 -->
+    <ModalInquire :isOpen="isDepartureModalOpen" @close="isDepartureModalOpen = false" @select="handleDepartureSelect" />
+    <!-- 도착지 모달 -->
+    <ModalInquire :isOpen="isArrivalModalOpen" @close="isArrivalModalOpen = false" @select="handleArrivalSelect" />
+    <!-- 달력 컴포넌트 -->
+    <DatePicker
+      v-if="isDatePickerOpen"
+      :type="selectedType"
+      :departureDate="selectedDepartureDate"
+      @select="handleDateSelect"
+      @close="isDatePickerOpen = false"
+      :style="{
+        position: 'absolute',
+        top: `${datePickerPosition.top}px`,
+        left: `${datePickerPosition.left}px`,
+        zIndex: 9999,
+      }" />
 
     <!-- 파트 1 -->
     <section class="a1-part1 inner">
@@ -533,6 +618,7 @@ const mainBannerData = computed(() => {
     }
     // 바로 예약하기
     .reservationMini {
+      overflow: visible; 
       width: 100%;
       max-width: 1000px;
       margin: 0 10px;

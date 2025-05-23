@@ -897,7 +897,6 @@ onUnmounted(() => {
 
 // watch: 탭 전환 감지
 watch(activeTab, (newValue) => {
-  console.log("탭 변경됨:", newValue);
   modalOpen.value = false;
 
   if (newValue === "todayWork") {
