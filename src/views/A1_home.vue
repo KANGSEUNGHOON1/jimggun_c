@@ -1,5 +1,5 @@
 <script setup>
-import { ref , computed } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 // 언어변경
@@ -11,7 +11,6 @@ import "swiper/css";
 import "swiper/css/autoplay";
 // gotop버튼
 import GototopBtn from "@/components/GototopBtn.vue";
-
 
 // 언어변경
 const { t, locale, messages } = useI18n();
@@ -36,7 +35,7 @@ function handleGoToReservation() {
 // 슬라이드 이미지 데이터
 const mainBannerData = computed(() => {
   // t: 번역 함수 (t('hello') → 현재 언어로 번역된 "hello" 표시)
-// locale: 현재 선택된 언어 코드 ('ko', 'en' 등)
+  // locale: 현재 선택된 언어 코드 ('ko', 'en' 등)
   const currentMessages = messages.value[locale.value];
   const data = currentMessages?.mainBanner || [];
 
@@ -44,9 +43,7 @@ const mainBannerData = computed(() => {
     ...slide,
     id: index + 1,
     image: slide.image || `/images/hong/slideImg${index + 1}.png`,
-    imageWidth:
-      slide.imageWidth ||
-      (index === 3 ? "280px" : index === 2 ? "350px" : "400px"),
+    imageWidth: slide.imageWidth || (index === 3 ? "280px" : index === 2 ? "350px" : "400px"),
   }));
 });
 
@@ -88,15 +85,15 @@ const mainBannerData = computed(() => {
             <input type="text" id="mini1" :placeholder="t('athome')" />
           </div>
           <div class="mini-text mini-text1">
-            <label for="mini1">{{t("scheduled")}}</label>
+            <label for="mini1">{{ t("scheduled") }}</label>
             <input type="text" id="mini1" placeholder="2025.03.21 / 10:00" />
           </div>
           <div class="mini-text mini-text1">
-            <label for="mini1">{{t("destination")}}</label>
+            <label for="mini1">{{ t("destination") }}</label>
             <input type="text" id="mini1" :placeholder="t('station')" />
           </div>
           <div class="mini-text">
-            <label for="mini1">{{t("pickuptime")}}</label>
+            <label for="mini1">{{ t("pickuptime") }}</label>
             <input type="text" id="mini1" placeholder="2025.03.22 / 11:00" />
           </div>
         </form>
@@ -104,7 +101,7 @@ const mainBannerData = computed(() => {
           <p>바로 예약</p>
         </router-link> -->
         <div class="mini-button" @click="handleGoToReservation">
-        <p>{{t("reservation")}}</p>
+          <p>{{ t("reservation") }}</p>
         </div>
       </div>
     </section>
@@ -112,9 +109,9 @@ const mainBannerData = computed(() => {
     <!-- 파트 1 -->
     <section class="a1-part1 inner">
       <div class="a1-part1-title">
-        <h3>{{t("benefits")}}</h3>
-        <p>{{t("checkbenefits1")}}</p>
-        <p>{{t("checkbenefits2")}}</p>
+        <h3>{{ t("benefits") }}</h3>
+        <p>{{ t("checkbenefits1") }}</p>
+        <p>{{ t("checkbenefits2") }}</p>
       </div>
       <ul class="a1-part1-boxes">
         <li class="part1-box1 part1-box">
@@ -122,8 +119,8 @@ const mainBannerData = computed(() => {
             <img src="/images/hong/s-banner-1.png" alt="혜택1" />
           </div>
           <div class="box-text box1-text">
-            <h3>{{t("allBenefits")}}</h3>
-            <p>{{t("appDownload")}}</p>
+            <h3>{{ t("allBenefits") }}</h3>
+            <p>{{ t("appDownload") }}</p>
           </div>
         </li>
         <li class="part1-box2 part1-box">
@@ -131,8 +128,8 @@ const mainBannerData = computed(() => {
             <img src="/images/hong/s-banner-3.png" alt="혜택2" />
           </div>
           <div class="box-text box2-text">
-            <h3>{{t("thoroughCare")}}</h3>
-            <p>{{t("options")}}</p>
+            <h3>{{ t("thoroughCare") }}</h3>
+            <p>{{ t("options") }}</p>
           </div>
         </li>
         <li class="part1-box3 part1-box">
@@ -141,7 +138,7 @@ const mainBannerData = computed(() => {
           </div>
           <div class="box-text box3-text">
             <h3>Guid for Foreign Users</h3>
-            <p>{{t("guide")}}</p>
+            <p>{{ t("guide") }}</p>
           </div>
         </li>
       </ul>
@@ -151,9 +148,9 @@ const mainBannerData = computed(() => {
     <section class="a1-part2">
       <!-- 파트2 - 제목 -->
       <div class="part2-title">
-        <h3>{{t("travelFree")}}</h3>
-        <p>{{t("travelFree1")}}</p>
-        <p>{{t("travelFree2")}}</p>
+        <h3>{{ t("travelFree") }}</h3>
+        <p>{{ t("travelFree1") }}</p>
+        <p>{{ t("travelFree2") }}</p>
       </div>
 
       <!-- 파트2 - 내용 -->
@@ -167,14 +164,16 @@ const mainBannerData = computed(() => {
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon1.png" alt="해외출장" />
-                <h3>{{t("business")}}</h3>
+                <h3>{{ t("business") }}</h3>
               </div>
               <!-- 말풍선 글 1-->
               <div class="p2-contents-texts1 p2-underline">
-                <h3>{{t("businessTrip")}} <span> {{t("businessTripSpan")}} </span></h3>
+                <h3>
+                  {{ t("businessTrip") }} <span> {{ t("businessTripSpan") }} </span>
+                </h3>
                 <p>
-                  {{t("TravelLight1")}} <br />
-                  {{t("TravelLight2")}} <br />{{t("TravelLight3")}}
+                  {{ t("TravelLight1") }} <br />
+                  {{ t("TravelLight2") }} <br />{{ t("TravelLight3") }}
                 </p>
               </div>
             </div>
@@ -183,12 +182,14 @@ const mainBannerData = computed(() => {
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon2.png" alt="골프투어" />
-                <h3>{{t("golf")}}</h3>
+                <h3>{{ t("golf") }}</h3>
               </div>
               <!-- 말풍선 글 2 -->
               <div class="p2-contents-texts2 p2-underline">
-                <h3>{{t("golf1")}} <span> {{t("golf2")}} </span></h3>
-                <p>{{t("golfText1")}} <br />{{t("golfText2")}} <br />{{t("golfText3")}}</p>
+                <h3>
+                  {{ t("golf1") }} <span> {{ t("golf2") }} </span>
+                </h3>
+                <p>{{ t("golfText1") }} <br />{{ t("golfText2") }} <br />{{ t("golfText3") }}</p>
               </div>
             </div>
           </div>
@@ -199,26 +200,30 @@ const mainBannerData = computed(() => {
             <div class="p2-contents">
               <!-- 말풍선 글 3 -->
               <div class="p2-contents-texts3 p2-underline">
-                <h3>{{t("weektrip1")}} <span> {{t("weektrip2")}} </span></h3>
-                <p>{{t("weektriptext1")}} <br />{{t("weektriptext2")}} <br />{{t("weektriptext3")}}</p>
+                <h3>
+                  {{ t("weektrip1") }} <span> {{ t("weektrip2") }} </span>
+                </h3>
+                <p>{{ t("weektriptext1") }} <br />{{ t("weektriptext2") }} <br />{{ t("weektriptext3") }}</p>
               </div>
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon3.png" alt="주말여행" />
-                <h3>{{t("week")}}</h3>
+                <h3>{{ t("week") }}</h3>
               </div>
             </div>
             <!-- 4 -->
             <div class="p2-contents">
               <!-- 말풍선 글 4 -->
               <div class="p2-contents-texts4 p2-underline">
-                <h3>{{t("Evening1")}} <span> {{t("Evening2")}} </span></h3>
-                <p>{{t("Eveningtext1")}} <br />{{t("Eveningtext2")}} <br />{{t("Eveningtext3")}}</p>
+                <h3>
+                  {{ t("Evening1") }} <span> {{ t("Evening2") }} </span>
+                </h3>
+                <p>{{ t("Eveningtext1") }} <br />{{ t("Eveningtext2") }} <br />{{ t("Eveningtext3") }}</p>
               </div>
               <!-- 아이콘 -->
               <div class="p2-contents-icons">
                 <img src="/images/hong/part2-icon4.png" alt="퇴근여행" />
-                <h3>{{t("Evening")}}</h3>
+                <h3>{{ t("Evening") }}</h3>
               </div>
             </div>
           </div>
@@ -231,28 +236,32 @@ const mainBannerData = computed(() => {
             <!-- 아이콘 영역 -->
             <div class="t-1-icon">
               <img src="/public/images/hong/part2-icon1.png" alt="해외출장-T" />
-              <h3>{{t("business")}}</h3>
+              <h3>{{ t("business") }}</h3>
             </div>
             <!-- 말풍선 영역 -->
             <div class="t-1-bubble p2-underline">
-              <h2>{{t("businessTrip")}} <span>{{t("businessTripSpan")}}&nbsp</span></h2>
+              <h2>
+                {{ t("businessTrip") }} <span>{{ t("businessTripSpan") }}&nbsp</span>
+              </h2>
               <p>
-                {{t("TravelLight1")}} <br />
-                {{t("TravelLight2")}} <br />{{t("TravelLight3")}}
+                {{ t("TravelLight1") }} <br />
+                {{ t("TravelLight2") }} <br />{{ t("TravelLight3") }}
               </p>
             </div>
           </div>
           <!-- 2 -->
           <div class="t-content2">
             <!-- 말풍선 영역 -->
-            <div class="t-2-bubble p2-underline p2-underline2">
-              <h2>{{t("weektrip1")}} <span>{{t("weektrip2")}}</span></h2>
-              <p>{{t("weektriptext1")}} <br />{{t("weektriptext2")}} <br />{{t("weektriptext3")}}</p>
+            <div class="t-2-bubble p2-underline">
+              <h2>
+                {{ t("weektrip1") }} <span>{{ t("weektrip2") }}</span>
+              </h2>
+              <p>{{ t("weektriptext1") }} <br />{{ t("weektriptext2") }} <br />{{ t("weektriptext3") }}</p>
             </div>
             <!-- 아이콘 영역 -->
             <div class="t-2-icon">
               <img src="/public/images/hong/part2-icon3.png" alt="주말여행-T" />
-              <h3>{{t("week")}}</h3>
+              <h3>{{ t("week") }}</h3>
             </div>
           </div>
           <!-- 3 -->
@@ -260,25 +269,29 @@ const mainBannerData = computed(() => {
             <!-- 아이콘 영역 -->
             <div class="t-1-icon">
               <img src="/public/images/hong/part2-icon2.png" alt="골프투어-T" />
-              <h3>{{t("golf")}}</h3>
+              <h3>{{ t("golf") }}</h3>
             </div>
             <!-- 말풍선 영역 -->
-            <div class="t-1-bubble p2-underline p2-underline2">
-              <h2>{{t("golf1")}} <span>{{t("golf2")}}</span></h2>
-              <p>{{t("golfText2")}} <br />{{t("golfText2")}} <br />{{t("golfText3")}}</p>
+            <div class="t-1-bubble p2-underline">
+              <h2>
+                {{ t("golf1") }} <span>{{ t("golf2") }}</span>
+              </h2>
+              <p>{{ t("golfText1") }} <br />{{ t("golfText2") }} <br />{{ t("golfText3") }}</p>
             </div>
           </div>
           <!-- 4 -->
           <div class="t-content4">
             <!-- 말풍선 영역 -->
-            <div class="t-2-bubble p2-underline p2-underline2">
-              <h2>{{t("Evening1")}} <span>{{t("Evening2")}}</span></h2>
-              <p>{{t("Eveningtext1")}} <br />{{t("Eveningtext2")}} <br />{{t("Eveningtext3")}}</p>
+            <div class="t-2-bubble p2-underline">
+              <h2>
+                {{ t("Evening1") }} <span>{{ t("Evening2") }}</span>
+              </h2>
+              <p>{{ t("Eveningtext1") }} <br />{{ t("Eveningtext2") }} <br />{{ t("Eveningtext3") }}</p>
             </div>
             <!-- 아이콘 영역 -->
             <div class="t-2-icon">
               <img src="/public/images/hong/part2-icon4.png" alt="퇴근여행-T" />
-              <h3>{{t("Evening")}}</h3>
+              <h3>{{ t("Evening") }}</h3>
             </div>
           </div>
         </div>
@@ -302,11 +315,11 @@ const mainBannerData = computed(() => {
         <div class="appTextPart">
           <div class="appTexts">
             <div class="appTexts-spans">
-              <span class="jimggun-span">{{t("jimggun")}}</span>
-              <span class="appdownload-span">{{t("download")}}</span>
+              <span class="jimggun-span">{{ t("jimggun") }}</span>
+              <span class="appdownload-span">{{ t("download") }}</span>
             </div>
-            <p>{{t("journeywithoutluggage")}}</p>
-            <p>{{t("experienceitwithMovers")}}</p>
+            <p>{{ t("journeywithoutluggage") }}</p>
+            <p>{{ t("experienceitwithMovers") }}</p>
           </div>
           <!-- 다운로드 버튼들 -->
           <div class="downloadBtns">
@@ -317,7 +330,7 @@ const mainBannerData = computed(() => {
                 <span class="playstoreENG">Google Play</span>
               </div>
               <div class="androidBtnText">
-                <span class="playstoreKOR">{{t("Android")}}</span>
+                <span class="playstoreKOR">AOS</span>
                 <span class="playstoreAdd">AOS</span>
               </div>
             </div>
@@ -336,9 +349,9 @@ const mainBannerData = computed(() => {
       </div>
       <!-- 두번째 박스 -->
       <div class="part3-box2">
-        <h3>{{t("coupon")}}</h3>
-        <p>{{t("coupontext1")}}</p>
-        <p>{{t("coupontext2")}}</p>
+        <h3>{{ t("coupon") }}</h3>
+        <p>{{ t("coupontext1") }}</p>
+        <p>{{ t("coupontext2") }}</p>
         <div class="couponImg">
           <img src="/images/hong/part3-coupon.png" alt="쿠폰 이미지" />
         </div>
@@ -354,7 +367,6 @@ const mainBannerData = computed(() => {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 20px;
-  
 }
 .main-wrap {
   width: 100%;
@@ -818,15 +830,6 @@ const mainBannerData = computed(() => {
               span {
                 position: relative;
                 box-shadow: inset 0 -6px 0 rgba(255, 111, 0, 0.5);
-                &::after {
-                  content: "";
-                  position: absolute;
-                  right: 0;
-                  bottom: 0;
-                  // width: 100%;
-                  height: 5px;
-                  background-color: rgba(255, 111, 0, 0.5);
-                }
               }
             }
           }
@@ -927,15 +930,6 @@ const mainBannerData = computed(() => {
               span {
                 position: relative;
                 box-shadow: inset 0 -6px 0 rgba(255, 111, 0, 0.5);
-                &::after {
-                  content: "";
-                  position: absolute;
-                  right: 0;
-                  bottom: 0;
-                  // width: 100%;
-                  height: 5px;
-                  background-color: rgba(255, 111, 0, 0.5);
-                }
               }
             }
           }
@@ -960,27 +954,10 @@ const mainBannerData = computed(() => {
         .p2-underline {
           span {
             position: relative;
-            &::after {
-              content: "";
-                  position: absolute;
-                  right: 0;
-                  bottom: 0;
-                  width: 100%;
-                  height: 5px;
-                  background-color: rgba(255, 111, 0, 0.5);
-            }
-          }
-        }
-        // 말풍선 underline 2
-        .p2-underline2 {
-          span {
-            @media screen and (max-width: 390px) {
-              // text-decoration: underline;
-              // text-decoration-color: rgba(255, 111, 0, 0.5);
-              // text-underline-offset: -1px;
-              // text-decoration-thickness: 6px;
-              box-shadow: inset 0 -6px 0 rgba(255, 111, 0, 0.5);
-            }
+            display: inline-block; // 이거 중요!
+            line-height: 1.2;
+            box-shadow: inset 0 -6px 0 rgba(255, 111, 0, 0.5);
+            white-space: nowrap; // 이거 추가
           }
         }
         // 1
@@ -1066,7 +1043,7 @@ const mainBannerData = computed(() => {
           }
           @media screen and (max-width: 390px) {
             width: 200px !important;
-            padding: 20px 25px !important;
+            padding: 20px !important;
           }
           &::after {
             content: "";
@@ -1110,7 +1087,7 @@ const mainBannerData = computed(() => {
           }
           @media screen and (max-width: 390px) {
             width: 200px !important;
-            padding: 20px 25px !important;
+            padding: 20px !important;
           }
           &::after {
             content: "";
@@ -1306,8 +1283,8 @@ const mainBannerData = computed(() => {
         margin-bottom: 9px;
       }
       p {
-        font-size: $text-font-XS;
-        line-height: 14px;
+        font-size: $text-font-S;
+        line-height: 17px;
         color: $font-gray;
       }
       .couponImg {

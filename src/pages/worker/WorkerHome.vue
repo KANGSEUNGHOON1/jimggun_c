@@ -131,15 +131,14 @@
           <div class="w-full mt-[35px] max-w-[700px] mx-auto">
             <!-- 상단: 제목 + 전체보기 -->
             <div class="flex justify-between items-center mb-4">
-              <div class="text-[#111] text-xl md:text-2xl pl-4 font-semibold font-['Pretendard']">알림사항</div>
-              <div class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer">
-                <span>전체보기</span>
-                <span>&gt;</span>
+              <div class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']">알림사항</div>
+              <div @click="router.push('/worker/worker-notice')" class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer">
+                <span class="pr-6">전체보기&gt;</span>
               </div>
             </div>
 
             <!-- 알림 내용 -->
-            <div class="flex gap-3 items-center px-4 py-4 outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] rounded-[10px] shadow-[0px_2px_10px_0px_rgba(17,17,17,0.1)]">
+            <div @click="router.push('/worker/worker-notice')" class="flex gap-3 items-center px-6 py-4 outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] rounded-[10px] shadow-[0px_2px_10px_0px_rgba(17,17,17,0.1)] cursor-pointer">
               <!-- 경고 아이콘 -->
               <div class="w-9 h-9 bg-[#EF4444] rounded-full flex items-center justify-center shrink-0 relative">
                 <div class="w-3.5 h-3.5 bg-white rounded-full absolute"></div>
@@ -154,25 +153,24 @@
           <div class="max-w-[700px] mt-[35px] w-full mx-auto">
             <!-- 제목 -->
             <div class="flex justify-between items-center mb-4">
-              <div class="text-[#111] text-xl md:text-2xl pl-4 font-semibold font-['Pretendard']">공지사항</div>
+              <div class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']">공지사항</div>
               <div class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer">
-                <span>전체보기</span>
-                <span>&gt;</span>
+                <span class="pr-6">전체보기&gt;</span>
               </div>
             </div>
             <!-- 공지 리스트 -->
             <div class="flex flex-col gap-4">
-              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
+              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer">
                 <span class="notice-text text-base text-[#111] font-medium font-['Pretendard']">짐꾼 사칭 및 보이스피싱 주의 안내</span>
                 <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.30</span>
               </div>
 
-              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
+              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer">
                 <span class="notice-text text-base text-[#111] font-medium font-['Pretendard']">5월 황금 연휴 기간 물류 집중 안내</span>
                 <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.28</span>
               </div>
 
-              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4">
+              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer">
                 <span class="notice-text text-base text-[#111] font-medium font-['Pretendard']">업데이트 된 짐꾼 앱 기능 안내</span>
                 <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.11</span>
               </div>
@@ -182,31 +180,30 @@
           <div class="w-full max-w-[700px] mt-[35px] pb-[140px] mx-auto">
             <!-- 제목 -->
             <div class="flex justify-between items-center mb-4">
-              <div class="text-[#111] text-xl md:text-2xl pl-4 font-semibold font-['Pretendard']">이달의 안전</div>
+              <div class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']">이달의 안전</div>
               <div class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer">
-                <span>전체보기</span>
-                <span>&gt;</span>
+                <span class="pr-6">전체보기&gt;</span>
               </div>
             </div>
             <!-- 카드 3개 그리드 -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               <!-- 카드 1 -->
-              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
-                <img class="block w-full h-40 rounded-[10px] object-cover" src="/images/kang/safe.png" alt="안전 이미지" />
+              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer">
+                <img class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover" src="/images/kang/safe.png" alt="안전 이미지" />
                 <div class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']">운전 시 일어나는 안전사고 예방법</div>
                 <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.04.30</div>
               </div>
 
               <!-- 카드 2 -->
-              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
-                <img class="block w-full h-40 rounded-[10px] object-cover" src="/images/kang/safe2.jpg" alt="안전 이미지" />
+              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer">
+                <img class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover" src="/images/kang/safe2.jpg" alt="안전 이미지" />
                 <div class="mt-5 pl-6 text-xs font-semibold text-[#111] text-left font-['Pretendard']">택배 배송 안전 수칙</div>
                 <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.03.31</div>
               </div>
 
               <!-- 카드 3 -->
-              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col">
-                <img class="block w-full h-40 rounded-[10px] object-cover" src="/images/kang/safe3.jpg" alt="안전 이미지" />
+              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer">
+                <img class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover" src="/images/kang/safe3.jpg" alt="안전 이미지" />
                 <div class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']">택배 위험 포인트</div>
                 <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.02.28</div>
               </div>
@@ -401,6 +398,7 @@
 
 <script setup>
 import { ref, onMounted, watch, nextTick, onUnmounted, reactive, computed } from "vue";
+import { useRouter } from "vue-router";
 import BottomNavBar from "@/components/BottomNavBar.vue";
 import { totalMonthlyPay } from "@/stores/usePayStore";
 
@@ -408,7 +406,10 @@ import { totalMonthlyPay } from "@/stores/usePayStore";
 const activeTab = ref("home");
 // 오늘 날짜
 const today = new Date();
-const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
+const days = ["일", "월", "화", "수", "목", "금", "토"];
+const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} (${days[today.getDay()]})`;
+// 알림 페이지 연결
+const router = useRouter();
 // 선택된 장소 정보
 const selectedPlace = ref(null);
 // 모달 열림상태
@@ -975,27 +976,23 @@ function handlePickupCompleteFromList(item) {
 
 // 내 위치 마커 생성 함수
 function addCurrentLocationMarker() {
-  if (!navigator.geolocation) return;
+  const latitude = 35.8675;
+  const longitude = 128.5936;
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const { latitude, longitude } = position.coords;
-      const locPosition = new kakao.maps.LatLng(latitude, longitude);
-      const marker = new kakao.maps.Marker({
-        position: locPosition,
-        image: new kakao.maps.MarkerImage("/images/hong/mylocationImg.png", new kakao.maps.Size(70, 90)),
-        title: "내 위치",
-      });
+  const locPosition = new kakao.maps.LatLng(latitude, longitude);
+  const marker = new kakao.maps.Marker({
+    position: locPosition,
+    image: new kakao.maps.MarkerImage(
+      "/images/hong/mylocationImg.png", // 너가 쓰던 트럭+세모 마커 이미지
+      new kakao.maps.Size(70, 90)
+    ),
+    title: "내 위치 (설정된)",
+  });
 
-      marker.setMap(map);
+  marker.setMap(map);
 
-      // 지도 중심도 내 위치로 이동
-      map.setCenter(locPosition);
-    },
-    (error) => {
-      console.error("위치 정보를 가져올 수 없습니다.", error);
-    }
-  );
+  // 지도 중심 이동
+  map.setCenter(locPosition);
 }
 
 // 지도 보기로 되돌아가기

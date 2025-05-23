@@ -30,9 +30,20 @@ import { useRouter } from "vue-router";
 
 const showPassword = ref(false);
 const router = useRouter();
+
 const handleLogin = () => {
-  router.push("/worker/worker-main");
+  // 로그인 성공했다고 가정하고 출근 여부 검사
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  const lastCheckedDate = localStorage.getItem("worker-checked-date");
+
+  if (lastCheckedDate === todayKey) {
+    router.push("/worker/worker-home"); // 이미 출근한 경우
+  } else {
+    router.push("/worker/worker-main"); // 오늘 첫 출근이면 출근 페이지 보여줌
+  }
 };
+
 const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };

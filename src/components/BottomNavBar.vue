@@ -1,7 +1,7 @@
 <template>
   <!-- 네비게이션 바 -->
   <div
-    class="fixed bottom-0 w-full max-w-[768px] py-3 px-[100px] bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex mx-auto justify-between items-center gap-20 overflow-hidden z-50"
+    class="fixed bottom-0 w-full max-w-[768px] py-3 px-[100px] bg-white shadow-[0px_-4px_10px_0px_rgba(0,0,0,0.05)] flex mx-auto justify-between items-center overflow-hidden z-50"
   >
     <!-- 홈 -->
     <router-link to="/worker/worker-home">
