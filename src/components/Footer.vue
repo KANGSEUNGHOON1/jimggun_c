@@ -33,7 +33,7 @@ const { t, locale, messages } = useI18n();
           </div>
           <div class="footerRightButtons">
             <a href="#">{{t("partnership")}}</a>
-            <router-link to="/cs">{{t("support")}}</router-link>
+            <router-link to="/cs">{{t("cs")}}</router-link>
           </div>
           <div class="footerRightServices">
             <p>{{t("termsService")}}</p>
