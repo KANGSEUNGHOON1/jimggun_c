@@ -1044,6 +1044,7 @@ const markerData = ref([
 
 // 마커 생성
 const createMarker = (place) => {
+  if (typeof kakao === "undefined" || !kakao.maps) return;
   const position = new kakao.maps.LatLng(place.lat, place.lng);
   const marker = new kakao.maps.Marker({
     position,
@@ -1066,8 +1067,9 @@ const createMarker = (place) => {
       completed: place.image.includes("-1.png"),
     };
     // reservationId에 해당하는 이미지만 불러오기
-    const image = uploadedImages["" + place.reservationId] || place.previewImage || null;
-    uploadedImages[place.reservationId] = image;
+    const image =
+      uploadedImages.value["" + place.reservationId] || place.previewImage || null;
+    uploadedImages.value[place.reservationId] = image;
 
     uploadedImages[place.reservationId] = image;
 
