@@ -78,15 +78,15 @@
                 @change="toggleSelectAll"
               />
             </th>
-            <th>기사명</th>
-            <th>기사 ID</th>
+            <th class="cursor-pointer" @click="setSortKey('workerName')">기사명</th>
+            <th class="cursor-pointer" @click="setSortKey('workerId')">기사 ID</th>
             <th>연락처</th>
-            <th>주소</th>
-            <th>입사일자</th>
-            <th>업무분류</th>
-            <th>직급</th>
-            <th>상세</th>
-            <th class="rounded-tr-[10px]">상세정보</th>
+            <th class="cursor-pointer" @click="setSortKey('workerAddress')">주소</th>
+            <th class="cursor-pointer" @click="setSortKey('joinDate')">입사일자</th>
+            <th class="cursor-pointer" @click="setSortKey('status')">업무분류</th>
+            <th class="cursor-pointer" @click="setSortKey('rank')">직급</th>
+            <th class="cursor-pointer" @click="setSortKey('region')">배정지역</th>
+            <th class="rounded-tr-[10px]">액션</th>
           </tr>
         </thead>
         <tbody>
@@ -202,10 +202,10 @@
       <h2 class="text-xl font-bold px-[30px] py-[30px] border-b border-[#E5E5EC]">
         신규 기사 추가
       </h2>
-      <div class="flex gap-2 px-[30px] pt-[30px] pb-[20px]">
+      <div class="flex gap-10 px-[30px] pt-[30px] pb-[20px]">
         <!-- 왼쪽 사진 업로드 영역 -->
         <div class="flex justify-center">
-          <div class="w-48 h-48 relative cursor-pointer" @click="triggerFileInput">
+          <div class="w-32 h-32 relative cursor-pointer" @click="triggerFileInput">
             <!-- 업로드 안 된 상태 -->
             <template v-if="!newDriver.photo">
               <div
@@ -220,7 +220,7 @@
 
             <!-- 미리보기 -->
             <template v-else>
-              <img :src="newDriver.photo" class="w-48 h-48 object-cover rounded-[10px]" />
+              <img :src="newDriver.photo" class="w-32 h-32 object-cover rounded-[10px]" />
             </template>
 
             <!-- 숨겨진 input[type="file"] -->
@@ -321,48 +321,217 @@
     </div>
   </div>
 
-  <!-- 상세보기 모달 -->
+  <!-- 기사 상세 정보 모달 -->
   <div
     v-if="isDetailModalOpen"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
     @click="isDetailModalOpen = false"
   >
-    <div class="bg-white w-[500px] p-6 rounded--[10px]" @click.stop>
-      <h2 class="text-xl font-bold mb-4">기사 상세 정보</h2>
-      <div class="grid gap-2 text-sm">
-        <div><strong>ID:</strong> {{ selectedDriver.workerId }}</div>
-        <div><strong>이름:</strong> {{ selectedDriver.workerName }}</div>
-        <div><strong>연락처:</strong> {{ selectedDriver.workerPhone }}</div>
-        <div><strong>주소:</strong> {{ selectedDriver.workerAddress }}</div>
-        <div><strong>입사일:</strong> {{ selectedDriver.joinDate }}</div>
-        <div><strong>직급:</strong> {{ selectedDriver.rank }}</div>
-        <div><strong>지역:</strong> {{ selectedDriver.region }}</div>
-        <div><strong>상태:</strong> {{ selectedDriver.status }}</div>
-        <div>
-          <strong>사진:</strong><br />
-          <img
-            :src="selectedDriver.photo"
-            class="w-32 h-32 object-cover mt-2 rounded-[10px]"
-            v-if="selectedDriver.photo"
-          />
+    <div class="bg-white rounded-[10px] shadow-lg px-10 py-8" @click.stop>
+      <h2 class="text-xl font-bold px-[25px] py-[25px] border-b border-[#E5E5EC]">
+        기사 상세 정보
+      </h2>
+      <div class="flex gap-10 gap-2 px-[30px] pt-[30px] pb-[20px]">
+        <!-- 왼쪽 영역-->
+        <div class="flex justify-center">
+          <div class="w-32 h-32 relative cursor-pointer">
+            <img
+              :src="selectedDriver.photo"
+              class="w-32 h-32 object-cover rounded-[10px]"
+              v-if="selectedDriver.photo"
+            />
+          </div>
         </div>
-        <div>
-          <strong>메모:</strong>
+        <!-- 오른쪽 영역-->
+        <div class="flex-1 grid grid-cols-1 gap-2 px-10">
+          <!-- ID -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">ID :</span>
+            <template v-if="isDetailEditMode">
+              <input
+                type="text"
+                v-model="selectedDriver.workerId"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              />
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.workerId }}</span>
+            </template>
+          </div>
+          <!-- 이름 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">이름 :</span>
+            <template v-if="isDetailEditMode">
+              <input
+                type="text"
+                v-model="selectedDriver.workerName"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              />
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.workerName }}</span>
+            </template>
+          </div>
+          <!-- 전화번호 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">전화번호 :</span>
+            <template v-if="isDetailEditMode">
+              <input
+                type="text"
+                v-model="selectedDriver.workerPhone"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              />
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.workerPhone }}</span>
+            </template>
+          </div>
+          <!-- 주소 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">주소 :</span>
+            <template v-if="isDetailEditMode">
+              <input
+                type="text"
+                v-model="selectedDriver.workerAddress"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              />
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.workerAddress }}</span>
+            </template>
+          </div>
+          <!-- 상세 주소 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">상세주소 :</span>
+            <template v-if="isDetailEditMode">
+              <input
+                type="text"
+                v-model="selectedDriver.workerAddressDetail"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              />
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.workerAddressDetail }}</span>
+            </template>
+          </div>
+          <!-- 입사일자 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">입사일자 :</span>
+            <template v-if="isDetailEditMode">
+              <input
+                type="date"
+                v-model="selectedDriver.joinDate"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2 pr-2"
+              />
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.joinDate }}</span>
+            </template>
+          </div>
+          <!-- 직급 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">직급 :</span>
+            <template v-if="isDetailEditMode">
+              <select
+                v-model="selectedDriver.rank"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              >
+                <option value="팀장">팀장</option>
+                <option value="기사">기사</option>
+              </select>
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.rank }}</span>
+            </template>
+          </div>
+          <!-- 지역 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">배정지역 :</span>
+            <template v-if="isDetailEditMode">
+              <select
+                v-model="selectedDriver.region"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              >
+                <option value="중구">중구</option>
+                <option value="남구">남구</option>
+                <option value="북구">북구</option>
+                <option value="서구">동구</option>
+                <option value="서구">서구</option>
+                <option value="달서구">달서구</option>
+                <option value="수성구">수성구</option>
+                <option value="달성군">달성군</option>
+              </select>
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.region }}</span>
+            </template>
+          </div>
+          <!-- 업무분류 -->
+          <div class="flex items-center mb-2">
+            <span class="w-24 font-semibold">업무분류 :</span>
+            <template v-if="isDetailEditMode">
+              <select
+                v-model="selectedDriver.status"
+                class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+              >
+                <option value="픽업">픽업</option>
+                <option value="배송">배송</option>
+              </select>
+            </template>
+            <template v-else>
+              <span>{{ selectedDriver.status }}</span>
+            </template>
+          </div>
+        </div>
+      </div>
+      <!-- 메모 -->
+      <div class="mt-4">
+        <label class="font-semibold block mb-1">Memo</label>
+        <template v-if="isDetailEditMode">
           <textarea
             v-model="selectedDriver.memo"
             rows="3"
-            class="w-full border border-zinc-300 rounded-[10px] mt-1 p-2 text-sm"
+            class="w-full border border-zinc-300 rounded-[10px] p-2 text-sm resize-none"
             placeholder="기사에 대한 메모를 입력하세요"
           ></textarea>
-        </div>
+        </template>
+        <template v-else>
+          <div
+            class="min-h-[72px] border border-zinc-200 rounded-[10px] p-2 text-sm bg-gray-50 whitespace-pre-wrap"
+          >
+            {{ selectedDriver.memo || "메모가 없습니다." }}
+          </div>
+        </template>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <button
-          class="px-4 py-2 bg-neutral-500 rounded-[10px] text-white"
-          @click="isDetailModalOpen = false"
-        >
-          닫기
-        </button>
+        <template v-if="isDetailEditMode">
+          <button
+            class="px-4 py-2 bg-manager rounded-[10px] text-white"
+            @click="saveDetailChanges"
+          >
+            저장
+          </button>
+          <button
+            class="px-4 py-2 bg-gray-400 rounded-[10px] text-white"
+            @click="cancelDetailEdit"
+          >
+            취소
+          </button>
+        </template>
+        <template v-else>
+          <button
+            class="px-4 py-2 bg-green-600 rounded-[10px] text-white"
+            @click="isDetailEditMode = true"
+          >
+            수정
+          </button>
+          <button
+            class="px-4 py-2 bg-neutral-500 rounded-[10px] text-white"
+            @click="isDetailModalOpen = false"
+          >
+            닫기
+          </button>
+        </template>
       </div>
     </div>
   </div>
@@ -925,13 +1094,44 @@ watch(isModalOpen, (newVal) => {
 
 // 정렬
 const sortOrder = ref("asc");
+const sortKey = ref("workerName");
 
 const sortedDrivers = computed(() => {
-  const sorted = [...filteredDrivers.value].sort((a, b) =>
-    a.workerName.localeCompare(b.workerName, "ko")
-  );
-  return sortOrder.value === "desc" ? sorted.reverse() : sorted;
+  return [...filteredDrivers.value].sort((a, b) => {
+    let aVal = a[sortKey.value];
+    let bVal = b[sortKey.value];
+
+    // 날짜 정렬 처리
+    if (sortKey.value === "joinDate") {
+      const parseDate = (str) => {
+        const match = str.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/);
+        if (!match) return new Date(0); // 잘못된 형식은 가장 오래된 날짜로 처리
+        const [_, year, month, day] = match;
+        return new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
+      };
+      aVal = parseDate(aVal);
+      bVal = parseDate(bVal);
+    }
+
+    // 문자열 비교
+    if (typeof aVal === "string" && typeof bVal === "string") {
+      return sortOrder.value === "asc"
+        ? aVal.localeCompare(bVal, "ko")
+        : bVal.localeCompare(aVal, "ko");
+    }
+
+    return sortOrder.value === "asc" ? aVal - bVal : bVal - aVal;
+  });
 });
+
+function setSortKey(key) {
+  if (sortKey.value === key) {
+    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
+  } else {
+    sortKey.value = key;
+    sortOrder.value = "asc";
+  }
+}
 
 const handleAddressSearch = () => {
   new window.daum.Postcode({
@@ -965,6 +1165,21 @@ const handleAddressSearch = () => {
     },
   }).open();
 };
+
+// 수정 모드
+const isDetailEditMode = ref(false);
+// 백업용 임시 객체
+const driverBackup = ref({});
+
+function saveDetailChanges() {
+  isDetailEditMode.value = false;
+}
+
+function cancelDetailEdit() {
+  // 백업된 값으로 되돌림
+  selectedDriver.value = { ...driverBackup.value };
+  isDetailEditMode.value = false;
+}
 </script>
 <style setup>
 td,
