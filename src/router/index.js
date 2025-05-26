@@ -19,7 +19,7 @@ import WorkerHome from '@/pages/worker/WorkerHome.vue';
 import WorkerMain from '@/pages/worker/WorkerMain.vue';
 import WorkerMypage from '@/pages/worker/WorkerMypage.vue';
 import WorkerNotice from '@/pages/worker/WorkerNotice.vue';
-import WorkerSettings from '@/pages/worker/WorkerSettings.vue';
+
 
 // 관리자페이지 로그인
 import A10_adminLogin from "@/views/A10_adminLogin.vue";
@@ -55,7 +55,7 @@ const routes = [
   { path: '/worker/worker-home', component: WorkerHome },
   { path: '/worker/worker-mypage', component: WorkerMypage },
   { path: '/worker/worker-notice', component: WorkerNotice },
-  { path: '/worker/worker-settings', component: WorkerSettings },
+ 
   // 관리자페이지
   {
     path: "/admin",

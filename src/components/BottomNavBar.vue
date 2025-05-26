@@ -5,9 +5,15 @@
   >
     <!-- 홈 -->
     <router-link to="/worker/worker-home">
-      <div class="flex flex-col items-center gap-2.5 w-14 transition-transform hover:scale-105">
+      <div
+        class="flex flex-col items-center gap-2.5 w-14 transition-transform hover:scale-105"
+      >
         <img
-          :src="route.path === '/worker/worker-home' ? '/images/kang/homeActive.png' : '/images/kang/home.png'"
+          :src="
+            route.path === '/worker/worker-home'
+              ? '/images/kang/homeActive.png'
+              : '/images/kang/home.png'
+          "
           alt="home"
         />
         <div
@@ -40,7 +46,11 @@
     <router-link to="/worker/worker-mypage">
       <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
         <img
-          :src="route.path === '/worker/worker-mypage' ? '/images/kang/mypageActive.png' : '/images/kang/mypage.png'"
+          :src="
+            route.path === '/worker/worker-mypage'
+              ? '/images/kang/mypageActive.png'
+              : '/images/kang/mypage.png'
+          "
           alt="mypage"
         />
         <div
@@ -55,50 +65,46 @@
     </router-link>
 
     <!-- 환경설정 -->
-    <router-link to="/worker/worker-settings">
-      <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
-        <img
-          :src="
-            route.path === '/worker/worker-settings' ? '/images/kang/settingsActive.png' : '/images/kang/settings.png'
-          "
-          alt="settings"
-        />
-        <div
-          :class="[
-            'w-full text-center text-base font-medium font-[Pretendard]',
-            route.path === '/worker/worker-settings' ? 'text-[#FF6F00]' : 'text-[#505050]',
-          ]"
-        >
-          환경설정
-        </div>
+
+    <div class="flex flex-col items-center gap-2 w-14 cursor-pointer">
+      <img
+        :src="
+          route.path === '/worker/worker-settings'
+            ? '/images/kang/settingsActive.png'
+            : '/images/kang/settings.png'
+        "
+        alt="settings"
+      />
+      <div :class="['w-full text-center text-base font-medium font-[Pretendard]']">
+        환경설정
       </div>
-    </router-link>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
-import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from "vue-router";
+import { ref, computed, onMounted } from "vue";
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const visitedNotice = ref(localStorage.getItem('visited-notice') === 'true')
+const visitedNotice = ref(localStorage.getItem("visited-notice") === "true");
 
 // 라우터가 완전히 바뀐 후 이벤트 처리
 onMounted(() => {
   router.afterEach((to) => {
-    if (to.path === '/worker/worker-notice') {
-      visitedNotice.value = true
-      localStorage.setItem('visited-notice', 'true')
+    if (to.path === "/worker/worker-notice") {
+      visitedNotice.value = true;
+      localStorage.setItem("visited-notice", "true");
     }
-  })
-})
+  });
+});
 
 const noticeIcon = computed(() => {
-  const isActive = route.path === '/worker/worker-notice'
-  const prefix = visitedNotice.value ? 'noticeB' : 'notice'
-  const suffix = isActive ? 'Active' : ''
-  return `/images/kang/${prefix}${suffix}.png`
-})
+  const isActive = route.path === "/worker/worker-notice";
+  const prefix = visitedNotice.value ? "noticeB" : "notice";
+  const suffix = isActive ? "Active" : "";
+  return `/images/kang/${prefix}${suffix}.png`;
+});
 </script>
