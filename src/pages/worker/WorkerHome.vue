@@ -251,7 +251,10 @@
                   </div>
                   <div class="flex gap-2">
                     <span class="text-gray-500 w-20">전화</span>
-                    <span class="text-base">{{ selectedPlace.phone }}</span>
+                    <div class="flex items-center gap-3 text-base">
+                      <span>{{ selectedPlace.phone }}</span>
+                      <img src="/images/hong/phone.png" alt="" aria-hidden="true" class="w-6 h-6 cursor-pointer" />
+                    </div>
                   </div>
                   <div class="flex gap-2">
                     <span class="text-gray-500 w-20">요청사항</span>
@@ -446,7 +449,7 @@ const markerData = ref([
     lng: 128.629024,
     title: "범어동 더샵아파트 104동 502호",
     reservationId: "1",
-    address: "대구광역시 수성구 범어동 달구벌대로492길 33\n더샵아파트 104동 502호",
+    address: "대구광역시 수성구 범어동 무학로 12길 3\n더샵아파트 104동 502호",
     name: "홍길동",
     phone: "010-1234-5678",
     notes: "",
@@ -1024,10 +1027,9 @@ const filteredMarkerData = computed(() => {
   .home-wrap,
   .todayWorkListWrap,
   .todayWorkMapWrap,
-  .list-view-wrap,
-  .workerHomeWrap {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+  .list-view-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   /* 전체적인 텍스트 크기 조정 */
