@@ -74,7 +74,7 @@ const handleLogin = () => {
       </div>
       <div class="workerLogin">
         <router-link to="/worker"
-          ><p>혹시 <strong>짐꾼</strong>이세요?</p></router-link
+          ><p>혹시 <strong>짐꾼</strong>이신가요?</p></router-link
         >
       </div>
     </div>

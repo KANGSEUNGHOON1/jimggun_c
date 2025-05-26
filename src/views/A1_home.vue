@@ -150,7 +150,7 @@ const handleGoToReservation = () => {
           <!-- 맡길 날짜 -->
           <div class="mini-text mini-text1">
             <label for="mini-dep">{{ t("scheduled") }}</label>
-            <input id="mini-dep" type="text" :value="selectedDepartureDate" readonly placeholder="맡길 날짜" @click="openDatePicker('departure', $event)" />
+            <input id="mini-dep" type="text" :value="selectedDepartureDate" readonly placeholder="2025.05.30" @click="openDatePicker('departure', $event)" />
           </div>
           <!-- 도착지 입력 -->
           <div class="mini-text mini-text1">
@@ -160,7 +160,7 @@ const handleGoToReservation = () => {
           <!-- 찾을 날짜 -->
           <div class="mini-text">
             <label for="mini-arr">{{ t("pickuptime") }}</label>
-            <input id="mini-arr" type="text" :value="selectedArrivalDate" readonly placeholder="찾을 날짜" @click="openDatePicker('arrival', $event)" />
+            <input id="mini-arr" type="text" :value="selectedArrivalDate" readonly placeholder="2025.05.31" @click="openDatePicker('arrival', $event)" />
           </div>
         </form>
         <!-- <router-link :to="isLoggedIn ? '/reservation' : '/reslogin'" class="mini-button">
