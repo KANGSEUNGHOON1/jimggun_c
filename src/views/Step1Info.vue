@@ -285,20 +285,14 @@ const openArrivalDateModal = (event) => {
 };
 
 // 찾을 날짜 모달 확인
+// 찾을 날짜 모달 확인
 const confirmArrivalDate = () => {
-  // 맡기는 날짜의 다음 날 계산
-  const nextDay = new Date(selectedDepartureDate.value);
-  nextDay.setDate(nextDay.getDate() + 1);
-
-  // 날짜 포맷팅
-  const year = nextDay.getFullYear();
-  const month = String(nextDay.getMonth() + 1).padStart(2, '0');
-  const day = String(nextDay.getDate()).padStart(2, '0');
-  const formattedNextDay = `${year}-${month}-${day}`;
-
-  // 찾을 날짜를 다음 날로 설정
-  selectedArrivalDate.value = formattedNextDay;
   isArrivalDateModalOpen.value = false;
+  // 모달 닫은 후 날짜 선택기 열기
+  const arrivalDateInput = document.getElementById("arrival_date");
+  if (arrivalDateInput) {
+    openDatePicker("arrival", { target: arrivalDateInput });
+  }
 };
 
 // 모바일 토글 상태 관리
@@ -698,7 +692,7 @@ const handleDateSelect = (date) => {
   <!-- 찾을 날짜 모달 -->
   <div v-if="isArrivalDateModalOpen" class="modal-overlay">
     <div class="modal-content">
-      <p>짐은 <strong>맡긴 다음 날</strong> 찾을 수 있어요.</p>
+      <p>짐은 <strong>맡긴 다음 날</strong>부터 찾을 수 있어요.</p>
       <div class="modal-buttons">
         <button @click="confirmArrivalDate" class="confirm-btn">확인</button>
       </div>
@@ -1003,7 +997,7 @@ const handleDateSelect = (date) => {
   background-color: white;
   padding-top: 20px;
   border-radius: 10px;
-  width: 250px;
+  width: 280px;
   height: 150px;
   // width: 100%;
   // height: 100%;
@@ -1021,7 +1015,7 @@ const handleDateSelect = (date) => {
 }
 
 .modal-buttons {
-  margin: 40px auto 0;
+  margin: 40px auto;
   width: 88%;
   height: 30%;
   button {

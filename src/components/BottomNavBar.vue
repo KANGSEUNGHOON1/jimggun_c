@@ -75,7 +75,7 @@
         "
         alt="settings"
       />
-      <div :class="['w-full text-center text-base font-medium font-[Pretendard]']">
+      <div :class="['w-full text-center text-base font-medium font-[Pretendard] text-[#505050]']">
         환경설정
       </div>
     </div>
