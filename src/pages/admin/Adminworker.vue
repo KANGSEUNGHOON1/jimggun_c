@@ -178,6 +178,12 @@
       <!-- 수정 모드일 때 -->
       <template v-else>
         <button
+          class="w-36 h-12 bg-red-500 text-white rounded-[10px] text-base font-medium"
+          @click="deleteSelectedDrivers"
+        >
+          삭제
+        </button>
+        <button
           class="w-36 h-12 bg-manager text-white rounded-[10px] text-base font-medium"
           @click="saveChanges"
         >
@@ -284,6 +290,26 @@
               type="date"
               class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2 pr-2"
             />
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">업무분류</span
+            ><select
+              v-model="newDriver.status"
+              class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+            >
+              <option value="픽업">픽업</option>
+              <option value="배송">배송</option>
+            </select>
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-24 text-[16px] text-[#505050]">직급</span
+            ><select
+              v-model="newDriver.rank"
+              class="input border border-[#E5E5EC] w-[250px] h-[40px] rounded-[10px] pl-2"
+            >
+              <option value="기사">기사</option>
+              <option value="팀장">팀장</option>
+            </select>
           </div>
           <div class="flex items-center mb-2">
             <span class="w-24 text-[16px] text-[#505050]">배정지역</span
