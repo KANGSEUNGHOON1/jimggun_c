@@ -1,13 +1,13 @@
 <script setup>
-import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { computed } from 'vue';
-import ErrorModal from '@/components/ErrorModal.vue';
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import { computed } from "vue";
+import ErrorModal from "@/components/ErrorModal.vue";
 
 const router = useRouter();
 
 const showErrorModal = ref(false);
-const errorMessage = ref('');
+const errorMessage = ref("");
 
 const allAgree = ref(false);
 const terms = ref(false);
@@ -17,69 +17,77 @@ const showPassword2 = ref(false);
 
 // 회원가입 폼 데이터 초기화
 const signUpData = ref({
-  userId: '', //아이디
-  name: '', // 사용자 이름
-  email: '', // 사용자 이메일
-  password: '', // 비밀번호
-  passwordCheck: '', // 비밀번호 확인
-  phone: '', // 휴대폰 번호
+  userId: "", //아이디
+  name: "", // 사용자 이름
+  email: "", // 사용자 이메일
+  password: "", // 비밀번호
+  passwordCheck: "", // 비밀번호 확인
+  phone: "", // 휴대폰 번호
 });
 
 const errors = ref({
-  userId: '',
-  name: '',
-  phone: '',
-  email: '',
-  password: '',
-  passwordCheck: '',
+  userId: "",
+  name: "",
+  phone: "",
+  email: "",
+  password: "",
+  passwordCheck: "",
 });
 
 const isEmailVerified = ref(false); //이메일 인증 완료 여부
 const isPhoneVerified = ref(false); //휴대폰 인증 완료 여부
 // 유효성 검사 정의
 const validateField = (field) => {
-  if (field === 'userId') {
-    errors.value.userId = !signUpData.value.userId.trim() ? '아이디를 입력해주세요.' : '';
+  if (field === "userId") {
+    errors.value.userId = !signUpData.value.userId.trim() ? "아이디를 입력해주세요." : "";
   }
   if (!signUpData.value.password) {
-    errors.value.password = '비밀번호를 입력해주세요.';
+    errors.value.password = "비밀번호를 입력해주세요.";
   } else {
-    errors.value.password = '';
+    errors.value.password = "";
   }
-  if (field === 'name') {
-    errors.value.name = !signUpData.value.name.trim() ? '이름을 입력해주세요.' : '';
+  if (field === "name") {
+    errors.value.name = !signUpData.value.name.trim() ? "이름을 입력해주세요." : "";
   }
 
-  if (field === 'phone') {
+  if (field === "phone") {
     if (!signUpData.value.phone.trim()) {
-      errors.value.phone = '전화번호를 입력해주세요.';
+      errors.value.phone = "전화번호를 입력해주세요.";
     } else if (!/^\d{3}-\d{4}-\d{4}$/.test(signUpData.value.phone)) {
-      errors.value.phone = '올바른 전화번호 형식이 아닙니다. (000-0000-0000)';
+      errors.value.phone = "올바른 전화번호 형식이 아닙니다. (000-0000-0000)";
     } else {
-      errors.value.phone = '';
+      errors.value.phone = "";
     }
   }
 
-  if (field === 'email') {
+  if (field === "email") {
     if (!signUpData.value.email.trim()) {
-      errors.value.email = '이메일을 입력해주세요.';
+      errors.value.email = "이메일을 입력해주세요.";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signUpData.value.email)) {
-      errors.value.email = '올바른 이메일 형식이 아닙니다.';
+      errors.value.email = "올바른 이메일 형식이 아닙니다.";
     } else {
-      errors.value.email = '';
+      errors.value.email = "";
     }
   }
 };
 
 // 비밀번호 확인 검사
 const validatePasswordMatch = () => {
-  if (signUpData.value.password !== signUpData.value.passwordCheck) {
-    errors.value.passwordCheck = '비밀번호가 일치하지 않습니다.';
+  const pw = signUpData.value.password;
+  const pwCheck = signUpData.value.passwordCheck;
+
+  // 두 필드 모두 비어있지 않아야 유효성 검사 시작
+  if (pw && pwCheck) {
+    if (pw !== pwCheck) {
+      errors.value.passwordCheck = "비밀번호가 일치하지 않습니다.";
+    } else {
+      errors.value.passwordCheck = "";
+    }
   } else {
-    errors.value.passwordCheck = '';
+    // 하나라도 비어 있으면 에러 메시지를 표시하지 않음
+    errors.value.passwordCheck = "";
   }
 };
-
 // 비밀번호 표시 토글
 
 const togglePassword = () => {
@@ -112,10 +120,10 @@ watch([terms, privacy], ([newTerms, newPrivacy]) => {
 
 // 유효성 검사 & 회원가입 처리 함수
 const validateAllFields = () => {
-  validateField('userId');
-  validateField('name');
-  validateField('phone');
-  validateField('email');
+  validateField("userId");
+  validateField("name");
+  validateField("phone");
+  validateField("email");
   validatePasswordMatch();
 
   return (
@@ -131,14 +139,14 @@ const validateAllFields = () => {
 const handleSignup = () => {
   // 약관 동의 여부 체크
   if (!terms.value || !privacy.value) {
-    errorMessage.value = '약관 및 개인정보처리방침에 동의해 주세요.';
+    errorMessage.value = "약관 및 개인정보처리방침에 동의해 주세요.";
     showErrorModal.value = true;
     return;
   }
 
   // 이메일 및 전화번호 인증 여부 체크
   if (!isPhoneVerified.value || !isEmailVerified.value) {
-    errorMessage.value = '이메일과 전화번호 인증을 완료해 주세요.';
+    errorMessage.value = "이메일과 전화번호 인증을 완료해 주세요.";
     showErrorModal.value = true;
     return;
   }
@@ -151,45 +159,51 @@ const handleSignup = () => {
     password: signUpData.value.password,
     phone: signUpData.value.phone,
   };
-  const existingUsers = JSON.parse(localStorage.getItem('userDatas') || '[]');
+  const existingUsers = JSON.parse(localStorage.getItem("userDatas") || "[]");
   if (existingUsers.some((userData) => userData.email === userInfo.email)) {
-    errorMessage.value = '이미 등록된 이메일입니다.';
+    errorMessage.value = "이미 등록된 이메일입니다.";
     showErrorModal.value = true;
     return;
   }
 
   // 회원 정보 저장
   existingUsers.push(userInfo);
-  localStorage.setItem('userDatas', JSON.stringify(existingUsers));
-  localStorage.setItem('user', JSON.stringify(userInfo));
+  localStorage.setItem("userDatas", JSON.stringify(existingUsers));
+  localStorage.setItem("user", JSON.stringify(userInfo));
 
-  router.push('/signUpFinish');
+  router.push("/signUpFinish");
 };
 
 // 하이픈 자동 입력
 const formatPhone = (e) => {
-  let digits = e.target.value.replace(/\D/g, '');
+  let digits = e.target.value.replace(/\D/g, "");
   if (digits.length <= 3) {
     signUpData.value.phone = digits;
   } else if (digits.length <= 7) {
     signUpData.value.phone = `${digits.slice(0, 3)}-${digits.slice(3)}`;
   } else if (digits.length <= 11) {
-    signUpData.value.phone = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7, 11)}`;
+    signUpData.value.phone = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(
+      7,
+      11
+    )}`;
   } else {
-    signUpData.value.phone = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7, 11)}`;
+    signUpData.value.phone = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(
+      7,
+      11
+    )}`;
   }
-  validateField('phone');
+  validateField("phone");
 };
 // 휴대폰인증 처리
 const handlePhoneVerification = () => {
   isPhoneVerified.value = true;
-  errorMessage.value = '전화번호 인증이 완료되었습니다.';
+  errorMessage.value = "전화번호 인증이 완료되었습니다.";
   showErrorModal.value = true;
 };
 // 이메일 인증 처리
 const handleEmailVerification = () => {
   isEmailVerified.value = true;
-  errorMessage.value = '이메일 인증이 완료되었습니다.';
+  errorMessage.value = "이메일 인증이 완료되었습니다.";
   showErrorModal.value = true;
 };
 </script>
@@ -197,13 +211,22 @@ const handleEmailVerification = () => {
 <template>
   <div class="wrap">
     <!-- 에러 모달 -->
-    <ErrorModal v-if="showErrorModal" :message="errorMessage" @close="showErrorModal = false" />
+    <ErrorModal
+      v-if="showErrorModal"
+      :message="errorMessage"
+      @close="showErrorModal = false"
+    />
     <h1>짐꾼 회원가입</h1>
     <!--약관 동의-->
     <div class="checkboxWrap">
       <input type="checkbox" v-model="terms" class="checkbox" />
       <p>회원가입약관</p>
-      <img src="/images/kang/moreView.png" alt="펼치기" class="moreView" @click="toggleTerms" />
+      <img
+        src="/images/kang/moreView.png"
+        alt="펼치기"
+        class="moreView"
+        @click="toggleTerms"
+      />
     </div>
     <!-- 약관 펼쳐지는 내용 -->
     <div v-if="showTermsContent" class="termsContent">
@@ -216,7 +239,12 @@ const handleEmailVerification = () => {
     <div class="checkboxWrap">
       <input type="checkbox" v-model="privacy" class="checkbox" />
       <p>개인정보처리방침안내</p>
-      <img src="/images/kang/moreView.png" alt="펼치기" class="moreView" @click="togglePrivacy" />
+      <img
+        src="/images/kang/moreView.png"
+        alt="펼치기"
+        class="moreView"
+        @click="togglePrivacy"
+      />
     </div>
     <!-- 개인정보 처리방침 펼쳐지는 내용 -->
     <div v-if="showPrivacyContent" class="termsContent">
@@ -302,8 +330,13 @@ const handleEmailVerification = () => {
           class="infoInput phone"
         />
         <p class="errorText" v-if="errors.phone">{{ errors.phone }}</p>
-        <button type="button" @click="handlePhoneVerification" :disabled="isPhoneVerified" class="verify-btn">
-          {{ isPhoneVerified ? '인증완료' : '인증하기' }}
+        <button
+          type="button"
+          @click="handlePhoneVerification"
+          :disabled="isPhoneVerified"
+          class="verify-btn"
+        >
+          {{ isPhoneVerified ? "인증완료" : "인증하기" }}
         </button>
       </div>
 
@@ -317,8 +350,13 @@ const handleEmailVerification = () => {
           @input="validateField('email')"
         />
         <p class="errorText" v-if="errors.email">{{ errors.email }}</p>
-        <button type="button" @click="handleEmailVerification" :disabled="isEmailVerified" class="verify-btn">
-          {{ isEmailVerified ? '인증완료' : '인증하기' }}
+        <button
+          type="button"
+          @click="handleEmailVerification"
+          :disabled="isEmailVerified"
+          class="verify-btn"
+        >
+          {{ isEmailVerified ? "인증완료" : "인증하기" }}
         </button>
       </div>
 
@@ -331,7 +369,7 @@ const handleEmailVerification = () => {
 </template>
 
 <style lang="scss" scoped>
-@import '/src/assets/variables';
+@import "/src/assets/variables";
 
 .wrap {
   max-width: 510px;
@@ -384,7 +422,7 @@ h1 {
   }
 
   &:checked::after {
-    content: '\2713';
+    content: "\2713";
     position: absolute;
     top: -2px;
     left: 3px;
@@ -427,7 +465,6 @@ h1 {
   margin-right: auto;
   text-align: left;
   line-height: 1.6;
- 
 }
 //개인정보 입력
 h2 {
@@ -585,11 +622,11 @@ h2 {
     margin-right: 10px;
   }
   .errorText {
-  color: $error-color;
-  font-size: 14px;
-  position: absolute;
-  left: 110px;
-  top: 48px;
-}
+    color: $error-color;
+    font-size: 14px;
+    position: absolute;
+    left: 110px;
+    top: 48px;
+  }
 }
 </style>
