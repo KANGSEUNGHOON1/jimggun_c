@@ -821,7 +821,7 @@ const handleDateSelect = (date) => {
   &.active {
     border: none;
     box-shadow: $reservation-boxShadow;
-    height: 488px;
+    height: 540px;
   }
   h3 {
     display: inline-block;

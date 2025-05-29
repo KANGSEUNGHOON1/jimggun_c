@@ -549,6 +549,7 @@ const handlePhonePrefixChange = (event) => {
   border-radius: 50%;
   appearance: none;
   border: 1px solid $input-select;
+  cursor: pointer;
   &:checked {
     border: 4px solid $primary-color;
   }
