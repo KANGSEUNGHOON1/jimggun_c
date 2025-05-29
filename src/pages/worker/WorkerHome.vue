@@ -13,8 +13,7 @@
             :class="{
               'bg-[#FF6F00] text-[#fff] border-b-[#FF6F00]': activeTab === 'home',
               'bg-[#fff] text-[#767676] border-b-input': activeTab !== 'home',
-            }"
-          >
+            }">
             홈
           </h2>
           <h2
@@ -23,8 +22,7 @@
             :class="{
               'bg-[#FF6F00] text-[#fff] border-b-[#FF6F00]': activeTab === 'todayWork',
               'bg-[#fff] text-[#767676] border-b-input': activeTab !== 'todayWork',
-            }"
-          >
+            }">
             오늘 할 일
           </h2>
         </div>
@@ -32,9 +30,7 @@
         <!--홈 탭 내용-->
         <section v-if="activeTab === 'home'" class="home-wrap mx-auto">
           <!--배너-->
-          <div
-            class="banner w-full mt-[35px] mx-auto max-w-[702px] h-80 p-6 bg-[#FFF] rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col justify-between text-[#111] font-['Pretendard']"
-          >
+          <div class="banner w-full mt-[35px] mx-auto max-w-[702px] h-80 p-6 bg-[#FFF] rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col justify-between text-[#111] font-['Pretendard']">
             <!-- 상단: 날짜 + 온도 -->
             <div class="date-line flex justify-between items-center">
               <div class="text-xl font-bold">{{ formattedDate }}</div>
@@ -47,27 +43,17 @@
             <!-- 중단: 프로필 + 설명 -->
             <div class="flex items-center gap-4 flex-nowrap">
               <!-- 아이콘 -->
-              <div
-                class="w-24 min-w-[96px] h-24 bg-[#FDF3E7] rounded-full shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex items-center justify-center shrink-0"
-              >
-                <img
-                  class="w-16 h-16 object-contain"
-                  src="/images/kang/truckicon.png"
-                  alt="아이콘"
-                />
+              <div class="w-24 min-w-[96px] h-24 bg-[#FDF3E7] rounded-full shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex items-center justify-center shrink-0">
+                <img class="w-16 h-16 object-contain" src="/images/kang/truckicon.png" alt="아이콘" />
               </div>
 
               <!-- 텍스트 -->
               <div class="flex flex-col justify-center min-w-0 flex-grow">
                 <div class="flex items-baseline gap-2 flex-wrap">
                   <div class="text-4xl font-bold whitespace-nowrap">홍은경</div>
-                  <div class="text-3xl font-bold text-[#505050] whitespace-nowrap">
-                    기사님
-                  </div>
+                  <div class="text-3xl font-bold text-[#505050] whitespace-nowrap">기사님</div>
                 </div>
-                <div class="mt-1 text-base font-medium text-[#767676]">
-                  실시간 교통정보, 중요한 알림을 확인하세요
-                </div>
+                <div class="mt-1 text-base font-medium text-[#767676]">실시간 교통정보, 중요한 알림을 확인하세요</div>
               </div>
             </div>
 
@@ -75,18 +61,14 @@
             <div class="w-full flex flex-col items-end mt-4">
               <div class="text-xl font-bold">이 달의 추가 수당</div>
               <div class="flex items-end gap-2">
-                <div class="total-incentive text-5xl font-bold text-[#FF6F00]">
-                  ₩ {{ totalMonthlyPay.toLocaleString() }}
-                </div>
+                <div class="total-incentive text-5xl font-bold text-[#FF6F00]">₩ {{ totalMonthlyPay.toLocaleString() }}</div>
                 <div class="text-4xl font-bold">원</div>
               </div>
             </div>
           </div>
 
           <!--1호차 게이지 영역-->
-          <div
-            class="w-full mx-auto mt-[35px] max-w-[697px] h-auto p-6 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col gap-4 font-['Inter']"
-          >
+          <div class="w-full mx-auto mt-[35px] max-w-[697px] h-auto p-6 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-[#E5E5EC] flex flex-col gap-4 font-['Inter']">
             <!-- 상단: 차량 이름 -->
             <div class="text-4xl font-bold text-[#111]">1호차</div>
 
@@ -99,13 +81,8 @@
             <!-- 하단: 진행 바 + 수치 -->
             <div class="flex items-center justify-between">
               <!-- 진행 바 -->
-              <div
-                class="gauge-bar w-full max-w-[559px] h-3 bg-[#FDF3E7] rounded-full outline outline-1 outline-[#E5E5EC] relative overflow-hidden"
-              >
-                <div
-                  class="absolute top-0 left-0 h-full bg-[#FF6F00] rounded-full"
-                  :style="{ width: progressRate + '%' }"
-                ></div>
+              <div class="gauge-bar w-full max-w-[559px] h-3 bg-[#FDF3E7] rounded-full outline outline-1 outline-[#E5E5EC] relative overflow-hidden">
+                <div class="absolute top-0 left-0 h-full bg-[#FF6F00] rounded-full" :style="{ width: progressRate + '%' }"></div>
               </div>
 
               <!-- 진행 수치 -->
@@ -116,63 +93,37 @@
             </div>
           </div>
           <!--건수 표시 박스 3개-->
-          <div
-            class="summary-cards w-full mx-auto mt-[35px] h-20 flex gap-10 px-4 md:px-0 justify-center"
-          >
+          <div class="summary-cards w-full mx-auto mt-[35px] h-20 flex gap-10 px-4 md:px-0 justify-center">
             <!-- 전체 건수 -->
-            <div
-              class="summary-card w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8"
-            >
+            <div class="summary-card w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
               <div class="summary-count-text flex justify-start items-start gap-1">
-                <div class="text-[#505050] text-[20px] font-medium font-['Pretendard']">
-                  전체 건수
-                </div>
+                <div class="text-[#505050] text-[20px] font-medium font-['Pretendard']">전체 건수</div>
               </div>
               <div class="flex items-center">
-                <span class="text-[#FF6F00] text-[24px] font-bold font-['Pretendard']">{{
-                  totalFiltered
-                }}</span>
-                <span class="text-[#111] text-[20px] font-bold font-['Pretendard']"
-                  >건</span
-                >
+                <span class="text-[#FF6F00] text-[24px] font-bold font-['Pretendard']">{{ totalFiltered }}</span>
+                <span class="text-[#111] text-[20px] font-bold font-['Pretendard']">건</span>
               </div>
             </div>
 
             <!-- 남은 건수 -->
-            <div
-              class="summary-card w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8"
-            >
+            <div class="summary-card w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
               <div class="summary-count-text flex justify-start items-start gap-1">
-                <div class="text-[#505050] text-[20px] font-medium font-['Pretendard']">
-                  남은 건수
-                </div>
+                <div class="text-[#505050] text-[20px] font-medium font-['Pretendard']">남은 건수</div>
               </div>
               <div class="flex items-center">
-                <span class="text-[#FF6F00] text-[24px] font-bold font-['Pretendard']">{{
-                  remainingFiltered
-                }}</span>
-                <span class="text-[#111] text-[20px] font-bold font-['Pretendard']"
-                  >건</span
-                >
+                <span class="text-[#FF6F00] text-[24px] font-bold font-['Pretendard']">{{ remainingFiltered }}</span>
+                <span class="text-[#111] text-[20px] font-bold font-['Pretendard']">건</span>
               </div>
             </div>
 
             <!-- 완료 -->
-            <div
-              class="summary-card w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8"
-            >
+            <div class="summary-card w-52 h-20 bg-white rounded-[10px] shadow-[2px_4px_10px_0px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] overflow-hidden flex items-center justify-between px-8">
               <div class="summary-count-text flex justify-start items-start gap-1">
-                <div class="text-[#505050] text-[20px] font-medium font-['Pretendard']">
-                  완료
-                </div>
+                <div class="text-[#505050] text-[20px] font-medium font-['Pretendard']">완료</div>
               </div>
               <div class="flex items-center">
-                <span class="text-[#FF6F00] text-[24px] font-bold font-['Pretendard']">{{
-                  completedFiltered
-                }}</span>
-                <span class="text-[#111] text-[20px] font-bold font-['Pretendard']"
-                  >건</span
-                >
+                <span class="text-[#FF6F00] text-[24px] font-bold font-['Pretendard']">{{ completedFiltered }}</span>
+                <span class="text-[#111] text-[20px] font-bold font-['Pretendard']">건</span>
               </div>
             </div>
           </div>
@@ -180,93 +131,48 @@
           <div class="w-full mt-[35px] max-w-[700px] mx-auto">
             <!-- 상단: 제목 + 전체보기 -->
             <div class="flex justify-between items-center mb-4">
-              <div
-                class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']"
-              >
-                알림사항
-              </div>
-              <div
-                @click="router.push('/worker/worker-notice')"
-                class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer"
-              >
+              <div class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']">알림사항</div>
+              <div @click="router.push('/worker/worker-notice')" class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer">
                 <span class="pr-6">전체보기&gt;</span>
               </div>
             </div>
 
             <!-- 알림 내용 -->
-            <div
-              @click="router.push('/worker/worker-notice')"
-              class="flex gap-3 items-center px-6 py-4 outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] rounded-[10px] shadow-[0px_2px_10px_0px_rgba(17,17,17,0.1)] cursor-pointer"
-            >
+            <div @click="router.push('/worker/worker-notice')" class="flex gap-3 items-center px-6 py-4 outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] rounded-[10px] shadow-[0px_2px_10px_0px_rgba(17,17,17,0.1)] cursor-pointer">
               <!-- 경고 아이콘 -->
-              <div
-                class="w-9 h-9 bg-[#EF4444] rounded-full flex items-center justify-center shrink-0 relative"
-              >
+              <div class="w-9 h-9 bg-[#EF4444] rounded-full flex items-center justify-center shrink-0 relative">
                 <div class="w-3.5 h-3.5 bg-white rounded-full absolute"></div>
-                <span
-                  class="relative z-10 text-[#EF4444] text-xs font-bold font-['Pretendard']"
-                  >!</span
-                >
+                <span class="relative z-10 text-[#EF4444] text-xs font-bold font-['Pretendard']">!</span>
               </div>
 
               <!-- 텍스트 -->
-              <p class="text-[#111] text-xs font-bold font-['Pretendard'] leading-[1.4]">
-                금일 16:00부로 경부선 북대구IC 인근 산불로 인한 북대구TG 진입, 진출 차단을
-                알려드립니다.
-              </p>
+              <p class="text-[#111] text-xs font-bold font-['Pretendard'] leading-[1.4]">금일 16:00부로 경부선 북대구IC 인근 산불로 인한 북대구TG 진입, 진출 차단을 알려드립니다.</p>
             </div>
           </div>
           <!--공지사항-->
           <div class="max-w-[700px] mt-[35px] w-full mx-auto">
             <!-- 제목 -->
             <div class="flex justify-between items-center mb-4">
-              <div
-                class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']"
-              >
-                공지사항
-              </div>
-              <div
-                class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer"
-              >
+              <div class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']">공지사항</div>
+              <div class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer">
                 <span class="pr-6">전체보기&gt;</span>
               </div>
             </div>
             <!-- 공지 리스트 -->
             <div class="flex flex-col gap-4">
-              <div
-                class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer"
-              >
-                <span
-                  class="notice-text text-base text-[#111] font-medium font-['Pretendard']"
-                  >짐꾼 사칭 및 보이스피싱 주의 안내</span
-                >
-                <span class="text-xs text-[#767676] font-medium font-['Pretendard']"
-                  >2025.04.30</span
-                >
+              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer">
+                <span class="notice-text text-base text-[#111] font-medium font-['Pretendard']">짐꾼 사칭 및 보이스피싱 주의 안내</span>
+                <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.30</span>
               </div>
 
-              <div
-                class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer"
-              >
-                <span
-                  class="notice-text text-base text-[#111] font-medium font-['Pretendard']"
-                  >5월 황금 연휴 기간 물류 집중 안내</span
-                >
-                <span class="text-xs text-[#767676] font-medium font-['Pretendard']"
-                  >2025.04.28</span
-                >
+              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer">
+                <span class="notice-text text-base text-[#111] font-medium font-['Pretendard']">5월 황금 연휴 기간 물류 집중 안내</span>
+                <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.28</span>
               </div>
 
-              <div
-                class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer"
-              >
-                <span
-                  class="notice-text text-base text-[#111] font-medium font-['Pretendard']"
-                  >업데이트 된 짐꾼 앱 기능 안내</span
-                >
-                <span class="text-xs text-[#767676] font-medium font-['Pretendard']"
-                  >2025.04.11</span
-                >
+              <div class="flex justify-between items-center bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(0,0,0,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] px-6 py-4 cursor-pointer">
+                <span class="notice-text text-base text-[#111] font-medium font-['Pretendard']">업데이트 된 짐꾼 앱 기능 안내</span>
+                <span class="text-xs text-[#767676] font-medium font-['Pretendard']">2025.04.11</span>
               </div>
             </div>
           </div>
@@ -274,80 +180,32 @@
           <div class="w-full max-w-[700px] mt-[35px] pb-[140px] mx-auto">
             <!-- 제목 -->
             <div class="flex justify-between items-center mb-4">
-              <div
-                class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']"
-              >
-                이달의 안전
-              </div>
-              <div
-                class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer"
-              >
+              <div class="text-[#111] text-xl md:text-2xl pl-6 font-semibold font-['Pretendard']">이달의 안전</div>
+              <div class="flex items-center gap-1 text-[#767676] text-xs font-bold font-['Pretendard'] cursor-pointer">
                 <span class="pr-6">전체보기&gt;</span>
               </div>
             </div>
             <!-- 카드 3개 그리드 -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               <!-- 카드 1 -->
-              <div
-                class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer"
-              >
-                <img
-                  class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover"
-                  src="/images/kang/safe.png"
-                  alt="안전 이미지"
-                />
-                <div
-                  class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']"
-                >
-                  운전 시 일어나는 안전사고 예방법
-                </div>
-                <div
-                  class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1"
-                >
-                  2025.04.30
-                </div>
+              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer">
+                <img class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover" src="/images/kang/safe.png" alt="안전 이미지" />
+                <div class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']">운전 시 일어나는 안전사고 예방법</div>
+                <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.04.30</div>
               </div>
 
               <!-- 카드 2 -->
-              <div
-                class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer"
-              >
-                <img
-                  class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover"
-                  src="/images/kang/safe2.jpg"
-                  alt="안전 이미지"
-                />
-                <div
-                  class="mt-5 pl-6 text-xs font-semibold text-[#111] text-left font-['Pretendard']"
-                >
-                  택배 배송 안전 수칙
-                </div>
-                <div
-                  class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1"
-                >
-                  2025.03.31
-                </div>
+              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer">
+                <img class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover" src="/images/kang/safe2.jpg" alt="안전 이미지" />
+                <div class="mt-5 pl-6 text-xs font-semibold text-[#111] text-left font-['Pretendard']">택배 배송 안전 수칙</div>
+                <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.03.31</div>
               </div>
 
               <!-- 카드 3 -->
-              <div
-                class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer"
-              >
-                <img
-                  class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover"
-                  src="/images/kang/safe3.jpg"
-                  alt="안전 이미지"
-                />
-                <div
-                  class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']"
-                >
-                  택배 위험 포인트
-                </div>
-                <div
-                  class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1"
-                >
-                  2025.02.28
-                </div>
+              <div class="bg-white rounded-[10px] shadow-[2px_4px_10px_rgba(17,17,17,0.02)] outline outline-1 outline-offset-[-1px] outline-[#E5E5EC] flex flex-col cursor-pointer">
+                <img class="block w-full h-40 rounded-t-[10px] rounded-b-none object-cover" src="/images/kang/safe3.jpg" alt="안전 이미지" />
+                <div class="mt-5 pl-6 text-xs font-semibold text-[#111] font-['Pretendard']">택배 위험 포인트</div>
+                <div class="mb-5 pl-6 text-xs font-semibold text-[#767676] font-['Pretendard'] mt-1">2025.02.28</div>
               </div>
             </div>
           </div>
@@ -359,29 +217,14 @@
         <!--오늘 할 일 탭 내용-->
         <section v-if="activeTab === 'todayWork'" class="todayWork-wrap h-full">
           <!-- 지도로 보기 영역 -->
-          <div
-            v-if="!listViewMode"
-            class="todayWorkMapWrap w-full"
-            id="map"
-            style="height: 100%; overflow: hidden; position: relative"
-          >
+          <div v-if="!listViewMode" class="todayWorkMapWrap w-full" id="map" style="height: 100%; overflow: hidden; position: relative">
             <!-- 리스트로 보기 버튼 -->
-            <button
-              @click="listViewMode = true"
-              class="list-view-btn absolute top-6 right-4 z-[100]"
-            >
-              <img
-                src="/images/hong/ListViewBtn.png"
-                alt="리스트 보기"
-                class="w-20 h-20"
-              />
+            <button @click="listViewMode = true" class="list-view-btn absolute top-6 right-4 z-[100]">
+              <img src="/images/hong/ListViewBtn.png" alt="리스트 보기" class="w-20 h-20" />
             </button>
 
             <!-- 모달 -->
-            <div
-              v-if="modalOpen && selectedPlace"
-              class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[768px] bg-white rounded-xl [box-shadow:0px_-4px_8px_rgba(0,0,0,0.1)] z-50 p-6"
-            >
+            <div v-if="modalOpen && selectedPlace" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[768px] bg-white rounded-xl [box-shadow:0px_-4px_8px_rgba(0,0,0,0.1)] z-50 p-6">
               <!-- 상단 정보 -->
               <div class="flex justify-between mb-4">
                 <!-- 왼쪽 컬럼 -->
@@ -392,15 +235,11 @@
                   </div>
                   <div class="flex gap-2">
                     <span class="text-gray-500 w-20">주소</span>
-                    <span class="whitespace-pre-line text-base">{{
-                      selectedPlace.address
-                    }}</span>
+                    <span class="whitespace-pre-line text-base">{{ selectedPlace.address }}</span>
                   </div>
                   <div class="flex gap-2">
                     <span class="text-gray-500 w-20">수화물</span>
-                    <span class="whitespace-pre-line text-base">{{
-                      selectedPlace.clothes
-                    }}</span>
+                    <span class="whitespace-pre-line text-base">{{ selectedPlace.clothes }}</span>
                   </div>
                 </div>
 
@@ -414,12 +253,7 @@
                     <span class="text-gray-500 w-20">전화</span>
                     <div class="flex items-center gap-3 text-base">
                       <span>{{ selectedPlace.phone }}</span>
-                      <img
-                        src="/images/hong/phone.png"
-                        alt=""
-                        aria-hidden="true"
-                        class="w-6 h-6 cursor-pointer"
-                      />
+                      <img src="/images/hong/phone.png" alt="" aria-hidden="true" class="w-6 h-6 cursor-pointer" />
                     </div>
                   </div>
                   <div class="flex gap-2">
@@ -437,68 +271,31 @@
                       <!-- 왼쪽: 업로드 영역 -->
                       <div class="flex items-start gap-2">
                         <!-- 이미지가 없을 때 -->
-                        <div
-                          v-if="!uploadedImages[selectedPlace.reservationId]"
-                          @click="triggerFileInput(selectedPlace.reservationId)"
-                          class="w-16 h-16 border-[2px] border-dashed border-[#E5E5EC] rounded-[10px] flex items-center justify-center cursor-pointer"
-                        >
-                          <span
-                            class="text-[#E5E5EC] text-3xl font-medium leading-none translate-y-[-2px]"
-                            >+</span
-                          >
+                        <div v-if="!uploadedImages[selectedPlace.reservationId]" @click="triggerFileInput(selectedPlace.reservationId)" class="w-16 h-16 border-[2px] border-dashed border-[#E5E5EC] rounded-[10px] flex items-center justify-center cursor-pointer">
+                          <span class="text-[#E5E5EC] text-3xl font-medium leading-none translate-y-[-2px]">+</span>
                         </div>
 
                         <!-- 이미지가 있을 때 -->
-                        <img
-                          v-else-if="uploadedImages[selectedPlace.reservationId]"
-                          :src="uploadedImages[selectedPlace.reservationId]"
-                          class="w-16 h-16 rounded-[10px] object-cover cursor-pointer"
-                          @click="triggerFileInput(selectedPlace.reservationId)"
-                        />
+                        <img v-else-if="uploadedImages[selectedPlace.reservationId]" :src="uploadedImages[selectedPlace.reservationId]" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" @click="triggerFileInput(selectedPlace.reservationId)" />
 
                         <!-- input 연결도 reservationId로 -->
-                        <input
-                          type="file"
-                          :ref="(el) => (imageInput[selectedPlace.reservationId] = el)"
-                          accept="image/*"
-                          class="hidden"
-                          @change="
-                            (e) => handleImageUpload(e, selectedPlace.reservationId)
-                          "
-                        />
+                        <input type="file" :ref="(el) => (imageInput[selectedPlace.reservationId] = el)" accept="image/*" class="hidden" @change="(e) => handleImageUpload(e, selectedPlace.reservationId)" />
                       </div>
 
                       <!-- 지도 모달: 픽업완료 버튼 -->
                       <div class="self-end">
                         <button
                           @click="handlePickupComplete"
-                          :disabled="selectedPlace.completed && !overrideUpload"
-                          :class="[
-                            'px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap',
-                            selectedPlace.completed && !overrideUpload
-                              ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed'
-                              : 'bg-[#FF6F00] text-white',
-                          ]"
-                        >
-                          {{
-                            selectedPlace.completed && !overrideUpload
-                              ? "픽업완료"
-                              : selectedPlace.completed && overrideUpload
-                              ? "수정하기"
-                              : "픽업완료"
-                          }}
+                          :disabled="selectedPlace.completed && !selectedPlace.overrideUpload"
+                          :class="['px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap', selectedPlace.completed && !selectedPlace.overrideUpload ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
+                          {{ selectedPlace.completed && !selectedPlace.overrideUpload ? "픽업완료" : selectedPlace.completed && selectedPlace.overrideUpload ? "수정하기" : "픽업완료" }}
                         </button>
                       </div>
                     </div>
                   </div>
 
                   <!-- 닫기 버튼 -->
-                  <button
-                    @click="modalOpen = false"
-                    class="text-gray-500 text-xl absolute top-[-3px] right-0"
-                  >
-                    ✕
-                  </button>
+                  <button @click="modalOpen = false" class="text-gray-500 text-xl absolute top-[-3px] right-0">✕</button>
                 </div>
               </div>
             </div>
@@ -506,10 +303,7 @@
 
           <!-- 리스트로 보기 영역 -->
           <div v-else class="todayWorkListWrap w-full relative">
-            <button
-              @click="switchToMapView"
-              class="list-view-btn absolute top-6 right-4 z-[100]"
-            >
+            <button @click="switchToMapView" class="list-view-btn absolute top-6 right-4 z-[100]">
               <img src="/images/hong/MapViewBtn.png" alt="지도 보기" class="w-20 h-20" />
             </button>
             <div class="list-view-wrap max-w-[768px] mx-auto px-8 py-10">
@@ -520,17 +314,13 @@
                   <div class="w-5/6 flex justify-between">
                     <div class="text-[#FF6F00] text-lg font-bold mb-2">
                       {{ remainingFiltered }}건
-                      <span class="text-[#767676] text-lg"
-                        >만 더 하면 임무완료! 힘내세요!</span
-                      >
+                      <span class="text-[#767676] text-lg">만 더 하면 임무완료! 힘내세요!</span>
                     </div>
                     <div class="flex">
                       <div class="ml-4 font-bold text-[#FF6F00] text-lg">
                         {{ completedFiltered }}
                       </div>
-                      <div class="ml-2 font-bold text-[#767676] text-lg">
-                        / {{ totalFiltered }}
-                      </div>
+                      <div class="ml-2 font-bold text-[#767676] text-lg">/ {{ totalFiltered }}</div>
                     </div>
                   </div>
                   <div class="flex justify-between items-center mb-4">
@@ -542,18 +332,12 @@
 
                 <!-- 셀렉트 박스 두 개 -->
                 <div class="max-w-[768px] flex gap-3 mt-[5px] justify-end">
-                  <select
-                    v-model="selectedArea"
-                    class="border border-[#E5E5EC] px-2 py-2 rounded-[10px] text-sm text-[#505050]"
-                  >
+                  <select v-model="selectedArea" class="border border-[#E5E5EC] px-2 py-2 rounded-[10px] text-sm text-[#505050]">
                     <option>전체 지역</option>
                     <option>중구</option>
                     <option>수성구</option>
                   </select>
-                  <select
-                    v-model="selectedStatus"
-                    class="border border-[#E5E5EC] px-2 py-2 rounded-[10px] text-sm text-[#505050]"
-                  >
+                  <select v-model="selectedStatus" class="border border-[#E5E5EC] px-2 py-2 rounded-[10px] text-sm text-[#505050]">
                     <option>전체 상태</option>
                     <option>픽업 대기</option>
                     <option>픽업 완료</option>
@@ -563,35 +347,12 @@
                 <!-- 리스트 전체 -->
                 <div class="flex flex-col gap-5 w-full max-w-[700px]">
                   <!-- 리스트 아이템 반복 -->
-                  <div
-                    v-for="item in filteredMarkerData"
-                    :key="item.reservationId"
-                    class="flex items-center justify-between p-4 bg-white rounded-[10px] overflow-hidden"
-                    :class="
-                      item.completed && !item.overrideUpload
-                        ? 'outline outline-1 outline-[#E5E5EC]'
-                        : 'outline outline-1 outline-orange-500'
-                    "
-                  >
+                  <div v-for="item in filteredMarkerData" :key="item.reservationId" class="flex items-center justify-between p-4 bg-white rounded-[10px] overflow-hidden" :class="item.completed && !item.overrideUpload ? 'outline outline-1 outline-[#E5E5EC]' : 'outline outline-1 outline-orange-500'">
                     <!-- 좌측: 아이디 + 플러스 + 테두리박스 -->
                     <div class="flex items-center gap-4">
                       <!-- 아이디 동그라미 -->
-                      <div
-                        class="w-7 h-7 rounded-full flex items-center justify-center"
-                        :class="
-                          item.completed && !item.overrideUpload
-                            ? 'bg-[#E5E5EC]'
-                            : 'bg-orange-50'
-                        "
-                      >
-                        <span
-                          class="text-sm font-semibold font-['Pretendard']"
-                          :class="
-                            item.completed && !item.overrideUpload
-                              ? 'text-[#505050]'
-                              : 'text-orange-500'
-                          "
-                        >
+                      <div class="w-7 h-7 rounded-full flex items-center justify-center" :class="item.completed && !item.overrideUpload ? 'bg-[#E5E5EC]' : 'bg-orange-50'">
+                        <span class="text-sm font-semibold font-['Pretendard']" :class="item.completed && !item.overrideUpload ? 'text-[#505050]' : 'text-orange-500'">
                           {{ item.reservationId }}
                         </span>
                       </div>
@@ -599,38 +360,18 @@
                       <!-- 리스트 업로드 영역 박스 -->
                       <div class="flex items-start gap-2">
                         <!-- 이미지 없을 때만 + 버튼 -->
-                        <div
-                          v-if="!uploadedImages[item.reservationId] && !item.previewImage"
-                          @click="triggerFileInput(item.reservationId)"
-                          class="w-16 h-16 border-[2px] border-dashed border-[#E5E5EC] rounded-[10px] flex items-center justify-center cursor-pointer"
-                        >
-                          <span
-                            class="text-[#E5E5EC] text-3xl font-medium leading-none translate-y-[-2px]"
-                            >+</span
-                          >
+                        <div v-if="!uploadedImages[item.reservationId] && !item.previewImage" @click="triggerFileInput(item.reservationId)" class="w-16 h-16 border-[2px] border-dashed border-[#E5E5EC] rounded-[10px] flex items-center justify-center cursor-pointer">
+                          <span class="text-[#E5E5EC] text-3xl font-medium leading-none translate-y-[-2px]">+</span>
                         </div>
 
                         <!-- 이미지 있을 때 -->
-                        <img
-                          v-else
-                          :src="uploadedImages[item.reservationId] || item.previewImage"
-                          class="w-16 h-16 rounded-[10px] object-cover cursor-pointer"
-                          @click="triggerFileInput(item.reservationId)"
-                        />
+                        <img v-else :src="uploadedImages[item.reservationId] || item.previewImage" class="w-16 h-16 rounded-[10px] object-cover cursor-pointer" @click="triggerFileInput(item.reservationId)" />
 
-                        <input
-                          type="file"
-                          :ref="(el) => (imageInput[item.reservationId] = el)"
-                          accept="image/*"
-                          class="hidden"
-                          @change="(e) => handleImageUpload(e, item.reservationId)"
-                        />
+                        <input type="file" :ref="(el) => (imageInput[item.reservationId] = el)" accept="image/*" class="hidden" @change="(e) => handleImageUpload(e, item.reservationId)" />
                       </div>
 
                       <!-- 주소 -->
-                      <div
-                        class="text-neutral-900 text-base font-medium font-['Pretendard'] whitespace-pre-line break-words max-w-[500px]"
-                      >
+                      <div class="text-neutral-900 text-base font-medium font-['Pretendard'] whitespace-pre-line break-words max-w-[500px]">
                         {{ item.address }}
                       </div>
                     </div>
@@ -639,20 +380,8 @@
                     <button
                       @click="handlePickupCompleteFromList(item)"
                       :disabled="item.completed && !item.overrideUpload"
-                      :class="[
-                        'px-4 py-2 rounded-[10px] text-sm font-bold whitespace-nowrap',
-                        item.completed && !item.overrideUpload
-                          ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed'
-                          : 'bg-[#FF6F00] text-white',
-                      ]"
-                    >
-                      {{
-                        item.completed && !item.overrideUpload
-                          ? "픽업완료"
-                          : item.completed && item.overrideUpload
-                          ? "수정하기"
-                          : "픽업완료"
-                      }}
+                      :class="['px-4 py-2 rounded-[10px] text-sm font-bold whitespace-nowrap', item.completed && !item.overrideUpload ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
+                      {{ item.completed && !item.overrideUpload ? "픽업완료" : item.completed && item.overrideUpload ? "수정하기" : "픽업완료" }}
                     </button>
                   </div>
                 </div>
@@ -664,19 +393,10 @@
     </div>
   </div>
   <!-- 사진 업로드 경고 모달 -->
-  <div
-    v-if="showImageRequiredModal"
-    class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center"
-    @click="showImageRequiredModal = false"
-  >
+  <div v-if="showImageRequiredModal" class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center" @click="showImageRequiredModal = false">
     <div class="bg-white w-[300px] rounded-[10px] shadow-lg p-6 text-center" @click.stop>
       <p class="text-[#111] text-base font-semibold mb-4">사진을 업로드해주세요</p>
-      <button
-        @click="showImageRequiredModal = false"
-        class="px-4 py-2 bg-[#FF6F00] text-white rounded-[10px] font-semibold text-sm"
-      >
-        확인
-      </button>
+      <button @click="showImageRequiredModal = false" class="px-4 py-2 bg-[#FF6F00] text-white rounded-[10px] font-semibold text-sm">확인</button>
     </div>
   </div>
 </template>
@@ -697,9 +417,7 @@ onMounted(() => {
         initMap();
       });
     };
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${
-      import.meta.env.VITE_KAKAO_JS_KEY
-    }&autoload=false&libraries=services`;
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_JS_KEY}&autoload=false&libraries=services`;
     document.head.appendChild(script);
   } else {
     window.kakao.maps.load(() => {
@@ -712,10 +430,7 @@ const activeTab = ref("home");
 // 오늘 날짜
 const today = new Date();
 const days = ["일", "월", "화", "수", "목", "금", "토"];
-const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(
-  2,
-  "0"
-)}.${String(today.getDate()).padStart(2, "0")} (${days[today.getDay()]})`;
+const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} (${days[today.getDay()]})`;
 // 알림 페이지 연결
 const router = useRouter();
 // 선택된 장소 정보
@@ -735,14 +450,10 @@ const selectedArea = ref("전체 지역");
 const selectedStatus = ref("전체 상태");
 // 필터링된 값과 진행갯수 및 게이지바 연동
 const totalFiltered = computed(() => filteredMarkerData.value.length);
-const completedFiltered = computed(
-  () => filteredMarkerData.value.filter((item) => item.completed).length
-);
+const completedFiltered = computed(() => filteredMarkerData.value.filter((item) => item.completed).length);
 const remainingFiltered = computed(() => totalFiltered.value - completedFiltered.value);
 const progressRate = computed(() => {
-  return totalFiltered.value > 0
-    ? Math.round((completedFiltered.value / totalFiltered.value) * 100)
-    : 0;
+  return totalFiltered.value > 0 ? Math.round((completedFiltered.value / totalFiltered.value) * 100) : 0;
 });
 // 사진 없이 픽업완료 버튼 클릭 시 경고 모달창
 const showImageRequiredModal = ref(false);
@@ -1049,10 +760,7 @@ const createMarker = (place) => {
   const marker = new kakao.maps.Marker({
     position,
     title: place.title,
-    image: new kakao.maps.MarkerImage(
-      `/images/hong/${place.image}`,
-      new kakao.maps.Size(44, 51)
-    ),
+    image: new kakao.maps.MarkerImage(`/images/hong/${place.image}`, new kakao.maps.Size(44, 51)),
   });
   kakao.maps.event.addListener(marker, "click", () => {
     // 이미 열린 모달이 있고, 같은 마커를 다시 클릭한 경우 → 닫기
@@ -1065,13 +773,15 @@ const createMarker = (place) => {
     selectedPlace.value = {
       ...place,
       completed: place.image.includes("-1.png"),
+      overrideUpload: place.overrideUpload ?? false,
+      uploadedImages: place.uploadedImages ?? "",
     };
     // reservationId에 해당하는 이미지만 불러오기
-    const image =
-      uploadedImages.value["" + place.reservationId] || place.previewImage || null;
+    const image = uploadedImages.value["" + place.reservationId] || place.previewImage || null;
     uploadedImages.value[place.reservationId] = image;
 
-    uploadedImages[place.reservationId] = image;
+    // uploadedImages[place.reservationId] = image;
+    uploadedImages.value[reservationId] = image;
 
     // 버튼 상태 초기화 (다시 클릭했을 때 항상 false)
     overrideUpload.value = false;
@@ -1105,9 +815,7 @@ function handlePickupComplete() {
   const index = markerData.value.findIndex((item) => item.reservationId === id);
   if (index !== -1) {
     const original = markerData.value[index].image;
-    const updated = original.includes("-1.png")
-      ? original
-      : original.replace(".png", "-1.png");
+    const updated = original.includes("-1.png") ? original : original.replace(".png", "-1.png");
     markerData.value[index].image = updated;
     markerData.value[index].completed = true;
     markerData.value[index].uploadedImages = uploadedImages.value[id];
@@ -1244,21 +952,29 @@ function handleImageUpload(event, reservationId) {
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    uploadedImages.value[reservationId] = e.target.result;
+    const uploadedSrc = e.target.result;
+    uploadedImages.value[reservationId] = uploadedSrc;
 
     const target = markerData.value.find((item) => item.reservationId === reservationId);
     if (target) {
-      // 기존 이미지가 없었을 경우 (첫 업로드)
+      // 최초 업로드일 경우 → 픽업 완료 처리
       if (!target.completed) {
         target.completed = true;
         target.overrideUpload = false;
       }
-      // 기존에 완료 상태였던 경우 → 재업로드
-      else if (target.completed) {
+      // 재업로드일 경우 → 수정하기 버튼으로 변경
+      else {
         target.overrideUpload = true;
       }
 
-      target.uploadedImages = e.target.result;
+      target.uploadedImages = uploadedSrc;
+
+      // 만약 selectedPlace가 현재 해당 마커라면 그것도 업데이트
+      if (selectedPlace && selectedPlace.reservationId === reservationId) {
+        selectedPlace.completed = target.completed;
+        selectedPlace.overrideUpload = target.overrideUpload;
+        selectedPlace.uploadedImages = target.uploadedImages;
+      }
     }
   };
   reader.readAsDataURL(file);
@@ -1277,9 +993,7 @@ function handlePickupCompleteFromList(item) {
   const index = markerData.value.findIndex((i) => i.reservationId === item.reservationId);
   if (index !== -1) {
     const original = markerData.value[index].image;
-    const updated = original.includes("-1.png")
-      ? original
-      : original.replace(".png", "-1.png");
+    const updated = original.includes("-1.png") ? original : original.replace(".png", "-1.png");
 
     markerData.value[index] = {
       ...markerData.value[index],
@@ -1326,13 +1040,9 @@ function switchToMapView() {
 // 셀렉트 박스 필터링
 const filteredMarkerData = computed(() => {
   return markerData.value.filter((item) => {
-    const areaMatch =
-      selectedArea.value === "전체 지역" || item.address.includes(selectedArea.value);
+    const areaMatch = selectedArea.value === "전체 지역" || item.address.includes(selectedArea.value);
 
-    const statusMatch =
-      selectedStatus.value === "전체 상태" ||
-      (selectedStatus.value === "픽업 대기" && !item.completed) ||
-      (selectedStatus.value === "픽업 완료" && item.completed);
+    const statusMatch = selectedStatus.value === "전체 상태" || (selectedStatus.value === "픽업 대기" && !item.completed) || (selectedStatus.value === "픽업 완료" && item.completed);
 
     return areaMatch && statusMatch;
   });
