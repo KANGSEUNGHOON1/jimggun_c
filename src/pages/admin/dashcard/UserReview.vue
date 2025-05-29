@@ -24,7 +24,7 @@
         <!-- 후기 내용 -->
          <div class="flex justify-between items-end">
         <p class="text-[13px] mt-1.5  leading-snug font-light dark:text-dark-font-100 dark:opacity-90">{{ review.content }}</p>
-        <span class="text-xs text-gray-200 font-light dark:text-dark-font-200">{{ review.date }}</span>
+        <span class="text-xs text-gray font-light dark:text-dark-font-100">{{ review.date }}</span>
         </div>
       </div>
     </div>
