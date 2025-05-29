@@ -1,13 +1,13 @@
 <template>
   <div
     class="max-w-[1920px] m-0 h-screen grid grid-cols-[220px_auto] grid-rows-[74px_auto] [grid-template-areas:'header_header''aside_main'] gap-y-[10px] bg-gray-100 dark:bg-dark">
-    <header class="[grid-area:header] bg-white dark:bg-dark-100 flex pr-[32px]">
+    <header class="[grid-area:header] bg-white dark:bg-dark-100 flex pr-[20px]">
       <div
         class="w-[220px] text-2xl flex items-center justify-center font-bold text-black dark:text-white">
         Jimggun
       </div>
 
-      <div class="flex-1 flex items-center justify-end mr-3">
+      <div class="flex-1 flex items-center justify-end ">
         <!-- 다크모드 토글 버튼 -->
         <button
           @click="toggleDark"
@@ -34,7 +34,7 @@
       <Sidebar />
     </aside>
 
-    <main class="[grid-area:main] max-w-[1700px] text-black dark:text-white  overflow-y-auto h-[calc(100vh-74px)] pr-2">
+    <main class="[grid-area:main] max-w-[1700px] text-black dark:text-white  overflow-y-auto h-[calc(100vh-74px)] pr-2 hide-scrollbar">
       <router-view />
     </main>
   </div>
@@ -54,4 +54,13 @@ watch(isDark, (val) => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+</style>
+

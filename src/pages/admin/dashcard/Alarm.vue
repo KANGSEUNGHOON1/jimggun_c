@@ -2,7 +2,7 @@
   <div
     v-for="(item, index) in visibleAlerts"
     :key="item.id"
-    class="mt-3 w-[760px] h-[100px] border border-input dark:border-dark rounded-8 flex items-center px-6"
+    class="mb-3 w-[760px] h-[100px] border border-input dark:border-dark rounded-8 flex items-center px-6"
   >
     <!-- 아이콘 -->
     <div>
@@ -20,7 +20,7 @@
         <div class="font-semibold text-[15px] dark:font-medium dark:opacity-90">
           {{ item.title }}
         </div>
-        <div class="text-xs text-gray-200 font-light pr-1 dark:text-dark-font-200">
+        <div class="text-xs text-gray font-light pr-1 dark:text-dark-font-100">
           {{ item.timeAgo }}
         </div>
       </div>
@@ -48,8 +48,8 @@
 
 
 <script setup>
-import { ref, computed } from 'vue'
-
+import { ref, computed, watch } from 'vue'
+const emit = defineEmits(['update:alertCount'])
 // 전체 더미 데이터
 const allAlerts = ref([
   { id: 1, type: 'warning', title: '배차 지연 예약 발생', timeAgo: '10분 전', description: '강남역 픽업 예약(#12345)이 30분 이상 배차되지 않고 있습니다.' },
@@ -66,7 +66,16 @@ const allAlerts = ref([
   { id: 12, type: 'alarm', title: '결제 오류 발생', timeAgo: '2시간 20분 전', description: '사용자 김지연(#2234)의 결제 도중 연결이 끊겼습니다.' },
   { id: 13, type: 'warning', title: '배차 지연 예약 발생', timeAgo: '3시간 전', description: '홍대역 예약(#9900)이 배차되지 않았습니다.' },
 ])
+const props = defineProps({
+  alertCount: Number
+});
 
+// 알람수 렌더링
+watch(
+  () => allAlerts.value.length,
+  (newLength) => emit('update:alertCount', newLength),
+  { immediate: true }
+)
 // 표시할 인덱스 범위
 const visibleCount = ref(2)
 

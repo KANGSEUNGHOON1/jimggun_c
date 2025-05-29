@@ -10,11 +10,11 @@
       ] "
       
     >
-      <div class="flex items-center gap-4 ml-2 text-black dark:text-dark-font-100 font-light hover:font-medium hover:text-[14px]">
+      <div class="flex items-center gap-4 ml-2 text-gray-black font-light dark:text-dark-font-100  hover:font-medium hover:text-[14px]">
         <img :src="isDark ? notice.darkIcon : notice.icon" :alt="notice.alt" class="w-5 h-5" />
         {{ notice.text }}
       </div>
-      <div class="text-gray mr-2 text-[13px] font-light dark:text-dark-font-200">{{ notice.date }}</div>
+      <div class="text-gray mr-2 text-[13px] font-light dark:text-dark-font-100">{{ notice.date }}</div>
     </li>
   </ul>
 </template>
