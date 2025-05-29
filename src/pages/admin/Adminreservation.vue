@@ -703,7 +703,10 @@ const filteredReservations = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter((item) => {
-      return item.customerName.toLowerCase().includes(query) || item.address.toLowerCase().includes(query);
+      return (
+        item.customerName.toLowerCase().includes(query) ||
+        item.address.toLowerCase().includes(query)
+      );
     });
   }
 
@@ -949,7 +952,9 @@ const paginatedReservations = computed(() => {
   return filteredReservations.value.slice(start, end);
 });
 const startPage = computed(() => pageGroup.value * groupSize + 1);
-const endPage = computed(() => Math.min(startPage.value + groupSize - 1, totalPages.value));
+const endPage = computed(() =>
+  Math.min(startPage.value + groupSize - 1, totalPages.value)
+);
 const visiblePages = computed(() => {
   const pages = [];
   for (let i = startPage.value; i <= endPage.value; i++) {
@@ -1237,7 +1242,11 @@ const initializeNextWeekCalendar = () => {
   currentPage1.value = {
     year: nextWeek.getFullYear(),
     month: nextWeek.getMonth() + 1,
-    week: Math.ceil((nextWeek.getDate() + new Date(nextWeek.getFullYear(), nextWeek.getMonth(), 1).getDay()) / 7),
+    week: Math.ceil(
+      (nextWeek.getDate() +
+        new Date(nextWeek.getFullYear(), nextWeek.getMonth(), 1).getDay()) /
+        7
+    ),
   };
 };
 
@@ -1271,7 +1280,7 @@ const handleDriverChange = (date) => {
 
   console.log("날짜 선택됨:", date);
 
-    const isSameDate =
+  const isSameDate =
     workerChange.value &&
     workerChange.value.year === date.year &&
     workerChange.value.month === date.month &&
@@ -1288,7 +1297,9 @@ const handleDriverChange = (date) => {
     return;
   }
 
-  const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
+  const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(
+    date.day
+  ).padStart(2, "0")}`;
   const currentWorkInfo = workData.value[dateKey];
 
   // 현재 선택된 날짜 저장
@@ -1312,9 +1323,11 @@ const saveDriverAssignment = () => {
   }
 
   // 기사 중복 배정 체크
-  const drivers = [selectedDrivers.value.driver1, selectedDrivers.value.driver2, selectedDrivers.value.driver3].filter(
-    (driver) => driver !== ""
-  ); // 빈 값 제외
+  const drivers = [
+    selectedDrivers.value.driver1,
+    selectedDrivers.value.driver2,
+    selectedDrivers.value.driver3,
+  ].filter((driver) => driver !== ""); // 빈 값 제외
 
   const uniqueDrivers = new Set(drivers);
   if (drivers.length !== uniqueDrivers.size) {
@@ -1322,9 +1335,10 @@ const saveDriverAssignment = () => {
     return;
   }
 
-  const dateKey = `${workerChange.value.year}-${String(workerChange.value.month).padStart(2, "0")}-${String(
-    workerChange.value.day
-  ).padStart(2, "0")}`;
+  const dateKey = `${workerChange.value.year}-${String(workerChange.value.month).padStart(
+    2,
+    "0"
+  )}-${String(workerChange.value.day).padStart(2, "0")}`;
 
   // 기존 데이터가 있는지 확인
   const existingData = workData.value[dateKey] || {};
@@ -1781,10 +1795,15 @@ const currentLabel = computed(() => {
 function goPrevWeek() {
   if (currentPage1.value.week === 1) {
     const prevMonth = currentPage1.value.month === 1 ? 12 : currentPage1.value.month - 1;
-    const prevYear = currentPage1.value.month === 1 ? currentPage1.value.year - 1 : currentPage1.value.year;
+    const prevYear =
+      currentPage1.value.month === 1
+        ? currentPage1.value.year - 1
+        : currentPage1.value.year;
 
     const lastDate = new Date(prevYear, prevMonth, 0);
-    const weeksInPrevMonth = Math.ceil((lastDate.getDate() + new Date(prevYear, prevMonth - 1, 1).getDay()) / 7);
+    const weeksInPrevMonth = Math.ceil(
+      (lastDate.getDate() + new Date(prevYear, prevMonth - 1, 1).getDay()) / 7
+    );
 
     currentPage1.value = {
       year: prevYear,
@@ -1803,7 +1822,10 @@ function goNextWeek() {
 
   if (currentPage1.value.week >= totalWeeks) {
     const nextMonth = currentPage1.value.month === 12 ? 1 : currentPage1.value.month + 1;
-    const nextYear = currentPage1.value.month === 12 ? currentPage1.value.year + 1 : currentPage1.value.year;
+    const nextYear =
+      currentPage1.value.month === 12
+        ? currentPage1.value.year + 1
+        : currentPage1.value.year;
     currentPage1.value = { year: nextYear, month: nextMonth, week: 1 };
   } else {
     currentPage1.value.week++;
@@ -1843,7 +1865,9 @@ const calendarDates = computed(() => {
 // 근무 정보 조회
 function getWorkInfo(date) {
   if (!date.inMonth) return null;
-  const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
+  const dateKey = `${date.year}-${String(date.month).padStart(2, "0")}-${String(
+    date.day
+  ).padStart(2, "0")}`;
   return workData.value[dateKey];
 }
 
@@ -1866,7 +1890,9 @@ const drivers = ref([
     <!-- 1. 헤더 카드박스 -->
     <ul class="flex gap-[20px] w-full">
       <!-- 1-1. 금일 신규 예약 건수 -->
-      <li class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+      <li
+        class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]"
+      >
         <div class="w-full flex flex-col px-[30px] py-[26px]">
           <p class="w-2/2 text-[13px] text-gray">금일 신규 예약 건수</p>
           <p class="flex items-end gap-[10px] w-full">
@@ -1876,18 +1902,23 @@ const drivers = ref([
         </div>
       </li>
       <!-- 1-2. 미배차 예약 건수 -->
-      <li class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+      <li
+        class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]"
+      >
         <div class="w-full flex flex-col px-[30px] py-[26px]">
           <p class="w-2/2 text-[13px] text-gray">미배차 예약 건수 / 전체 예약 건수</p>
           <p class="flex items-end gap-[10px] w-full">
-            <span class="font-bold text-lg">200</span><span class="text-[13px] pb-[2px] text-manager-orange">- 12</span>
+            <span class="font-bold text-lg">200</span
+            ><span class="text-[13px] pb-[2px] text-manager-orange">- 12</span>
             /
             <span class="font-bold text-lg">342 건</span>
           </p>
         </div>
       </li>
       <!-- 1-3. 금일 픽업 건수 -->
-      <li class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+      <li
+        class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]"
+      >
         <div class="w-full flex flex-col px-[30px] py-[26px]">
           <p class="w-2/2 text-[13px] text-gray">금일 픽업 건수</p>
           <p class="flex items-end gap-[10px] w-full">
@@ -1897,7 +1928,9 @@ const drivers = ref([
         </div>
       </li>
       <!-- 1-4. 금일 배차 완료 건수 -->
-      <li class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+      <li
+        class="gap-[10px] w-1/4 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]"
+      >
         <div class="w-full flex flex-col px-[30px] py-[26px]">
           <p class="w-2/2 text-[13px] text-gray">금일 배차 완료 건수</p>
           <p class="flex items-end gap-[10px] w-full">
@@ -1909,7 +1942,8 @@ const drivers = ref([
     </ul>
     <!-- 2. 날짜검색 및 선택박스 -->
     <div
-      class="flex justify-between px-[20px] py-[10px] w-2/2 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+      class="flex justify-between px-[20px] py-[10px] w-2/2 bg-white rounded-lg shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]"
+    >
       <!-- 2-1. 날짜 검색 및 다음 날 픽업날짜 체크박스 -->
       <div class="flex">
         <div class="select1 flex align-center justify-center">
@@ -1921,18 +1955,28 @@ const drivers = ref([
         <div class="flex items-center gap-[20px]">
           <!-- 2-1-1. 날짜 검색 -->
           <div class="dateBox flex gap-[10px]">
-            <input v-model="dateRange.start" type="date" class="border-none outline-none text-center align-middle" />
+            <input
+              v-model="dateRange.start"
+              type="date"
+              class="border-none outline-none text-center align-middle"
+            />
             <span class="text-[16px]">~</span>
             <input
               :min="dateRange.start"
               v-model="dateRange.end"
               type="date"
-              class="border-none outline-none text-center align-middle" />
+              class="border-none outline-none text-center align-middle"
+            />
           </div>
         </div>
         <!-- 2-1-2. 다음 날 픽업날짜 목록보기 -->
         <div class="flex items-center gap-[10px]">
-          <input type="checkbox" id="tomorrowPickUp" class="w-4 h-4" v-model="showTomorrowPickup" />
+          <input
+            type="checkbox"
+            id="tomorrowPickUp"
+            class="w-4 h-4"
+            v-model="showTomorrowPickup"
+          />
           <label for="tomorrowPickUp" class="text-gray">내일 픽업 날짜만 보기</label>
         </div>
       </div>
@@ -1984,7 +2028,8 @@ const drivers = ref([
     </div>
     <!-- 3.검색상자, 예약목록 리스트, 페이지네이션 -->
     <div
-      class="relative w-2/2 h-[480px] flex flex-col align-center bg-white rounded-[10px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]">
+      class="relative w-2/2 h-[480px] flex flex-col align-center bg-white rounded-[10px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.10)]"
+    >
       <!-- 3-1. 검색상자 -->
       <div class="h-[80px] flex justify-between w-full p-[20px]">
         <div class="flex align-center justify-center font-bold font-[16px]">
@@ -1999,7 +2044,8 @@ const drivers = ref([
             @input="handleInput"
             type="text"
             placeholder="고객명 또는 주소로 검색하세요."
-            class="w-full placeholder:text-[14px] py-[5px] outline-none" />
+            class="w-full placeholder:text-[14px] py-[5px] outline-none"
+          />
         </div>
       </div>
       <!-- 3-2.예약목록 리스트 , 3-3. 페이지네이션 -->
@@ -2009,10 +2055,17 @@ const drivers = ref([
           <!-- 3-2-1. 예약목록 구분 -->
           <thead class="bg-[#F9FAFB] w-2/2 border-t border-b border-gray pr-[65px]">
             <tr class="w-[100%] pl-[20px] pr-[65px]">
-              <th class="pl-[20px] flex justify-center align-center" v-if="showCheckboxes">
+              <th
+                class="pl-[20px] flex justify-center align-center"
+                v-if="showCheckboxes"
+              >
                 <div class="">
                   <!-- :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" -->
-                  <input class="w-4 h-4 align-middle" type="checkbox" v-model="isAllSelected" />
+                  <input
+                    class="w-4 h-4 align-middle"
+                    type="checkbox"
+                    v-model="isAllSelected"
+                  />
                 </div>
               </th>
               <th v-else class="pl-[20px] flex justify-center align-center">
@@ -2031,7 +2084,11 @@ const drivers = ref([
             </tr>
           </thead>
           <!-- 3-2-2. 예약목록 내용 -->
-          <tbody v-for="item in paginatedReservations" :key="item.id" class="bg-white align-middle text-center">
+          <tbody
+            v-for="item in paginatedReservations"
+            :key="item.id"
+            class="bg-white align-middle text-center"
+          >
             <tr>
               <td class="pl-[20px] py-1 align-middle text-[14px]">
                 <!-- :disabled="!isCheckboxEnabled(item.dispatchStatus)" -->
@@ -2041,7 +2098,8 @@ const drivers = ref([
                   v-if="showCheckboxes"
                   :checked="selectedItems.has(item.id)"
                   @change="toggleItem(item.id)"
-                  class="w-4 h-4 align-middle" />
+                  class="w-4 h-4 align-middle"
+                />
               </td>
               <td class="pr-[30px] align-middle text-[14px]">{{ item.id }}</td>
               <td class="align-middle text-[14px]">{{ item.customerName }}</td>
@@ -2069,20 +2127,23 @@ const drivers = ref([
 
         <!-- 3-3. 페이지네이션 -->
         <div
-          class="absolute left-[50%] bottom-0 transform -translate-x-1/2 flex justify-center items-center rounded-[10px] p-4">
+          class="absolute left-[50%] bottom-0 transform -translate-x-1/2 flex justify-center items-center rounded-[10px] p-4"
+        >
           <div class="flex gap-2">
             <!-- 3-3-1. 이전버튼(그룹단위) -->
             <button
               @click="prevPageGroup"
               :disabled="pageGroup === 0"
-              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <<
             </button>
             <!-- 3-3-2. 이전버튼(페이지단위) -->
             <button
               @click="prevPage"
               :disabled="currentPage === 1"
-              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <
             </button>
             <!-- 3-3-3. 클릭 시 페이지 이동 -->
@@ -2091,21 +2152,27 @@ const drivers = ref([
               :key="page"
               @click="goToPage(page)"
               class="w-10"
-              :class="['px-3 py-1 text-[14px]', currentPage === page ? 'bg-gray-200 text-white rounded-[5px]' : '']">
+              :class="[
+                'px-3 py-1 text-[14px]',
+                currentPage === page ? 'bg-gray-200 text-white rounded-[5px]' : '',
+              ]"
+            >
               {{ page }}
             </button>
             <!-- 3-3-4. 다음버튼(페이지단위) -->
             <button
               @click="nextPage"
               :disabled="currentPage === totalPages || totalPages === 0"
-              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               >
             </button>
             <!-- 3-3-5. 다음버튼(그룹단위) -->
             <button
               @click="nextPageGroup"
               :disabled="endPage === totalPages"
-              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed">
+              class="px-2 py-1 border rounded-[10px] text-[14px] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               >>
             </button>
           </div>
@@ -2117,20 +2184,32 @@ const drivers = ref([
     <div class="flex flex-row-reverse gap-6 mb-[27px]">
       <!-- 4-1. 배차변경 클릭 후 -->
       <div class="flex gap-3" v-if="modifyDispatchStatus">
-        <button @click="showDispatchChangeModal" class="w-36 h-12 bg-manager rounded-[10px] text-white">
+        <button
+          @click="showDispatchChangeModal"
+          class="w-36 h-12 bg-[#767676] hover:bg-[#5a5a5a] rounded-[10px] text-white"
+        >
           배차변경
         </button>
         <!-- <button class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">저장</button> -->
-        <button @click="cancelDispatchClick" class="w-36 h-12 bg-white border rounded-[10px] text-black">
+        <button
+          @click="cancelDispatchClick"
+          class="w-36 h-12 bg-white hover:bg-[#f3f4f6] border rounded-[10px] text-black"
+        >
           수정취소
         </button>
       </div>
       <!-- 4-2. 배차변경 클릭 전 -->
       <div class="flex gap-3" v-if="modifyBtn">
-        <button @click="handleDispatchClick" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
+        <button
+          @click="handleDispatchClick"
+          class="w-36 h-12 bg-[#767676] hover:bg-[#5a5a5a] rounded-[10px] text-white"
+        >
           배차수정
         </button>
-        <button @click="workerSelectModalOpen" class="w-36 h-12 bg-neutral-500 rounded-[10px] text-white">
+        <button
+          @click="workerSelectModalOpen"
+          class="w-36 h-12 bg-[#767676] hover:bg-[#5a5a5a] rounded-[10px] text-white"
+        >
           기사배정
         </button>
       </div>
@@ -2139,42 +2218,70 @@ const drivers = ref([
 
   <!-- 5. 모달창 -->
   <!-- 5-1. 예약 상세정보 -->
-  <div v-if="selectedItem" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
+  <div
+    v-if="selectedItem"
+    class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0"
+    @click="closeSelectedItem"
+  >
     <div
-      class="w-1/2 w-max-[1000px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
-      <h4 class="font-bold p-[30px] ml-[15px] text-[20px] border-b border-[#E5E5EC]">예약 상세 정보</h4>
+      class="w-1/2 w-max-[1000px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
+      @click.stop
+    >
+      <h4 class="font-bold p-[30px] ml-[15px] text-[20px] border-b border-[#E5E5EC]">
+        예약 상세 정보
+      </h4>
       <div class="flex px-[45px] my-[30px]">
         <!-- 5-1-1. 기본정보 -->
         <div class="flex flex-col flex-1 gap-[30px]">
           <h4 class="text-[18px] font-bold">기본정보</h4>
           <div class="flex flex-col gap-[30px]">
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">예약 번호</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.id }}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >예약 번호</span
+              >
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.id
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">고객명</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >고객명</span
+              >
               <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
                 selectedItem.customerName
               }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">연락처</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.phone }}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >연락처</span
+              >
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.phone
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">주소</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.address }}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >주소</span
+              >
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.address
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">상세주소</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >상세주소</span
+              >
               <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
                 selectedItem.detailaddress
               }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">짐종류</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.clothes }}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >짐종류</span
+              >
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.clothes
+              }}</span>
             </div>
           </div>
         </div>
@@ -2183,24 +2290,36 @@ const drivers = ref([
           <h4 class="text-[18px] font-bold">일정정보</h4>
           <div class="flex flex-col gap-[30px]">
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">예약일자</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >예약일자</span
+              >
               <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
                 selectedItem.reservationDate
               }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">픽업일자</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.pickupDate }}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >픽업일자</span
+              >
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.pickupDate
+              }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">배차상태</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >배차상태</span
+              >
               <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
                 getdispatchStatusText(selectedItem.dispatchStatus)
               }}</span>
             </div>
             <div class="flex gap-[30px]">
-              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal">배정기사</span>
-              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{ selectedItem.name }}</span>
+              <span class="block w-[70px] h-[20px] text-center text-[#505050] font-normal"
+                >배정기사</span
+              >
+              <span class="w-[250px] h-[20px] text-left text-[#111] font-semibold">{{
+                selectedItem.name
+              }}</span>
             </div>
           </div>
         </div>
@@ -2209,7 +2328,8 @@ const drivers = ref([
       <div class="flex flex-row-reverse px-[45px] pt-[10px] pb-[30px] gap-6">
         <button
           @click="closeSelectedItem"
-          class="w-36 h-12 border border-neutral-500 rounded-[10px] text-black font-light">
+          class="w-36 h-12 border hover:bg-[#f3f4f6] border-neutral-500 rounded-[10px] text-black font-light"
+        >
           닫기
         </button>
       </div>
@@ -2217,20 +2337,29 @@ const drivers = ref([
   </div>
   <!-- 5-2. 배차완료 예약 상세정보 -->
   <div class="none w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
-    <div class="w-1/2 w-max-[900px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+    <div
+      class="w-1/2 w-max-[900px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
+    >
       <h4 class="font-bold m-[30px]">예약 상세 정보</h4>
     </div>
   </div>
   <!-- 5-3. 배차변경 모달 -->
   <!-- 배차변경 모달 bg -->
-  <div v-if="dispatchChangeModal" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
+  <div
+    v-if="dispatchChangeModal"
+    class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0"
+  >
     <div
-      class="flex flex-col align-center gap-[40px] w-[400px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
+      class="flex flex-col align-center gap-[40px] w-[400px] rounded-[10px] bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
+    >
       <!-- 5-3-1. 모달 제목 -->
-      <h4 class="font-bold p-[20px] text-center text-[18px] border-b-[1px] border-b-[#E5E5EC]">
+      <h4
+        class="font-bold p-[20px] text-center text-[18px] border-b-[1px] border-b-[#E5E5EC]"
+      >
         <p class="text-center text-gray-300 font-normal text-[14px]">
           선택하신 총
-          <span class="font-bold">{{ selectedItems.size }} 건</span>의 배차상태가 다음과 같이 변경됩니다.
+          <span class="font-bold">{{ selectedItems.size }} 건</span>의 배차상태가 다음과
+          같이 변경됩니다.
         </p>
       </h4>
 
@@ -2240,17 +2369,28 @@ const drivers = ref([
         <div class="w-[200px] flex justify-around">
           <span class="w-[50px] text-gray text-[15px] font-light">변경 전</span>
           <div class="block w-[80px] text-center text-gray text-[15px] font-light">
-            <div v-if="currentDispatchCounts.wait > 0">배차대기 : {{ currentDispatchCounts.wait }}건</div>
-            <div v-if="currentDispatchCounts.one > 0">1호차 : {{ currentDispatchCounts.one }}건</div>
-            <div v-if="currentDispatchCounts.two > 0">2호차 : {{ currentDispatchCounts.two }}건</div>
-            <div v-if="currentDispatchCounts.three > 0">3호차 : {{ currentDispatchCounts.three }}건</div>
+            <div v-if="currentDispatchCounts.wait > 0">
+              배차대기 : {{ currentDispatchCounts.wait }}건
+            </div>
+            <div v-if="currentDispatchCounts.one > 0">
+              1호차 : {{ currentDispatchCounts.one }}건
+            </div>
+            <div v-if="currentDispatchCounts.two > 0">
+              2호차 : {{ currentDispatchCounts.two }}건
+            </div>
+            <div v-if="currentDispatchCounts.three > 0">
+              3호차 : {{ currentDispatchCounts.three }}건
+            </div>
           </div>
         </div>
         <!-- 변경 후 -->
         <div class="w-[200px] flex align-center justify-around">
           <label class="w-[50px] font-semibold">변경 후</label>
           <div class="select3">
-            <select class="w-[70px] h-[20px] block text-black" v-model="selectedDispatchStatus">
+            <select
+              class="w-[70px] h-[20px] block text-black"
+              v-model="selectedDispatchStatus"
+            >
               <option value="one">1호차</option>
               <option value="two">2호차</option>
               <option value="three">3호차</option>
@@ -2260,27 +2400,45 @@ const drivers = ref([
       </div>
       <!-- 5-3-4. 모달 버튼 -->
       <div class="flex align-center justify-center gap-2 mb-[30px]">
-        <button class="w-36 h-11 bg-manager rounded-[10px] text-white" @click="saveDispatchChange">완료</button>
+        <button
+          class="w-36 h-11 bg-manager rounded-[10px] text-white"
+          @click="saveDispatchChange"
+        >
+          완료
+        </button>
         <button
           class="w-36 h-11 border border-neutral-500 rounded-[10px] text-black font-light"
-          @click="closeDispatchChangeModal">
+          @click="closeDispatchChangeModal"
+        >
           취소
         </button>
       </div>
     </div>
   </div>
   <!--  5-4. 기사배정 모달 -->
-  <div v-if="workerSelected" class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0">
+  <div
+    v-if="workerSelected"
+    class="w-full h-[100%] bg-[#11111166] z-10 fixed top-0 left-0"
+    @click="workerSelectModalClose"
+  >
     <div
-      class="max-w-[1200px] w-full mx-auto bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 rounded-[10px] py-[70px]">
+      class="max-w-[1200px] w-full mx-auto bg-white absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 rounded-[10px] py-[70px]"
+      @click.stop
+    >
       <!-- 주차별 페이지네이션 -->
       <div class="w-full max-w-xs mx-auto mb-8">
         <div class="flex items-center justify-between px-2">
-          <button @click="goPrevWeek" class="transition-transform hover:scale-110 active:scale-95">
+          <button
+            @click="goPrevWeek"
+            class="transition-transform hover:scale-110 active:scale-95"
+          >
             <img src="/images/kang/pre.png" class="w-3 h-3.5" alt="이전 주" />
           </button>
           <span class="text-[#111] text-base font-medium">{{ currentLabel }}</span>
-          <button @click="goNextWeek" class="transition-transform hover:scale-110 active:scale-95">
+          <button
+            @click="goNextWeek"
+            class="transition-transform hover:scale-110 active:scale-95"
+          >
             <img src="/images/kang/next.png" class="w-3 h-3.5" alt="다음 주" />
           </button>
         </div>
@@ -2289,7 +2447,9 @@ const drivers = ref([
       <!-- 5-4-3. 달력 -->
       <div class="max-w-[950px] mb-5 w-full mx-auto">
         <!-- 요일 헤더 -->
-        <div class="grid grid-cols-7 bg-white text-center text-sm font-medium text-[#505050]">
+        <div
+          class="grid grid-cols-7 bg-white text-center text-sm font-medium text-[#505050]"
+        >
           <div class="py-3 text-[#FF4B0F]">일</div>
           <div class="py-3">월</div>
           <div class="py-3">화</div>
@@ -2300,7 +2460,9 @@ const drivers = ref([
         </div>
 
         <!-- 달력 그리드 -->
-        <div class="grid grid-cols-7 border border-[#D9D9D9] rounded-[10px] overflow-hidden">
+        <div
+          class="grid grid-cols-7 border border-[#D9D9D9] rounded-[10px] overflow-hidden"
+        >
           <div
             v-for="(date, index) in calendarDates"
             :key="`${date.year}-${date.month}-${date.day}`"
@@ -2311,15 +2473,18 @@ const drivers = ref([
               (index + 1) % 7 !== 0 ? 'border-r' : '',
               index < calendarDates.length - 7 ? 'border-b' : '',
               workerChange && workerChange.day === date.day ? 'ring-2 ring-manager' : '',
-            ]">
+            ]"
+          >
             <span
               class="absolute top-1 right-2 text-[11px]"
               :class="{
                 'text-[#D9D9D9]': !date.inMonth,
                 'text-[#FF4B0F]': date.inMonth && date.weekday === 0,
                 'text-[#4299E1]': date.inMonth && date.weekday === 6,
-                'text-[#767676]': date.inMonth && date.weekday !== 0 && date.weekday !== 6,
-              }">
+                'text-[#767676]':
+                  date.inMonth && date.weekday !== 0 && date.weekday !== 6,
+              }"
+            >
               {{ date.day }}
             </span>
             <!-- 기사 정보 표시 -->
@@ -2348,7 +2513,10 @@ const drivers = ref([
           <p class="text-gray py-4">날짜를 선택해주세요.</p>
         </div>
         <div v-if="workerChange" class="flex flex-col gap-6 align-center justify-center">
-          <h4>{{ workerChange.year }}년 {{ workerChange.month }}월 {{ workerChange.day }}일 기사배정 변경</h4>
+          <h4>
+            {{ workerChange.year }}년 {{ workerChange.month }}월 {{ workerChange.day }}일
+            기사배정 변경
+          </h4>
           <div class="flex gap-3">
             <div class="flex flex-col gap-2">
               <p class="text-[14px] font-medium">1호차</p>
@@ -2387,23 +2555,26 @@ const drivers = ref([
         </div>
         <!-- 5-4-5 버튼 -->
         <div class="flex flex-row-reverse gap-2">
-          <button v-if="!workerChange"
+          <button
+            v-if="!workerChange"
             @click="workerSelectModalClose"
-            class="w-36 h-11 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors">
+            class="w-36 h-11 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors"
+          >
             닫기
           </button>
           <div v-if="workerChange" class="flex gap-2">
-          <button
+            <button
               @click="saveDriverAssignment"
-              class="w-36 h-11 bg-manager rounded-[10px] text-white hover:bg-[#0066CC] transition-colors">
+              class="w-36 h-11 bg-manager rounded-[10px] text-white hover:bg-[#0066CC] transition-colors"
+            >
               배정완료
             </button>
             <button
               @click="workerChange = false"
-              class="w-36 h-11 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors">
+              class="w-36 h-11 bg-white border rounded-[10px] text-black hover:bg-gray-50 transition-colors"
+            >
               취소
             </button>
-            
           </div>
         </div>
       </div>
