@@ -286,9 +286,9 @@
                       <div class="self-end">
                         <button
                           @click="handlePickupComplete"
-                          :disabled="selectedPlace.completed && !selectedPlace.overrideUpload"
-                          :class="['px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap', selectedPlace.completed && !selectedPlace.overrideUpload ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
-                          {{ selectedPlace.completed && !selectedPlace.overrideUpload ? "픽업완료" : selectedPlace.completed && selectedPlace.overrideUpload ? "수정하기" : "픽업완료" }}
+                          :disabled="selectedPlace.completed && !overrideUpload"
+                          :class="['px-6 py-2 rounded-[10px] font-bold text-sm whitespace-nowrap', selectedPlace.completed && !overrideUpload ? 'bg-[#E5E5EC] text-[#505050] cursor-not-allowed' : 'bg-[#FF6F00] text-white']">
+                          {{ selectedPlace.completed && !overrideUpload ? "픽업완료" : selectedPlace.completed && overrideUpload ? "수정하기" : "픽업완료" }}
                         </button>
                       </div>
                     </div>
@@ -773,15 +773,12 @@ const createMarker = (place) => {
     selectedPlace.value = {
       ...place,
       completed: place.image.includes("-1.png"),
-      overrideUpload: place.overrideUpload ?? false,
-      uploadedImages: place.uploadedImages ?? "",
     };
     // reservationId에 해당하는 이미지만 불러오기
     const image = uploadedImages.value["" + place.reservationId] || place.previewImage || null;
     uploadedImages.value[place.reservationId] = image;
 
-    // uploadedImages[place.reservationId] = image;
-    uploadedImages.value[reservationId] = image;
+    uploadedImages[place.reservationId] = image;
 
     // 버튼 상태 초기화 (다시 클릭했을 때 항상 false)
     overrideUpload.value = false;
@@ -810,6 +807,7 @@ function handlePickupComplete() {
     return;
   }
 
+  // 픽업이 완료된 상태이고 수정하기 모드가 아닐 때는 함수 실행 중단
   if (selectedPlace.value?.completed && !overrideUpload.value) return;
 
   const index = markerData.value.findIndex((item) => item.reservationId === id);
@@ -819,6 +817,14 @@ function handlePickupComplete() {
     markerData.value[index].image = updated;
     markerData.value[index].completed = true;
     markerData.value[index].uploadedImages = uploadedImages.value[id];
+    markerData.value[index].overrideUpload = false;
+
+    // selectedPlace 상태도 업데이트
+    selectedPlace.value = {
+      ...selectedPlace.value,
+      completed: true,
+      overrideUpload: false,
+    };
 
     overrideUpload.value = false;
     modalOpen.value = false;
@@ -952,29 +958,32 @@ function handleImageUpload(event, reservationId) {
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    const uploadedSrc = e.target.result;
-    uploadedImages.value[reservationId] = uploadedSrc;
+    uploadedImages.value[reservationId] = e.target.result;
 
     const target = markerData.value.find((item) => item.reservationId === reservationId);
     if (target) {
-      // 최초 업로드일 경우 → 픽업 완료 처리
+      // 기존 이미지가 없었을 경우 (첫 업로드)
       if (!target.completed) {
         target.completed = true;
         target.overrideUpload = false;
       }
-      // 재업로드일 경우 → 수정하기 버튼으로 변경
-      else {
+      // 기존에 완료 상태였던 경우 → 재업로드
+      else if (target.completed) {
+        // 수정하기 모드로 전환
         target.overrideUpload = true;
+        overrideUpload.value = true;
+
+        // 모달이 열려있는 경우 selectedPlace 상태도 업데이트
+        if (selectedPlace.value && selectedPlace.value.reservationId === reservationId) {
+          selectedPlace.value = {
+            ...selectedPlace.value,
+            overrideUpload: true,
+            completed: true,
+          };
+        }
       }
 
-      target.uploadedImages = uploadedSrc;
-
-      // 만약 selectedPlace가 현재 해당 마커라면 그것도 업데이트
-      if (selectedPlace && selectedPlace.reservationId === reservationId) {
-        selectedPlace.completed = target.completed;
-        selectedPlace.overrideUpload = target.overrideUpload;
-        selectedPlace.uploadedImages = target.uploadedImages;
-      }
+      target.uploadedImages = e.target.result;
     }
   };
   reader.readAsDataURL(file);
@@ -1047,8 +1056,6 @@ const filteredMarkerData = computed(() => {
     return areaMatch && statusMatch;
   });
 });
-
-// 리스트로 보기 버튼
 </script>
 <style scoped>
 /* marker 숨김용 */

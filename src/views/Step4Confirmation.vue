@@ -183,6 +183,9 @@ const formatPhoneNumber = (phone) => {
 .confirmation_top {
   position: relative;
   text-align: center;
+  .conImg{
+    padding-left: 30px;
+  }
   .conTopTitle {
     h2 {
       margin: 15px 0 25px;
