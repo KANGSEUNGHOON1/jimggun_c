@@ -2059,7 +2059,7 @@ const drivers = ref([
                 class="pl-[20px] flex justify-center align-center"
                 v-if="showCheckboxes"
               >
-                <div class="">
+                <div class="m1m1m1">
                   <!-- :disabled="!filteredReservations.some((item) => item.dispatchStatus === 'wait')" -->
                   <input
                     class="w-4 h-4 align-middle"
@@ -2645,5 +2645,11 @@ tbody td {
 }
 .dayBox11 {
   align-items: end;
+}
+.m1m1m1{
+  /* margin-top: 20px; */
+  width: 20px;
+  height: 100%;
+  padding-top: 10px;
 }
 </style>
