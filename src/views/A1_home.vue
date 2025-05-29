@@ -1466,7 +1466,15 @@ const handleGoToReservation = () => {
     align-items: center !important;
     gap: 15px;
     margin: 0 !important;
-    padding: 100px 20px !important;
+    padding: 70px 20px !important;
+  }
+  .a1-part2{
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+  .a1-part3{
+    margin-top: 80px !important;
+    margin-bottom: 80px !important;
   }
   .a1-part1-title h3 {
     text-align: center !important;
@@ -1557,6 +1565,9 @@ const handleGoToReservation = () => {
   }
 }
 @media screen and (max-width: 475px) {
+  .a1-part1{
+    padding: 55px 20px 70px 20px !important;
+  }
   .box-text h3 {
     font-size: 14px !important;
   }
