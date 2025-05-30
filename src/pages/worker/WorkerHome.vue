@@ -50,7 +50,7 @@
               <!-- 텍스트 -->
               <div class="flex flex-col justify-center min-w-0 flex-grow">
                 <div class="flex items-baseline gap-2 flex-wrap">
-                  <div class="text-4xl font-bold whitespace-nowrap">홍은경</div>
+                  <div class="text-4xl font-bold whitespace-nowrap">김진수</div>
                   <div class="text-3xl font-bold text-[#505050] whitespace-nowrap">기사님</div>
                 </div>
                 <div class="mt-1 text-base font-medium text-[#767676]">실시간 교통정보, 중요한 알림을 확인하세요</div>
