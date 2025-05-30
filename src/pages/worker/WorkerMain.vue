@@ -12,7 +12,7 @@
 
       <!-- 중앙 텍스트 -->
       <div class="contentsbox flex-grow flex flex-col justify-center items-center text-center">
-        <h2 class="text-4xl font-bold mb-2.5">홍길동 기사님</h2>
+        <h2 class="text-4xl font-bold mb-2.5">김진수 기사님</h2>
         <p class="text-5xl font-bold">오늘도 안전운행 하세요!</p>
 
         <router-link to="/worker/worker-home" custom v-slot="{ navigate }">
